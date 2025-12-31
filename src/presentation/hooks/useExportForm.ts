@@ -4,7 +4,7 @@
  */
 
 import { useState, useCallback, useMemo } from "react";
-import type { ExportSettings, VideoProject } from "@domains/video";
+import type { ExportSettings, VideoProject } from "../../../domain/entities";
 import type {
   Resolution,
   Quality,

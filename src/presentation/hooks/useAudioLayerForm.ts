@@ -4,7 +4,7 @@
  */
 
 import { useState, useCallback } from "react";
-import type { Audio } from "@domains/video";
+import type { Audio } from "../../../domain/entities";
 
 export interface AudioLayerFormState {
   audioUri: string;

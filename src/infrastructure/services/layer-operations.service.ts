@@ -7,7 +7,7 @@ import { textLayerOperationsService } from "./text-layer-operations.service";
 import { imageLayerOperationsService } from "./image-layer-operations.service";
 import { shapeLayerOperationsService } from "./shape-layer-operations.service";
 import { layerManipulationService } from "./layer-manipulation.service";
-import type { Scene, TextLayer, ImageLayer, Animation } from "@domains/video";
+import type { Scene, TextLayer, ImageLayer, Animation } from "../../../domain/entities";
 import type {
   LayerOperationResult,
   LayerOrderAction,

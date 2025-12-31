@@ -4,7 +4,7 @@
  */
 
 import { useState, useCallback } from "react";
-import type { Animation, AnimationType } from "@domains/video";
+import type { Animation, AnimationType } from "../../../domain/entities";
 import type { Easing } from "../constants/animation-layer.constants";
 
 export interface AnimationLayerFormState {

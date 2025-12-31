@@ -7,7 +7,7 @@ import { useCallback } from "react";
 import { Alert } from "react-native";
 import { layerOperationsService } from "../infrastructure/services/layer-operations.service";
 import type { AddImageLayerData } from "../types";
-import type { ImageLayer } from "@domains/video";
+import type { ImageLayer } from "../../../domain/entities";
 
 export interface UseImageLayerOperationsParams {
   scenes: any[];

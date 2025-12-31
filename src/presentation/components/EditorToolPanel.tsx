@@ -17,7 +17,7 @@ import {
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
 import { useLocalization } from "@umituz/react-native-localization";
-import type { Audio } from "@domains/video";
+import type { Audio } from "../../../domain/entities";
 
 export interface EditorToolPanelProps {
   onAddText: () => void;

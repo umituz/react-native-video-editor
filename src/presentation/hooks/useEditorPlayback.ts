@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect, useCallback } from "react";
-import type { Scene } from "@domains/video";
+import type { Scene } from "../../../domain/entities";
 
 export interface UseEditorPlaybackParams {
   currentScene: Scene | undefined;

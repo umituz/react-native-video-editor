@@ -4,8 +4,10 @@
 
 export * from "./video-project.types";
 
+import type { VideoProject, Scene } from "./video-project.types";
+
 export interface EditorState {
-  project: import("./video-project.types").VideoProject | null;
+  project: VideoProject | null;
   currentSceneIndex: number;
   selectedLayerId: string | null;
   isPlaying: boolean;
@@ -14,13 +16,13 @@ export interface EditorState {
 
 export interface LayerOperationResult {
   success: boolean;
-  updatedScenes: import("./video-project.types").Scene[];
+  updatedScenes: Scene[];
   error?: string;
 }
 
 export interface SceneOperationResult {
   success: boolean;
-  updatedScenes: import("./video-project.types").Scene[];
+  updatedScenes: Scene[];
   newSceneIndex?: number;
   error?: string;
 }

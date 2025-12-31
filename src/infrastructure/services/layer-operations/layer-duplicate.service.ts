@@ -4,7 +4,7 @@
  */
 
 import { generateUUID } from "@umituz/react-native-uuid";
-import type { Scene } from "@domains/video";
+import type { Scene } from "../../../domain/entities";
 import type { LayerOperationResult } from "../../../types";
 
 class LayerDuplicateService {

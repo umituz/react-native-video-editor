@@ -1,5 +1,5 @@
 /**
- * Video Project Entity Types
+ * Video Project Types
  * Core domain entities for video editor
  */
 

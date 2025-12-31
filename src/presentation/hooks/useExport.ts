@@ -1,12 +1,34 @@
 /**
  * useExport Hook
  * Manages export state and operations
+ * Package-driven: Export function is injected from app
  */
 
-import { useState, useCallback, useEffect } from "react";
-import type { ExportSettings, VideoProject } from "@domains/video";
-import type { ExportProgress } from "@domains/video/infrastructure/services/video-export.service";
-import { exportOrchestratorService } from "../infrastructure/services/export-orchestrator.service";
+import { useState, useCallback } from "react";
+import type { ExportSettings, VideoProject } from "../../domain/entities";
+
+export interface ExportProgress {
+  status: "preparing" | "encoding" | "saving" | "complete" | "error";
+  phase: string;
+  progress: number;
+  message?: string;
+  currentFrame?: number;
+  totalFrames?: number;
+}
+
+export interface ExportResult {
+  success: boolean;
+  uri?: string;
+  error?: string;
+}
+
+export interface UseExportConfig {
+  exportFunction: (
+    project: VideoProject,
+    settings: ExportSettings,
+    onProgress: (progress: ExportProgress) => void,
+  ) => Promise<ExportResult>;
+}
 
 export interface UseExportReturn {
   isExporting: boolean;
@@ -14,43 +36,36 @@ export interface UseExportReturn {
   exportVideo: (
     project: VideoProject,
     settings: ExportSettings,
-  ) => Promise<{ success: boolean; uri?: string; error?: string }>;
+  ) => Promise<ExportResult>;
   resetExport: () => void;
 }
 
 /**
  * Hook for managing export operations
+ * @param config - Configuration with export function injected from app
  */
-export function useExport(): UseExportReturn {
+export function useExport(config: UseExportConfig): UseExportReturn {
   const [isExporting, setIsExporting] = useState(false);
   const [exportProgress, setExportProgress] = useState<ExportProgress | null>(
     null,
   );
 
-  useEffect(() => {
-    exportOrchestratorService.requestNotificationPermissions();
-  }, []);
-
   const exportVideo = useCallback(
     async (
       project: VideoProject,
       settings: ExportSettings,
-    ): Promise<{ success: boolean; uri?: string; error?: string }> => {
+    ): Promise<ExportResult> => {
       setIsExporting(true);
       setExportProgress(null);
 
-      const result = await exportOrchestratorService.exportVideo(
-        project,
-        settings,
-        (progress) => {
-          setExportProgress(progress);
-        },
-      );
+      const result = await config.exportFunction(project, settings, (progress) => {
+        setExportProgress(progress);
+      });
 
       setIsExporting(false);
       return result;
     },
-    [],
+    [config],
   );
 
   const resetExport = useCallback(() => {

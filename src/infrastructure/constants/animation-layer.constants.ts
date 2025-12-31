@@ -3,7 +3,7 @@
  * Centralized constants for animation layer editor
  */
 
-import type { AnimationType } from "@domains/video";
+import type { AnimationType } from "../../../domain/entities";
 
 export type Easing = "linear" | "ease-in" | "ease-out" | "ease-in-out";
 

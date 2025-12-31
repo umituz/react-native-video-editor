@@ -10,7 +10,7 @@ import {
   AtomicIcon,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
-import type { VideoProject } from "@domains/video";
+import type { VideoProject } from "../../../domain/entities";
 
 interface ProjectInfoBoxProps {
   project: VideoProject;

@@ -10,7 +10,7 @@ import {
   AtomicIcon,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
-import type { Layer, ImageLayer } from "@domains/video";
+import type { Layer, ImageLayer } from "../../../domain/entities";
 
 export interface LayerActionsMenuProps {
   layer: Layer;

@@ -6,7 +6,7 @@
 import React, { useCallback } from "react";
 import { View, ScrollView, StyleSheet, Alert } from "react-native";
 import { useImagePicker } from "@/domains/media";
-import type { ImageLayer } from "@domains/video";
+import type { ImageLayer } from "../../../domain/entities";
 import { useImageLayerForm } from "../../hooks/useImageLayerForm";
 import { IMAGE_PICKER_OPTIONS } from "../../constants/image-layer.constants";
 import {

@@ -10,7 +10,7 @@ import {
   AtomicIcon,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
-import type { ShapeLayer } from "@domains/video";
+import type { ShapeLayer } from "../../../domain/entities";
 import { useShapeLayerForm } from "../../hooks/useShapeLayerForm";
 import {
   BORDER_WIDTHS,

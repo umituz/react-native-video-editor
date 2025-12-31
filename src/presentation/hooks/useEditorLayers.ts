@@ -13,7 +13,7 @@ import type {
   AddShapeLayerData,
   LayerOrderAction,
 } from "../types";
-import type { TextLayer, ImageLayer, Animation } from "@domains/video";
+import type { TextLayer, ImageLayer, Animation } from "../../../domain/entities";
 
 export interface UseEditorLayersParams {
   projectId: string;

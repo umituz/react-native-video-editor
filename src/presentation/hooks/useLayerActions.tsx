@@ -8,7 +8,7 @@ import { TextLayerEditor } from "../presentation/components/TextLayerEditor";
 import { ImageLayerEditor } from "../presentation/components/ImageLayerEditor";
 import { ShapeLayerEditor } from "../presentation/components/ShapeLayerEditor";
 import { AnimationEditor } from "../presentation/components/AnimationEditor";
-import type { ImageLayer } from "@domains/video";
+import type { ImageLayer } from "../../../domain/entities";
 import type { UseEditorLayersReturn } from "./useEditorLayers";
 import type { UseEditorBottomSheetReturn } from "./useEditorBottomSheet";
 

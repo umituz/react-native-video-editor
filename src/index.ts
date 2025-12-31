@@ -47,7 +47,6 @@ export { textLayerOperationsService } from "./infrastructure/services/text-layer
 export { imageLayerOperationsService } from "./infrastructure/services/image-layer-operations.service";
 export { shapeLayerOperationsService } from "./infrastructure/services/shape-layer-operations.service";
 export { layerManipulationService } from "./infrastructure/services/layer-manipulation.service";
-export { exportOrchestratorService } from "./infrastructure/services/export-orchestrator.service";
 
 export {
   layerDeleteService,

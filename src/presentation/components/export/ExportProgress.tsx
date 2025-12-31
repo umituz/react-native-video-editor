@@ -9,7 +9,7 @@ import {
   AtomicText,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
-import type { ExportProgress as ExportProgressType } from "@domains/video/infrastructure/services/video-export.service";
+import type { ExportProgress as ExportProgressType } from "../../hooks/useExport";
 
 interface ExportProgressProps {
   progress: ExportProgressType;

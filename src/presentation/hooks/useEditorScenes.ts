@@ -6,7 +6,7 @@
 import { useCallback } from "react";
 import { Alert } from "react-native";
 import { sceneOperationsService } from "../infrastructure/services/scene-operations.service";
-import type { Audio } from "@domains/video";
+import type { Audio } from "../../../domain/entities";
 
 export interface UseEditorScenesParams {
   scenes: any[];

@@ -3,7 +3,7 @@
  * Single Responsibility: Handle layer position, size, and animation updates
  */
 
-import type { Scene, Animation, Layer } from "@domains/video";
+import type { Scene, Animation, Layer } from "../../../domain/entities";
 import type { LayerOperationResult } from "../../../types";
 
 class LayerTransformService {

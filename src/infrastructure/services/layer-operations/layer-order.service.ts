@@ -3,7 +3,7 @@
  * Single Responsibility: Handle layer ordering operations
  */
 
-import type { Scene } from "@domains/video";
+import type { Scene } from "../../../domain/entities";
 import type { LayerOperationResult, LayerOrderAction } from "../../../types";
 
 class LayerOrderService {

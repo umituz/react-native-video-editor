@@ -9,7 +9,7 @@ import {
   AtomicIcon,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
-import type { Layer, TextLayer, ImageLayer, ShapeLayer } from "@domains/video";
+import type { Layer, TextLayer, ImageLayer, ShapeLayer } from "../../../domain/entities";
 
 interface LayerContentProps {
   layer: Layer;
