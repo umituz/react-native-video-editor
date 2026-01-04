@@ -4,7 +4,7 @@
  */
 
 import { useCallback } from "react";
-import { LayerActionsMenu } from "../presentation/components/LayerActionsMenu";
+import { LayerActionsMenu } from "../components/LayerActionsMenu";
 import type { UseEditorLayersReturn } from "./useEditorLayers";
 import type { UseEditorBottomSheetReturn } from "./useEditorBottomSheet";
 

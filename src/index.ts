@@ -97,3 +97,28 @@ export { useLayerActions } from "./presentation/hooks/useLayerActions";
 export { useSceneActions } from "./presentation/hooks/useSceneActions";
 export { useMenuActions } from "./presentation/hooks/useMenuActions";
 export { useExportActions } from "./presentation/hooks/useExportActions";
+
+// =============================================================================
+// VIDEO PLAYER MODULE
+// =============================================================================
+
+export type {
+  VideoPlayerConfig,
+  VideoPlayerState,
+  VideoPlayerControls,
+  UseVideoPlayerControlResult,
+  VideoVisibilityConfig,
+  VideoPlayerProps,
+  VideoPlayerType,
+} from "./player";
+
+export {
+  safePlay,
+  safePause,
+  safeToggle,
+  isPlayerReady,
+  configurePlayer,
+  useVideoPlayerControl,
+  useVideoVisibility,
+  VideoPlayer,
+} from "./player";

@@ -9,7 +9,7 @@ import {
   AtomicText,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
-import { VOLUME_OPTIONS } from "../../../constants/audio-layer.constants";
+import { VOLUME_OPTIONS } from "../../../infrastructure/constants/audio-layer.constants";
 
 interface VolumeSelectorProps {
   volume: number;

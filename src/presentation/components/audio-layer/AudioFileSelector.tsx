@@ -10,7 +10,7 @@ import {
   AtomicIcon,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
-import { SUPPORTED_AUDIO_FORMATS } from "../../../constants/audio-layer.constants";
+import { SUPPORTED_AUDIO_FORMATS } from "../../../infrastructure/constants/audio-layer.constants";
 
 interface AudioFileSelectorProps {
   audioUri: string;

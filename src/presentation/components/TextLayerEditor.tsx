@@ -6,12 +6,12 @@
 import React from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
 import { useLocalization } from "@umituz/react-native-localization";
-import type { TextLayer } from "../../../domain/entities";
-import { useTextLayerForm } from "../../hooks/useTextLayerForm";
+import type { TextLayer } from "../../domain/entities";
+import { useTextLayerForm } from "../hooks/useTextLayerForm";
 import {
   FONT_FAMILIES,
   FONT_WEIGHTS,
-} from "../../constants/text-layer.constants";
+} from "../../infrastructure/constants/text-layer.constants";
 import {
   TextInputSection,
   FontSizeSelector,

@@ -11,7 +11,7 @@ import {
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
 import { useLocalization } from "@umituz/react-native-localization";
-import type { VideoProject, Scene } from "../../../domain/entities";
+import type { VideoProject, Scene } from "../../domain/entities";
 
 export interface EditorTimelineProps {
   project: VideoProject;

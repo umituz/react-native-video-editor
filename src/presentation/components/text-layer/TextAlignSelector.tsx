@@ -11,7 +11,7 @@ import {
   AtomicIcon,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
-import { TEXT_ALIGNS } from "../../../constants/text-layer.constants";
+import { TEXT_ALIGNS } from "../../../infrastructure/constants/text-layer.constants";
 
 interface TextAlignSelectorProps {
   textAlign: "left" | "center" | "right";

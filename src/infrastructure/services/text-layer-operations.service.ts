@@ -4,8 +4,8 @@
  */
 
 import { generateUUID } from "@umituz/react-native-uuid";
-import type { Scene, TextLayer } from "../../../domain/entities";
-import type { LayerOperationResult, AddTextLayerData } from "../../types";
+import type { Scene, TextLayer } from "../../domain/entities";
+import type { LayerOperationResult, AddTextLayerData } from "../../domain/entities";
 
 class TextLayerOperationsService {
   /**

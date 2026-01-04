@@ -4,16 +4,19 @@
  */
 
 import React, { useCallback } from "react";
-import { View, ScrollView, StyleSheet } from "react-native";
+import { View, ScrollView, StyleSheet, Alert } from "react-native";
 import { useLocalization } from "@umituz/react-native-localization";
-import type { ExportSettings, VideoProject } from "../../../domain/entities";
-import { useExportForm } from "../../hooks/useExportForm";
-import { useExport } from "../../hooks/useExport";
+import type { ExportSettings, VideoProject } from "../../domain/entities";
+import { useExportForm } from "../hooks/useExportForm";
+import { useExport, type UseExportConfig, type ExportResult } from "../hooks/useExport";
 import {
   RESOLUTIONS,
   QUALITIES,
   FORMATS,
-} from "../../constants/export.constants";
+  type Resolution,
+  type Quality,
+  type Format,
+} from "../../infrastructure/constants/export.constants";
 import {
   ProjectInfoBox,
   OptionSelectorRow,
@@ -24,15 +27,22 @@ import {
 } from "./export";
 
 interface ExportDialogProps {
-  project: VideoProject;
-  onExport: (settings: ExportSettings, uri?: string) => void;
-  onCancel: () => void;
+  readonly project: VideoProject;
+  readonly onExport: (settings: ExportSettings, uri?: string) => void;
+  readonly onCancel: () => void;
+  readonly exportConfig?: UseExportConfig;
 }
+
+const defaultExportFunction = async (): Promise<ExportResult> => {
+  Alert.alert("Not Configured", "Export function not provided.");
+  return { success: false, error: "Export function not configured" };
+};
 
 export const ExportDialog: React.FC<ExportDialogProps> = ({
   project,
   onExport,
   onCancel,
+  exportConfig,
 }) => {
   const { t } = useLocalization();
   const {
@@ -46,7 +56,11 @@ export const ExportDialog: React.FC<ExportDialogProps> = ({
     projectDuration,
   } = useExportForm(project);
 
-  const { isExporting, exportProgress, exportVideo, resetExport } = useExport();
+  const config: UseExportConfig = exportConfig ?? {
+    exportFunction: defaultExportFunction,
+  };
+
+  const { isExporting, exportProgress, exportVideo, resetExport } = useExport(config);
 
   const handleExport = useCallback(async () => {
     const settings = buildExportSettings();

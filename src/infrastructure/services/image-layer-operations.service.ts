@@ -4,8 +4,8 @@
  */
 
 import { generateUUID } from "@umituz/react-native-uuid";
-import type { Scene, ImageLayer } from "../../../domain/entities";
-import type { LayerOperationResult, AddImageLayerData } from "../../types";
+import type { Scene, ImageLayer } from "../../domain/entities";
+import type { LayerOperationResult, AddImageLayerData } from "../../domain/entities";
 
 class ImageLayerOperationsService {
   /**

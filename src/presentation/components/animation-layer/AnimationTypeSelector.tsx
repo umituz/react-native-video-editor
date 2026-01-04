@@ -10,7 +10,7 @@ import {
   AtomicIcon,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
-import { ANIMATION_TYPES } from "../../../constants/animation-layer.constants";
+import { ANIMATION_TYPES } from "../../../infrastructure/constants/animation-layer.constants";
 import type { AnimationType } from "../../../domain/entities";
 
 interface AnimationTypeSelectorProps {

@@ -5,9 +5,9 @@
 
 import { useCallback } from "react";
 import { Alert } from "react-native";
-import { layerOperationsService } from "../infrastructure/services/layer-operations.service";
-import type { AddTextLayerData } from "../types";
-import type { TextLayer } from "../../../domain/entities";
+import { layerOperationsService } from "../../infrastructure/services/layer-operations.service";
+import type { AddTextLayerData } from "../../domain/entities";
+import type { TextLayer } from "../../domain/entities";
 
 export interface UseTextLayerOperationsParams {
   scenes: any[];

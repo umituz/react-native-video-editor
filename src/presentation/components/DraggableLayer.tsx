@@ -8,8 +8,8 @@ import { StyleSheet } from "react-native";
 import { GestureDetector } from "react-native-gesture-handler";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { useAppDesignTokens } from "@umituz/react-native-design-system";
-import type { Layer } from "../../../domain/entities";
-import { useDraggableLayerGestures } from "../../hooks/useDraggableLayerGestures";
+import type { Layer } from "../../domain/entities";
+import { useDraggableLayerGestures } from "../hooks/useDraggableLayerGestures";
 import { LayerContent } from "./draggable-layer/LayerContent";
 import { ResizeHandles } from "./draggable-layer/ResizeHandles";
 

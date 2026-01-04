@@ -4,8 +4,8 @@
  */
 
 import { useCallback } from "react";
-import { ExportDialog } from "../presentation/components/ExportDialog";
-import type { VideoProject, ExportSettings } from "../../../domain/entities";
+import { ExportDialog } from "../components/ExportDialog";
+import type { VideoProject, ExportSettings } from "../../domain/entities";
 import type { UseEditorBottomSheetReturn } from "./useEditorBottomSheet";
 
 export interface UseExportActionsParams {

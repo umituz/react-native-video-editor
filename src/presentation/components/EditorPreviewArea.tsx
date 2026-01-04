@@ -11,7 +11,7 @@ import {
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
 import { DraggableLayer } from "./DraggableLayer";
-import type { Scene, Layer, ImageLayer } from "../../../domain/entities";
+import type { Scene, Layer, ImageLayer } from "../../domain/entities";
 
 const { width } = Dimensions.get("window");
 const PREVIEW_ASPECT_RATIO = 16 / 9;

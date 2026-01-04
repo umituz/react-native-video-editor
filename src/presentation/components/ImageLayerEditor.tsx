@@ -5,10 +5,8 @@
 
 import React, { useCallback } from "react";
 import { View, ScrollView, StyleSheet, Alert } from "react-native";
-import { useImagePicker } from "@/domains/media";
-import type { ImageLayer } from "../../../domain/entities";
-import { useImageLayerForm } from "../../hooks/useImageLayerForm";
-import { IMAGE_PICKER_OPTIONS } from "../../constants/image-layer.constants";
+import type { ImageLayer } from "../../domain/entities";
+import { useImageLayerForm } from "../hooks/useImageLayerForm";
 import {
   ImagePreview,
   ImageSelectionButtons,
@@ -16,36 +14,52 @@ import {
 } from "./image-layer";
 import { EditorActions } from "./text-layer/EditorActions";
 
+interface ImagePickerResult {
+  canceled: boolean;
+  assets?: Array<{ uri: string }>;
+}
+
 interface ImageLayerEditorProps {
-  layer?: ImageLayer;
-  onSave: (layerData: Partial<ImageLayer>) => void;
-  onCancel: () => void;
+  readonly layer?: ImageLayer;
+  readonly onSave: (layerData: Partial<ImageLayer>) => void;
+  readonly onCancel: () => void;
+  readonly onPickFromLibrary?: () => Promise<ImagePickerResult>;
+  readonly onTakePhoto?: () => Promise<ImagePickerResult>;
 }
 
 export const ImageLayerEditor: React.FC<ImageLayerEditorProps> = ({
   layer,
   onSave,
   onCancel,
+  onPickFromLibrary,
+  onTakePhoto,
 }) => {
-  const { pickFromLibrary, pickFromCamera } = useImagePicker();
   const { formState, setImageUri, setOpacity, buildLayerData, isValid } =
     useImageLayerForm(layer);
 
   const handlePickImage = useCallback(async () => {
-    const result = await pickFromLibrary(IMAGE_PICKER_OPTIONS);
+    if (!onPickFromLibrary) {
+      Alert.alert("Not Available", "Image picker not configured.");
+      return;
+    }
+    const result = await onPickFromLibrary();
 
     if (!result.canceled && result.assets?.[0]) {
       setImageUri(result.assets[0].uri);
     }
-  }, [pickFromLibrary, setImageUri]);
+  }, [onPickFromLibrary, setImageUri]);
 
   const handleTakePhoto = useCallback(async () => {
-    const result = await pickFromCamera(IMAGE_PICKER_OPTIONS);
+    if (!onTakePhoto) {
+      Alert.alert("Not Available", "Camera not configured.");
+      return;
+    }
+    const result = await onTakePhoto();
 
     if (!result.canceled && result.assets?.[0]) {
       setImageUri(result.assets[0].uri);
     }
-  }, [pickFromCamera, setImageUri]);
+  }, [onTakePhoto, setImageUri]);
 
   const handleSave = useCallback(() => {
     if (!isValid) {
@@ -58,7 +72,7 @@ export const ImageLayerEditor: React.FC<ImageLayerEditorProps> = ({
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{ marginBottom: 24 }}>
+        <View style={styles.previewContainer}>
           <ImagePreview
             imageUri={formState.imageUri}
             opacity={formState.opacity}
@@ -91,5 +105,8 @@ export const ImageLayerEditor: React.FC<ImageLayerEditorProps> = ({
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 16,
+  },
+  previewContainer: {
+    marginBottom: 24,
   },
 });

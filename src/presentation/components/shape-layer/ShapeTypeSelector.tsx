@@ -13,7 +13,7 @@ import {
 import {
   SHAPES,
   type ShapeType,
-} from "../../../constants/shape-layer.constants";
+} from "../../../infrastructure/constants/shape-layer.constants";
 
 interface ShapeTypeSelectorProps {
   selectedShape: ShapeType;

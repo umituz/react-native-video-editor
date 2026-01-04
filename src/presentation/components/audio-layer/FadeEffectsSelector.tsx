@@ -12,7 +12,7 @@ import {
 import {
   FADE_IN_OPTIONS,
   FADE_OUT_OPTIONS,
-} from "../../../constants/audio-layer.constants";
+} from "../../../infrastructure/constants/audio-layer.constants";
 
 interface FadeEffectsSelectorProps {
   fadeIn: number;

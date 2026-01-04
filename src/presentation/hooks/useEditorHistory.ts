@@ -15,7 +15,7 @@ const useHistoryStore = () => ({
   canUndo: () => false,
   canRedo: () => false,
 });
-import type { VideoProject } from "../../../domain/entities";
+import type { VideoProject } from "../../domain/entities";
 
 export interface UseEditorHistoryParams {
   project: VideoProject | undefined;

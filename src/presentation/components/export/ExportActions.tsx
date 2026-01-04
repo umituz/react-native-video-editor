@@ -8,11 +8,11 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  ActivityIndicator,
 } from "react-native";
 import {
   AtomicText,
   AtomicIcon,
+  AtomicSpinner,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
 
@@ -64,7 +64,7 @@ export const ExportActions: React.FC<ExportActionsProps> = ({
         disabled={isExporting}
       >
         {isExporting ? (
-          <ActivityIndicator color="#FFFFFF" size="small" />
+          <AtomicSpinner size="sm" color="white" />
         ) : (
           <AtomicIcon name="Download" size="sm" color="onSurface" />
         )}

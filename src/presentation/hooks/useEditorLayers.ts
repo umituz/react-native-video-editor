@@ -12,8 +12,8 @@ import type {
   AddImageLayerData,
   AddShapeLayerData,
   LayerOrderAction,
-} from "../types";
-import type { TextLayer, ImageLayer, Animation } from "../../../domain/entities";
+} from "../../domain/entities";
+import type { TextLayer, ImageLayer, Animation } from "../../domain/entities";
 
 export interface UseEditorLayersParams {
   projectId: string;

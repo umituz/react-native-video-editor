@@ -10,12 +10,12 @@ import {
   AtomicIcon,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
-import type { ShapeLayer } from "../../../domain/entities";
-import { useShapeLayerForm } from "../../hooks/useShapeLayerForm";
+import type { ShapeLayer } from "../../domain/entities";
+import { useShapeLayerForm } from "../hooks/useShapeLayerForm";
 import {
   BORDER_WIDTHS,
   OPACITY_OPTIONS,
-} from "../../constants/shape-layer.constants";
+} from "../../infrastructure/constants/shape-layer.constants";
 import {
   ShapeTypeSelector,
   ColorPickerHorizontal,

@@ -10,7 +10,7 @@ import {
   AtomicText,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
-import { IMAGE_OPACITY_OPTIONS } from "../../../constants/image-layer.constants";
+import { IMAGE_OPACITY_OPTIONS } from "../../../infrastructure/constants/image-layer.constants";
 
 interface OpacitySelectorProps {
   opacity: number;

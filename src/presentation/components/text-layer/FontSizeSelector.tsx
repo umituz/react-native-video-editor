@@ -10,7 +10,7 @@ import {
   AtomicText,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
-import { FONT_SIZES } from "../../../constants/text-layer.constants";
+import { FONT_SIZES } from "../../../infrastructure/constants/text-layer.constants";
 
 interface FontSizeSelectorProps {
   fontSize: number;

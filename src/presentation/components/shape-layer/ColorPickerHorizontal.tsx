@@ -10,7 +10,7 @@ import {
   AtomicIcon,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
-import { SHAPE_COLORS } from "../../../constants/shape-layer.constants";
+import { SHAPE_COLORS } from "../../../infrastructure/constants/shape-layer.constants";
 
 interface ColorPickerHorizontalProps {
   title: string;

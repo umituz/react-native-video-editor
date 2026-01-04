@@ -9,7 +9,7 @@ import {
   AtomicText,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
-import type { TextLayerFormState } from "../../../hooks/useTextLayerForm";
+import type { TextLayerFormState } from "../../hooks/useTextLayerForm";
 
 interface TextPreviewProps {
   formState: TextLayerFormState;

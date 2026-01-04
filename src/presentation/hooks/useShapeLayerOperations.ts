@@ -5,8 +5,8 @@
 
 import { useCallback } from "react";
 import { Alert } from "react-native";
-import { layerOperationsService } from "../infrastructure/services/layer-operations.service";
-import type { AddShapeLayerData } from "../types";
+import { layerOperationsService } from "../../infrastructure/services/layer-operations.service";
+import type { AddShapeLayerData } from "../../domain/entities";
 
 export interface UseShapeLayerOperationsParams {
   scenes: any[];

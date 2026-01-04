@@ -11,7 +11,7 @@ import {
   AtomicIcon,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
-import { TEXT_COLORS } from "../../../constants/text-layer.constants";
+import { TEXT_COLORS } from "../../../infrastructure/constants/text-layer.constants";
 
 interface ColorPickerProps {
   selectedColor: string;

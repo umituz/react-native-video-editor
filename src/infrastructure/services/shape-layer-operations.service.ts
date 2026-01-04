@@ -4,8 +4,8 @@
  */
 
 import { generateUUID } from "@umituz/react-native-uuid";
-import type { Scene, ShapeLayer } from "../../../domain/entities";
-import type { LayerOperationResult, AddShapeLayerData } from "../../types";
+import type { Scene, ShapeLayer } from "../../domain/entities";
+import type { LayerOperationResult, AddShapeLayerData } from "../../domain/entities";
 
 class ShapeLayerOperationsService {
   /**

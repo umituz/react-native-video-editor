@@ -10,9 +10,9 @@ import {
   AtomicText,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
-import type { Audio } from "../../../domain/entities";
-import { useAudioLayerForm } from "../../hooks/useAudioLayerForm";
-import { AUDIO_FILE_TYPES } from "../../constants/audio-layer.constants";
+import type { Audio } from "../../domain/entities";
+import { useAudioLayerForm } from "../hooks/useAudioLayerForm";
+import { AUDIO_FILE_TYPES } from "../../infrastructure/constants/audio-layer.constants";
 import {
   AudioFileSelector,
   VolumeSelector,

@@ -3,8 +3,8 @@
  * Orchestrator service that delegates to specialized layer operation services
  */
 
-import type { Scene, Animation } from "../../../domain/entities";
-import type { LayerOperationResult, LayerOrderAction } from "../../types";
+import type { Scene, Animation } from "../../domain/entities";
+import type { LayerOperationResult, LayerOrderAction } from "../../domain/entities";
 import {
   layerDeleteService,
   layerOrderService,

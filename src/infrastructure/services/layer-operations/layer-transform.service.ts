@@ -4,7 +4,7 @@
  */
 
 import type { Scene, Animation, Layer } from "../../../domain/entities";
-import type { LayerOperationResult } from "../../../types";
+import type { LayerOperationResult } from "../../../domain/entities";
 
 class LayerTransformService {
   /**

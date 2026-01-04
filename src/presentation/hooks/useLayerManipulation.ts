@@ -5,9 +5,9 @@
 
 import { useCallback } from "react";
 import { Alert } from "react-native";
-import { layerOperationsService } from "../infrastructure/services/layer-operations.service";
-import type { LayerOrderAction } from "../types";
-import type { Animation } from "../../../domain/entities";
+import { layerOperationsService } from "../../infrastructure/services/layer-operations.service";
+import type { LayerOrderAction } from "../../domain/entities";
+import type { Animation } from "../../domain/entities";
 
 export interface UseLayerManipulationParams {
   scenes: any[];

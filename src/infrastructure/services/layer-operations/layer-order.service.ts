@@ -4,7 +4,7 @@
  */
 
 import type { Scene } from "../../../domain/entities";
-import type { LayerOperationResult, LayerOrderAction } from "../../../types";
+import type { LayerOperationResult, LayerOrderAction } from "../../../domain/entities";
 
 class LayerOrderService {
   /**

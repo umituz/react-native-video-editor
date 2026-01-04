@@ -4,8 +4,8 @@
  */
 
 import { useCallback } from "react";
-import { AudioEditor } from "../presentation/components/AudioEditor";
-import { SceneActionsMenu } from "../presentation/components/SceneActionsMenu";
+import { AudioEditor } from "../components/AudioEditor";
+import { SceneActionsMenu } from "../components/SceneActionsMenu";
 import type { UseEditorScenesReturn } from "./useEditorScenes";
 import type { UseEditorBottomSheetReturn } from "./useEditorBottomSheet";
 
