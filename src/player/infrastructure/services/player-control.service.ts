@@ -11,16 +11,24 @@ declare const __DEV__: boolean;
  * Safely play video with error handling
  */
 export const safePlay = (player: VideoPlayer | null): boolean => {
-  console.log("[safePlay] called, player:", !!player);
+  if (__DEV__) {
+    console.log("[safePlay] called, player:", !!player);
+  }
   if (!player) return false;
 
   try {
-    console.log("[safePlay] calling player.play()");
+    if (__DEV__) {
+      console.log("[safePlay] calling player.play()");
+    }
     player.play();
-    console.log("[safePlay] player.play() called successfully");
+    if (__DEV__) {
+      console.log("[safePlay] player.play() called successfully");
+    }
     return true;
   } catch (error) {
-    console.log("[safePlay] Play error:", error);
+    if (__DEV__) {
+      console.log("[safePlay] Play error:", error);
+    }
     return false;
   }
 };
