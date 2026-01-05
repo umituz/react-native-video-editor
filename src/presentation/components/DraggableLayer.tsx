@@ -63,16 +63,17 @@ export const DraggableLayer: React.FC<DraggableLayerProps> = ({
 
   const animatedStyle = useAnimatedStyle(() => {
     const rotationStr = `${layer.rotation}deg`;
-    return {
+    const style = {
       transform: [
         { translateX: translateX.value },
         { translateY: translateY.value },
         { rotate: rotationStr },
-      ],
+      ] as const,
       opacity: layer.opacity,
       width: width.value,
       height: height.value,
     };
+    return style as any;
   });
 
   return (
