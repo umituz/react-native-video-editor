@@ -5,7 +5,13 @@
 
 import React, { useCallback } from "react";
 import { View, ScrollView, StyleSheet, Alert } from "react-native";
-import * as DocumentPicker from "expo-document-picker";
+// Safe import for expo-document-picker
+let DocumentPicker: any;
+try {
+  DocumentPicker = require("expo-document-picker");
+} catch (e) {
+  // Graceful fail - DocumentPicker will be undefined
+}
 import {
   AtomicText,
   useAppDesignTokens,
@@ -46,6 +52,10 @@ export const AudioEditor: React.FC<AudioEditorProps> = ({
   } = useAudioLayerForm(audio);
 
   const handlePickAudio = useCallback(async () => {
+    if (!DocumentPicker) {
+      Alert.alert("Error", "Audio picker is not available in this environment");
+      return;
+    }
     try {
       const result = await DocumentPicker.getDocumentAsync({
         type: AUDIO_FILE_TYPES[0],
