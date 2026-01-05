@@ -61,16 +61,19 @@ export const DraggableLayer: React.FC<DraggableLayerProps> = ({
     onSizeChange,
   });
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: translateX.value },
-      { translateY: translateY.value },
-      { rotate: `${layer.rotation}deg` },
-    ],
-    opacity: layer.opacity,
-    width: width.value,
-    height: height.value,
-  }));
+  const animatedStyle = useAnimatedStyle(() => {
+    const rotationStr = `${layer.rotation}deg`;
+    return {
+      transform: [
+        { translateX: translateX.value },
+        { translateY: translateY.value },
+        { rotate: rotationStr },
+      ],
+      opacity: layer.opacity,
+      width: width.value,
+      height: height.value,
+    };
+  });
 
   return (
     <GestureDetector gesture={composedGesture}>
