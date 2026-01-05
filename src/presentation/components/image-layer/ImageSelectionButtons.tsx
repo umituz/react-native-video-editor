@@ -34,7 +34,7 @@ export const ImageSelectionButtons: React.FC<ImageSelectionButtonsProps> = ({
         ]}
         onPress={onPickFromGallery}
       >
-        <AtomicIcon name="FolderOpen" size="md" color="primary" />
+        <AtomicIcon name="folder-open-outline" size="md" color="primary" />
         <AtomicText
           type="bodySmall"
           style={{ color: tokens.colors.textPrimary, marginTop: 8 }}
@@ -53,7 +53,7 @@ export const ImageSelectionButtons: React.FC<ImageSelectionButtonsProps> = ({
         ]}
         onPress={onTakePhoto}
       >
-        <AtomicIcon name="Camera" size="md" color="primary" />
+        <AtomicIcon name="camera-outline" size="md" color="primary" />
         <AtomicText
           type="bodySmall"
           style={{ color: tokens.colors.textPrimary, marginTop: 8 }}

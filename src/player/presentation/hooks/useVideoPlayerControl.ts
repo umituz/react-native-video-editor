@@ -20,6 +20,8 @@ import {
   configurePlayer,
 } from "../../infrastructure/services/player-control.service";
 
+declare const __DEV__: boolean;
+
 /**
  * Hook for managing video player with safe operations
  */
@@ -32,12 +34,26 @@ export const useVideoPlayerControl = (
   const [isLoading, setIsLoading] = useState(true);
 
   const player = useExpoVideoPlayer(source || "", (p) => {
-    console.log("[useVideoPlayerControl] Player callback, source:", source, "player:", !!p);
+    if (typeof __DEV__ !== "undefined" && __DEV__) {
+      // eslint-disable-next-line no-console
+      console.log("[useVideoPlayerControl] Player callback, source:", source, "player:", !!p);
+    }
     if (source && p) {
       configurePlayer(p, { loop, muted, autoPlay });
       setIsLoading(false);
       if (autoPlay) {
         setIsPlaying(true);
+      }
+      if (typeof __DEV__ !== "undefined" && __DEV__) {
+        // eslint-disable-next-line no-console
+        console.log("[useVideoPlayerControl] Player status:", {
+          currentTime: p.currentTime,
+          duration: p.duration,
+          status: p.status,
+          playing: p.playing,
+          muted: p.muted,
+          volume: p.volume,
+        });
       }
     }
   });

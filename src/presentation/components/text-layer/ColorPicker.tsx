@@ -56,7 +56,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
           >
             {selectedColor === color && (
               <AtomicIcon
-                name="Check"
+                name="checkmark-outline"
                 size="sm"
                 color={
                   color === "#FFFFFF" || color === "#FCD34D"

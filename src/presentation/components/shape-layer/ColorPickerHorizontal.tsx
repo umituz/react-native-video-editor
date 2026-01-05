@@ -61,7 +61,7 @@ export const ColorPickerHorizontal: React.FC<ColorPickerHorizontalProps> = ({
           >
             {selectedColor === color.value && (
               <AtomicIcon
-                name="Check"
+                name="checkmark-outline"
                 size="sm"
                 color={color.value === "#FFFFFF" ? "primary" : "onSurface"}
               />

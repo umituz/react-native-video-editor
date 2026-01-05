@@ -21,7 +21,7 @@ export const ExportInfoBanner: React.FC = () => {
         { backgroundColor: tokens.colors.primary + "20" },
       ]}
     >
-      <AtomicIcon name="Info" size="sm" color="primary" />
+      <AtomicIcon name="information-circle-outline" size="sm" color="primary" />
       <AtomicText
         type="labelSmall"
         style={{ color: tokens.colors.primary, marginLeft: 8, flex: 1 }}

@@ -60,7 +60,7 @@ export const EditorToolPanel: React.FC<EditorToolPanelProps> = ({
           ]}
           onPress={onAddText}
         >
-          <AtomicIcon name="Type" size="md" color="primary" />
+          <AtomicIcon name="text-outline" size="md" color="primary" />
           <AtomicText
             type="labelSmall"
             style={{ color: tokens.colors.textPrimary, marginTop: 4 }}
@@ -92,7 +92,7 @@ export const EditorToolPanel: React.FC<EditorToolPanelProps> = ({
           ]}
           onPress={onAddShape}
         >
-          <AtomicIcon name="Square" size="md" color="primary" />
+          <AtomicIcon name="square-outline" size="md" color="primary" />
           <AtomicText
             type="labelSmall"
             style={{ color: tokens.colors.textPrimary, marginTop: 4 }}
@@ -108,7 +108,7 @@ export const EditorToolPanel: React.FC<EditorToolPanelProps> = ({
           ]}
           onPress={onAudio}
         >
-          <AtomicIcon name="Music" size="md" color="primary" />
+          <AtomicIcon name="musical-notes-outline" size="md" color="primary" />
           <AtomicText
             type="labelSmall"
             style={{ color: tokens.colors.textPrimary, marginTop: 4 }}

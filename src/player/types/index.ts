@@ -72,3 +72,12 @@ export interface VideoPlayerProps {
 }
 
 export type { VideoPlayer } from "expo-video";
+
+/**
+ * Video caching types
+ */
+export type {
+  VideoDownloadProgressCallback,
+  VideoCacheResult,
+} from "../infrastructure/services/video-cache.service";
+export type { VideoCachingState } from "../presentation/hooks/useVideoCaching";

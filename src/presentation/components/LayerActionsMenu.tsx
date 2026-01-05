@@ -43,7 +43,7 @@ export const LayerActionsMenu: React.FC<LayerActionsMenuProps> = ({
     <View style={{ paddingVertical: 8 }}>
       {layer.type === "text" && (
         <TouchableOpacity style={styles.actionMenuItem} onPress={onEditText}>
-          <AtomicIcon name="Edit" size="md" color="primary" />
+          <AtomicIcon name="create-outline" size="md" color="primary" />
           <AtomicText
             type="bodyMedium"
             style={{
@@ -57,7 +57,7 @@ export const LayerActionsMenu: React.FC<LayerActionsMenuProps> = ({
       )}
       {layer.type === "image" && (
         <TouchableOpacity style={styles.actionMenuItem} onPress={onEditImage}>
-          <AtomicIcon name="Edit" size="md" color="primary" />
+          <AtomicIcon name="create-outline" size="md" color="primary" />
           <AtomicText
             type="bodyMedium"
             style={{
@@ -107,7 +107,7 @@ export const LayerActionsMenu: React.FC<LayerActionsMenuProps> = ({
       <View style={styles.divider} />
 
       <TouchableOpacity style={styles.actionMenuItem} onPress={onMoveFront}>
-        <AtomicIcon name="ChevronsUp" size="md" color="secondary" />
+        <AtomicIcon name="chevron-up-outline" size="md" color="secondary" />
         <AtomicText
           type="bodyMedium"
           style={{
@@ -120,7 +120,7 @@ export const LayerActionsMenu: React.FC<LayerActionsMenuProps> = ({
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.actionMenuItem} onPress={onMoveUp}>
-        <AtomicIcon name="ChevronUp" size="md" color="secondary" />
+        <AtomicIcon name="chevron-up-outline" size="md" color="secondary" />
         <AtomicText
           type="bodyMedium"
           style={{
@@ -146,7 +146,7 @@ export const LayerActionsMenu: React.FC<LayerActionsMenuProps> = ({
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.actionMenuItem} onPress={onMoveBack}>
-        <AtomicIcon name="ChevronsDown" size="md" color="secondary" />
+        <AtomicIcon name="chevron-down-outline" size="md" color="secondary" />
         <AtomicText
           type="bodyMedium"
           style={{

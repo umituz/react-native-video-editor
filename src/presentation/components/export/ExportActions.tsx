@@ -66,7 +66,7 @@ export const ExportActions: React.FC<ExportActionsProps> = ({
         {isExporting ? (
           <AtomicSpinner size="sm" color="white" />
         ) : (
-          <AtomicIcon name="Download" size="sm" color="onSurface" />
+          <AtomicIcon name="download-outline" size="sm" color="onSurface" />
         )}
         <AtomicText
           type="bodyMedium"

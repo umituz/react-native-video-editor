@@ -1,25 +1,22 @@
 /**
  * VideoPlayer Component
- * Reusable video player with thumbnail and controls
+ * Reusable video player with caching, thumbnail and controls
  */
 
 import React, { useState, useCallback, useMemo, useEffect } from "react";
-import {
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  type ViewStyle,
-} from "react-native";
+import { View, TouchableOpacity, StyleSheet, type ViewStyle } from "react-native";
 import { Image } from "expo-image";
 import { VideoView } from "expo-video";
 import {
+  useResponsive,
   useAppDesignTokens,
   AtomicIcon,
-  useResponsive,
+  AtomicText,
 } from "@umituz/react-native-design-system";
 
 import type { VideoPlayerProps } from "../../types";
 import { useVideoPlayerControl } from "../hooks/useVideoPlayerControl";
+import { useVideoCaching } from "../hooks/useVideoCaching";
 
 declare const __DEV__: boolean;
 
@@ -43,12 +40,17 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   contentFit = "cover",
   style,
 }) => {
-  const tokens = useAppDesignTokens();
+  // IMPORTANT: Call useResponsive BEFORE useAppDesignTokens to maintain hook order
   const { width: screenWidth, horizontalPadding } = useResponsive();
+  const tokens = useAppDesignTokens();
   const [showVideo, setShowVideo] = useState(autoPlay);
 
+  // Cache the video first (downloads if needed)
+  const { localUri, isDownloading, downloadProgress, error } = useVideoCaching(source);
+
+  // Use cached local URI for player
   const { player, state, controls } = useVideoPlayerControl({
-    source,
+    source: localUri,
     loop,
     muted,
     autoPlay: false,
@@ -56,23 +58,21 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
   useEffect(() => {
     if (showVideo && state.isPlayerValid && player) {
-      if (typeof __DEV__ !== "undefined" && __DEV__) {
-        // eslint-disable-next-line no-console
-        console.log("[VideoPlayer] Starting playback...");
+      if (__DEV__) {
+        console.log("[VideoPlayer] Starting playback from:", localUri);
       }
       controls.play();
     }
-  }, [showVideo, state.isPlayerValid, player, controls]);
+  }, [showVideo, state.isPlayerValid, player, controls, localUri]);
 
   const handlePlay = useCallback(() => {
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-      // eslint-disable-next-line no-console
-      console.log("[VideoPlayer] handlePlay called, source:", source);
+    if (__DEV__) {
+      console.log("[VideoPlayer] handlePlay, localUri:", localUri);
     }
     setShowVideo(true);
-  }, [source]);
+  }, [localUri]);
 
-  // Calculate absolute dimensions for VideoView (expo-video requires pixel values)
+  // Calculate dimensions
   const videoWidth = getWidthFromStyle(style as ViewStyle) ?? (screenWidth - horizontalPadding * 2);
   const videoHeight = videoWidth / ASPECT_RATIO;
 
@@ -84,59 +84,63 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     overflow: "hidden" as const,
   }), [tokens.colors.surface, videoWidth, videoHeight]);
 
-  const styles = useMemo(
-    () =>
-      StyleSheet.create({
-        video: {
-          width: videoWidth,
-          height: videoHeight,
-        },
-        thumbnailContainer: {
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        },
-        thumbnail: {
-          width: videoWidth,
-          height: videoHeight,
-        },
-        placeholder: {
-          width: videoWidth,
-          height: videoHeight,
-          backgroundColor: tokens.colors.surfaceSecondary,
-        },
-        playButtonContainer: {
-          ...StyleSheet.absoluteFillObject,
-          justifyContent: "center",
-          alignItems: "center",
-        },
-        playButton: {
-          width: 64,
-          height: 64,
-          borderRadius: 32,
-          backgroundColor: tokens.colors.primary,
-          justifyContent: "center",
-          alignItems: "center",
-          paddingLeft: 4,
-        },
-      }),
-    [tokens, videoWidth, videoHeight]
-  );
+  const styles = useMemo(() => StyleSheet.create({
+    video: { width: videoWidth, height: videoHeight },
+    thumbnailContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
+    thumbnail: { width: videoWidth, height: videoHeight },
+    placeholder: { width: videoWidth, height: videoHeight, backgroundColor: tokens.colors.surfaceSecondary },
+    playButtonContainer: { ...StyleSheet.absoluteFillObject, justifyContent: "center", alignItems: "center" },
+    playButton: {
+      width: 64, height: 64, borderRadius: 32,
+      backgroundColor: tokens.colors.primary,
+      justifyContent: "center", alignItems: "center", paddingLeft: 4,
+    },
+    progressContainer: {
+      ...StyleSheet.absoluteFillObject,
+      justifyContent: "center", alignItems: "center",
+      backgroundColor: "rgba(0,0,0,0.5)",
+    },
+    progressText: { color: "#fff", fontSize: 16, fontWeight: "600" },
+    errorText: { color: tokens.colors.error, fontSize: 14, textAlign: "center", padding: 16 },
+  }), [tokens, videoWidth, videoHeight]);
 
-  if (typeof __DEV__ !== "undefined" && __DEV__) {
-    // eslint-disable-next-line no-console
-    console.log("[VideoPlayer] state:", {
-      showVideo,
-      isPlayerValid: state.isPlayerValid,
-      hasPlayer: !!player,
-      source,
-    });
+  // Show error state
+  if (error) {
+    return (
+      <View style={[containerStyle, style]}>
+        <View style={styles.thumbnailContainer}>
+          <View style={styles.placeholder} />
+          <View style={styles.progressContainer}>
+            <AtomicText style={styles.errorText}>{error}</AtomicText>
+          </View>
+        </View>
+      </View>
+    );
   }
 
+  // Show download progress
+  if (isDownloading) {
+    const progressPercent = Math.round(downloadProgress * 100);
+    return (
+      <View style={[containerStyle, style]}>
+        <View style={styles.thumbnailContainer}>
+          {thumbnailUrl ? (
+            <Image source={{ uri: thumbnailUrl }} style={styles.thumbnail} contentFit="cover" />
+          ) : (
+            <View style={styles.placeholder} />
+          )}
+          <View style={styles.progressContainer}>
+            <AtomicText style={styles.progressText}>{progressPercent}%</AtomicText>
+          </View>
+        </View>
+      </View>
+    );
+  }
+
+  // Show video player
   if (showVideo && state.isPlayerValid && player) {
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-      // eslint-disable-next-line no-console
-      console.log("[VideoPlayer] Rendering VideoView");
+    if (__DEV__) {
+      console.log("[VideoPlayer] Rendering VideoView:", { videoWidth, videoHeight });
     }
     return (
       <View style={[containerStyle, style]}>
@@ -150,19 +154,12 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     );
   }
 
+  // Show thumbnail with play button
   return (
-    <TouchableOpacity
-      style={[containerStyle, style]}
-      onPress={handlePlay}
-      activeOpacity={0.8}
-    >
+    <TouchableOpacity style={[containerStyle, style]} onPress={handlePlay} activeOpacity={0.8}>
       <View style={styles.thumbnailContainer}>
         {thumbnailUrl ? (
-          <Image
-            source={{ uri: thumbnailUrl }}
-            style={styles.thumbnail}
-            contentFit="cover"
-          />
+          <Image source={{ uri: thumbnailUrl }} style={styles.thumbnail} contentFit="cover" />
         ) : (
           <View style={styles.placeholder} />
         )}

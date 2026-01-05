@@ -31,7 +31,7 @@ export const AudioFileSelector: React.FC<AudioFileSelectorProps> = ({
         style={[styles.fileCard, { backgroundColor: tokens.colors.surface }]}
       >
         <View style={styles.fileInfo}>
-          <AtomicIcon name="Music" size="md" color="primary" />
+          <AtomicIcon name="musical-notes-outline" size="md" color="primary" />
           <View style={{ marginLeft: 12, flex: 1 }}>
             <AtomicText
               type="bodySmall"
@@ -71,7 +71,7 @@ export const AudioFileSelector: React.FC<AudioFileSelectorProps> = ({
       style={[styles.pickButton, { backgroundColor: tokens.colors.surface }]}
       onPress={onPickAudio}
     >
-      <AtomicIcon name="Upload" size="md" color="primary" />
+      <AtomicIcon name="cloud-upload-outline" size="md" color="primary" />
       <AtomicText
         type="bodyMedium"
         style={{
