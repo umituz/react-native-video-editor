@@ -70,7 +70,7 @@ export const ExportActions: React.FC<ExportActionsProps> = ({
         )}
         <AtomicText
           type="bodyMedium"
-          style={{ color: "#FFFFFF", fontWeight: "600", marginLeft: 8 }}
+          style={{ color: tokens.colors.onPrimary, fontWeight: "600", marginLeft: 8 }}
         >
           {isExporting ? "Exporting..." : "Export Video"}
         </AtomicText>

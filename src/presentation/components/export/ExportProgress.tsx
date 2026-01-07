@@ -57,7 +57,12 @@ export const ExportProgress: React.FC<ExportProgressProps> = ({ progress }) => {
         </AtomicText>
       </View>
 
-      <View style={styles.progressBarContainer}>
+      <View
+        style={[
+          styles.progressBarContainer,
+          { backgroundColor: tokens.colors.borderLight },
+        ]}
+      >
         <View
           style={[
             styles.progressBar,
@@ -98,7 +103,6 @@ const styles = StyleSheet.create({
   },
   progressBarContainer: {
     height: 8,
-    backgroundColor: "rgba(0, 0, 0, 0.1)",
     borderRadius: 4,
     overflow: "hidden",
     marginBottom: 8,

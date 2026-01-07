@@ -67,7 +67,7 @@ export function OptionSelectorRow<T extends string>({
               style={{
                 color:
                   selectedValue === option.value
-                    ? "#FFFFFF"
+                    ? tokens.colors.onPrimary
                     : tokens.colors.textPrimary,
                 fontWeight: selectedValue === option.value ? "600" : "400",
                 textTransform: option.textTransform || "none",

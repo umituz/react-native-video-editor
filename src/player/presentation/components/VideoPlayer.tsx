@@ -98,9 +98,8 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     progressContainer: {
       ...StyleSheet.absoluteFillObject,
       justifyContent: "center", alignItems: "center",
-      backgroundColor: "rgba(0,0,0,0.5)",
     },
-    progressText: { color: "#fff", fontSize: 16, fontWeight: "600" },
+    progressText: { color: tokens.colors.onPrimary, fontSize: 16, fontWeight: "600" },
     errorText: { color: tokens.colors.error, fontSize: 14, textAlign: "center", padding: 16 },
   }), [tokens, videoWidth, videoHeight]);
 
@@ -129,7 +128,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
           ) : (
             <View style={styles.placeholder} />
           )}
-          <View style={styles.progressContainer}>
+          <View style={[styles.progressContainer, { backgroundColor: "rgba(0,0,0,0.5)" }]}>
             <AtomicText style={styles.progressText}>{progressPercent}%</AtomicText>
           </View>
         </View>

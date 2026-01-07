@@ -68,7 +68,7 @@ export const ShapeTypeSelector: React.FC<ShapeTypeSelectorProps> = ({
               style={{
                 color:
                   selectedShape === s.type
-                    ? "#FFFFFF"
+                    ? tokens.colors.onPrimary
                     : tokens.colors.textPrimary,
                 marginTop: 8,
                 fontWeight: selectedShape === s.type ? "600" : "400",

@@ -59,7 +59,7 @@ export const OpacitySelector: React.FC<OpacitySelectorProps> = ({
               type="bodySmall"
               style={{
                 color:
-                  opacity === value ? "#FFFFFF" : tokens.colors.textPrimary,
+                  opacity === value ? tokens.colors.onPrimary : tokens.colors.textPrimary,
                 fontWeight: opacity === value ? "600" : "400",
               }}
             >

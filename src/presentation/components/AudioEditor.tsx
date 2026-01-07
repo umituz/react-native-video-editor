@@ -5,17 +5,12 @@
 
 import React, { useCallback } from "react";
 import { View, ScrollView, StyleSheet, Alert } from "react-native";
-// Safe import for expo-document-picker
-let DocumentPicker: any;
-try {
-  DocumentPicker = require("expo-document-picker");
-} catch (e) {
-  // Graceful fail - DocumentPicker will be undefined
-}
+import * as DocumentPicker from "expo-document-picker";
 import {
   AtomicText,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
+import { useLocalization } from "@umituz/react-native-localization";
 import type { Audio } from "../../domain/entities";
 import { useAudioLayerForm } from "../hooks/useAudioLayerForm";
 import { AUDIO_FILE_TYPES } from "../../infrastructure/constants/audio-layer.constants";
@@ -41,6 +36,7 @@ export const AudioEditor: React.FC<AudioEditorProps> = ({
   onCancel,
 }) => {
   const tokens = useAppDesignTokens();
+  const { t } = useLocalization();
   const {
     formState,
     setAudioUri,
@@ -52,10 +48,6 @@ export const AudioEditor: React.FC<AudioEditorProps> = ({
   } = useAudioLayerForm(audio);
 
   const handlePickAudio = useCallback(async () => {
-    if (!DocumentPicker) {
-      Alert.alert("Error", "Audio picker is not available in this environment");
-      return;
-    }
     try {
       const result = await DocumentPicker.getDocumentAsync({
         type: AUDIO_FILE_TYPES[0],
@@ -66,26 +58,26 @@ export const AudioEditor: React.FC<AudioEditorProps> = ({
         setAudioUri(result.assets[0].uri);
       }
     } catch (error) {
-      Alert.alert("Error", "Failed to pick audio file");
+      Alert.alert(t("audio.errors.pickFailed"));
     }
-  }, [setAudioUri]);
+  }, [setAudioUri, t]);
 
   const handleSave = useCallback(() => {
     if (!isValid) {
-      Alert.alert("Error", "Please select an audio file");
+      Alert.alert(t("audio.errors.noFile"));
       return;
     }
     onSave(buildAudioData());
-  }, [isValid, buildAudioData, onSave]);
+  }, [isValid, buildAudioData, onSave, t]);
 
   const handleRemoveAudio = useCallback(() => {
     Alert.alert(
-      "Remove Audio",
-      "Are you sure you want to remove the audio from this scene?",
+      t("audio.remove.title"),
+      t("audio.remove.message"),
       [
-        { text: "Cancel", style: "cancel" },
+        { text: t("common.buttons.cancel"), style: "cancel" },
         {
-          text: "Remove",
+          text: t("audio.remove.confirm"),
           style: "destructive",
           onPress: () => {
             onRemove?.();
@@ -93,12 +85,12 @@ export const AudioEditor: React.FC<AudioEditorProps> = ({
         },
       ],
     );
-  }, [onRemove]);
+  }, [onRemove, t]);
 
   const getFileName = useCallback((uri: string) => {
     const parts = uri.split("/");
-    return parts[parts.length - 1] || "Unknown";
-  }, []);
+    return parts[parts.length - 1] || t("audio.unknownFile");
+  }, [t]);
 
   return (
     <View style={styles.container}>
@@ -112,7 +104,7 @@ export const AudioEditor: React.FC<AudioEditorProps> = ({
               marginBottom: 8,
             }}
           >
-            Audio File
+            {t("audio.file.title")}
           </AtomicText>
           <AudioFileSelector
             audioUri={formState.audioUri}

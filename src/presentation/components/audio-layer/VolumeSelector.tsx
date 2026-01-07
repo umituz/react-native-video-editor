@@ -61,7 +61,7 @@ export const VolumeSelector: React.FC<VolumeSelectorProps> = ({
             <AtomicText
               type="labelSmall"
               style={{
-                color: volume === val ? "#FFFFFF" : tokens.colors.textPrimary,
+                color: volume === val ? tokens.colors.onPrimary : tokens.colors.textPrimary,
                 fontWeight: volume === val ? "600" : "400",
               }}
             >

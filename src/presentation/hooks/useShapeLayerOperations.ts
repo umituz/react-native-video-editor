@@ -5,13 +5,14 @@
 
 import { useCallback } from "react";
 import { Alert } from "react-native";
+import { useLocalization } from "@umituz/react-native-localization";
 import { layerOperationsService } from "../../infrastructure/services/layer-operations.service";
-import type { AddShapeLayerData } from "../../domain/entities";
+import type { AddShapeLayerData, Scene } from "../../domain/entities";
 
 export interface UseShapeLayerOperationsParams {
-  scenes: any[];
+  scenes: Scene[];
   sceneIndex: number;
-  onUpdateScenes: (scenes: any[]) => void;
+  onUpdateScenes: (scenes: Scene[]) => void;
   onCloseBottomSheet: () => void;
   defaultColor: string;
 }
@@ -27,6 +28,8 @@ export function useShapeLayerOperations({
   onCloseBottomSheet,
   defaultColor,
 }: UseShapeLayerOperationsParams): UseShapeLayerOperationsReturn {
+  const { t } = useLocalization();
+
   const addShapeLayer = useCallback(
     (data: AddShapeLayerData) => {
       const result = layerOperationsService.addShapeLayer(
@@ -38,12 +41,12 @@ export function useShapeLayerOperations({
       if (result.success) {
         onUpdateScenes(result.updatedScenes);
         onCloseBottomSheet();
-        Alert.alert("Success", "Shape layer added!");
+        Alert.alert(t("editor.layers.shape.add.success"));
       } else {
-        Alert.alert("Error", result.error || "Failed to add shape layer");
+        Alert.alert(t("editor.layers.shape.add.error"));
       }
     },
-    [scenes, sceneIndex, onUpdateScenes, onCloseBottomSheet, defaultColor],
+    [scenes, sceneIndex, onUpdateScenes, onCloseBottomSheet, defaultColor, t],
   );
 
   return {

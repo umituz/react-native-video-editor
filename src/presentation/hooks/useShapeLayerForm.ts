@@ -36,7 +36,7 @@ export function useShapeLayerForm(
 
   const [formState, setFormState] = useState<ShapeLayerFormState>({
     shape: initialLayer?.shape || "rectangle",
-    fillColor: initialLayer?.fillColor || "#3B82F6",
+    fillColor: initialLayer?.fillColor || tokens.colors.primary,
     borderColor: initialLayer?.borderColor || tokens.colors.textPrimary,
     borderWidth: initialLayer?.borderWidth || 0,
     opacity: initialLayer?.opacity || 1,

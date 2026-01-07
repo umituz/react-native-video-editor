@@ -5,14 +5,14 @@
 
 import { useCallback } from "react";
 import { Alert } from "react-native";
+import { useLocalization } from "@umituz/react-native-localization";
 import { layerOperationsService } from "../../infrastructure/services/layer-operations.service";
-import type { AddTextLayerData } from "../../domain/entities";
-import type { TextLayer } from "../../domain/entities";
+import type { AddTextLayerData, Scene, TextLayer } from "../../domain/entities";
 
 export interface UseTextLayerOperationsParams {
-  scenes: any[];
+  scenes: Scene[];
   sceneIndex: number;
-  onUpdateScenes: (scenes: any[]) => void;
+  onUpdateScenes: (scenes: Scene[]) => void;
   onCloseBottomSheet: () => void;
   defaultColor: string;
 }
@@ -29,6 +29,8 @@ export function useTextLayerOperations({
   onCloseBottomSheet,
   defaultColor,
 }: UseTextLayerOperationsParams): UseTextLayerOperationsReturn {
+  const { t } = useLocalization();
+
   const addTextLayer = useCallback(
     (data: AddTextLayerData) => {
       const result = layerOperationsService.addTextLayer(
@@ -40,12 +42,12 @@ export function useTextLayerOperations({
       if (result.success) {
         onUpdateScenes(result.updatedScenes);
         onCloseBottomSheet();
-        Alert.alert("Success", "Text layer added!");
+        Alert.alert(t("editor.layers.text.add.success"));
       } else {
-        Alert.alert("Error", result.error || "Failed to add text layer");
+        Alert.alert(t("editor.layers.text.add.error"));
       }
     },
-    [scenes, sceneIndex, onUpdateScenes, onCloseBottomSheet, defaultColor],
+    [scenes, sceneIndex, onUpdateScenes, onCloseBottomSheet, defaultColor, t],
   );
 
   const editTextLayer = useCallback(
@@ -59,12 +61,12 @@ export function useTextLayerOperations({
       if (result.success) {
         onUpdateScenes(result.updatedScenes);
         onCloseBottomSheet();
-        Alert.alert("Success", "Text layer updated!");
+        Alert.alert(t("editor.layers.text.update.success"));
       } else {
-        Alert.alert("Error", result.error || "Failed to update text layer");
+        Alert.alert(t("editor.layers.text.update.error"));
       }
     },
-    [scenes, sceneIndex, onUpdateScenes, onCloseBottomSheet],
+    [scenes, sceneIndex, onUpdateScenes, onCloseBottomSheet, t],
   );
 
   return {

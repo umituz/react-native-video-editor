@@ -44,7 +44,7 @@ export const EditorActions: React.FC<EditorActionsProps> = ({
           type="bodyMedium"
           style={{ color: tokens.colors.textSecondary }}
         >
-          {t("common.buttons.cancel", "Cancel")}
+          {t("common.buttons.cancel")}
         </AtomicText>
       </TouchableOpacity>
 

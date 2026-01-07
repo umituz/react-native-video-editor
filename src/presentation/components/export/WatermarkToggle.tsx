@@ -54,7 +54,7 @@ export const WatermarkToggle: React.FC<WatermarkToggleProps> = ({
           style={[
             styles.toggleThumb,
             {
-              backgroundColor: "#FFFFFF",
+              backgroundColor: tokens.colors.onPrimary,
               transform: [{ translateX: includeWatermark ? 20 : 0 }],
             },
           ]}

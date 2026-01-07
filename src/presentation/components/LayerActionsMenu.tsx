@@ -10,6 +10,7 @@ import {
   AtomicIcon,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
+import { useLocalization } from "@umituz/react-native-localization";
 import type { Layer, ImageLayer } from "../../domain/entities";
 
 export interface LayerActionsMenuProps {
@@ -38,6 +39,7 @@ export const LayerActionsMenu: React.FC<LayerActionsMenuProps> = ({
   onDelete,
 }) => {
   const tokens = useAppDesignTokens();
+  const { t } = useLocalization();
 
   return (
     <View style={{ paddingVertical: 8 }}>
@@ -51,7 +53,7 @@ export const LayerActionsMenu: React.FC<LayerActionsMenuProps> = ({
               marginLeft: 12,
             }}
           >
-            Edit Text
+            {t("editor.layers.actions.editText")}
           </AtomicText>
         </TouchableOpacity>
       )}
@@ -65,7 +67,7 @@ export const LayerActionsMenu: React.FC<LayerActionsMenuProps> = ({
               marginLeft: 12,
             }}
           >
-            Edit Image
+            {t("editor.layers.actions.editImage")}
           </AtomicText>
         </TouchableOpacity>
       )}
@@ -79,7 +81,9 @@ export const LayerActionsMenu: React.FC<LayerActionsMenuProps> = ({
             marginLeft: 12,
           }}
         >
-          {layer.animation ? "Edit Animation" : "Add Animation"}
+          {layer.animation
+            ? t("editor.layers.actions.editAnimation")
+            : t("editor.layers.actions.addAnimation")}
         </AtomicText>
         {layer.animation && (
           <View
@@ -100,11 +104,13 @@ export const LayerActionsMenu: React.FC<LayerActionsMenuProps> = ({
             marginLeft: 12,
           }}
         >
-          Duplicate Layer
+          {t("editor.layers.actions.duplicate")}
         </AtomicText>
       </TouchableOpacity>
 
-      <View style={styles.divider} />
+      <View
+        style={[styles.divider, { backgroundColor: tokens.colors.border }]}
+      />
 
       <TouchableOpacity style={styles.actionMenuItem} onPress={onMoveFront}>
         <AtomicIcon name="chevron-up-outline" size="md" color="secondary" />
@@ -115,7 +121,7 @@ export const LayerActionsMenu: React.FC<LayerActionsMenuProps> = ({
             marginLeft: 12,
           }}
         >
-          Bring to Front
+          {t("editor.layers.actions.bringToFront")}
         </AtomicText>
       </TouchableOpacity>
 
@@ -128,7 +134,7 @@ export const LayerActionsMenu: React.FC<LayerActionsMenuProps> = ({
             marginLeft: 12,
           }}
         >
-          Move Up
+          {t("editor.layers.actions.moveUp")}
         </AtomicText>
       </TouchableOpacity>
 
@@ -141,7 +147,7 @@ export const LayerActionsMenu: React.FC<LayerActionsMenuProps> = ({
             marginLeft: 12,
           }}
         >
-          Move Down
+          {t("editor.layers.actions.moveDown")}
         </AtomicText>
       </TouchableOpacity>
 
@@ -154,11 +160,13 @@ export const LayerActionsMenu: React.FC<LayerActionsMenuProps> = ({
             marginLeft: 12,
           }}
         >
-          Send to Back
+          {t("editor.layers.actions.sendToBack")}
         </AtomicText>
       </TouchableOpacity>
 
-      <View style={styles.divider} />
+      <View
+        style={[styles.divider, { backgroundColor: tokens.colors.border }]}
+      />
 
       <TouchableOpacity style={styles.actionMenuItem} onPress={onDelete}>
         <AtomicIcon name="trash-outline" size="md" color="error" />
@@ -169,7 +177,7 @@ export const LayerActionsMenu: React.FC<LayerActionsMenuProps> = ({
             marginLeft: 12,
           }}
         >
-          Delete Layer
+          {t("editor.layers.actions.delete")}
         </AtomicText>
       </TouchableOpacity>
     </View>
@@ -185,7 +193,6 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    backgroundColor: "#E5E7EB",
     marginVertical: 8,
   },
   animationBadge: {

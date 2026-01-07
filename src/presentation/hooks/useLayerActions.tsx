@@ -4,17 +4,18 @@
  */
 
 import { useCallback } from "react";
+import { useLocalization } from "@umituz/react-native-localization";
 import { TextLayerEditor } from "../components/TextLayerEditor";
 import { ImageLayerEditor } from "../components/ImageLayerEditor";
 import { ShapeLayerEditor } from "../components/ShapeLayerEditor";
 import { AnimationEditor } from "../components/AnimationEditor";
-import type { ImageLayer } from "../../domain/entities";
+import type { Scene, ImageLayer, Layer } from "../../domain/entities";
 import type { UseEditorLayersReturn } from "./useEditorLayers";
 import type { UseEditorBottomSheetReturn } from "./useEditorBottomSheet";
 
 export interface UseLayerActionsParams {
   selectedLayerId: string | null;
-  currentScene: any;
+  currentScene: Scene | undefined;
   layers: UseEditorLayersReturn;
   bottomSheet: UseEditorBottomSheetReturn;
 }
@@ -34,11 +35,12 @@ export function useLayerActions({
   layers,
   bottomSheet,
 }: UseLayerActionsParams): UseLayerActionsReturn {
+  const { t } = useLocalization();
   const { openBottomSheet, closeBottomSheet } = bottomSheet;
 
   const handleAddText = useCallback(() => {
     openBottomSheet({
-      title: "Add Text Layer",
+      title: t("editor.layers.text.add"),
       children: (
         <TextLayerEditor
           onSave={layers.addTextLayer}
@@ -46,17 +48,17 @@ export function useLayerActions({
         />
       ),
     });
-  }, [layers.addTextLayer, openBottomSheet, closeBottomSheet]);
+  }, [layers.addTextLayer, openBottomSheet, closeBottomSheet, t]);
 
   const handleEditLayer = useCallback(() => {
     if (!selectedLayerId || !currentScene) return;
     const layer = currentScene.layers.find(
-      (l: any) => l.id === selectedLayerId,
+      (l: Layer) => l.id === selectedLayerId,
     );
     if (!layer || layer.type !== "text") return;
 
     openBottomSheet({
-      title: "Edit Text Layer",
+      title: t("editor.layers.text.edit"),
       children: (
         <TextLayerEditor
           layer={layer}
@@ -71,11 +73,12 @@ export function useLayerActions({
     layers.editTextLayer,
     openBottomSheet,
     closeBottomSheet,
+    t,
   ]);
 
   const handleAddImage = useCallback(() => {
     openBottomSheet({
-      title: "Add Image Layer",
+      title: t("editor.layers.image.add"),
       children: (
         <ImageLayerEditor
           onSave={layers.addImageLayer}
@@ -83,18 +86,18 @@ export function useLayerActions({
         />
       ),
     });
-  }, [layers.addImageLayer, openBottomSheet, closeBottomSheet]);
+  }, [layers.addImageLayer, openBottomSheet, closeBottomSheet, t]);
 
   const handleEditImageLayer = useCallback(
     (layerId: string) => {
       if (!currentScene) return;
-      const layer = currentScene.layers.find((l: any) => l.id === layerId) as
+      const layer = currentScene.layers.find((l: Layer) => l.id === layerId) as
         | ImageLayer
         | undefined;
       if (!layer) return;
 
       openBottomSheet({
-        title: "Edit Image Layer",
+        title: t("editor.layers.image.edit"),
         children: (
           <ImageLayerEditor
             layer={layer}
@@ -104,12 +107,12 @@ export function useLayerActions({
         ),
       });
     },
-    [currentScene, layers.editImageLayer, openBottomSheet, closeBottomSheet],
+    [currentScene, layers.editImageLayer, openBottomSheet, closeBottomSheet, t],
   );
 
   const handleAddShape = useCallback(() => {
     openBottomSheet({
-      title: "Add Shape Layer",
+      title: t("editor.layers.shape.add"),
       children: (
         <ShapeLayerEditor
           onSave={layers.addShapeLayer}
@@ -117,16 +120,18 @@ export function useLayerActions({
         />
       ),
     });
-  }, [layers.addShapeLayer, openBottomSheet, closeBottomSheet]);
+  }, [layers.addShapeLayer, openBottomSheet, closeBottomSheet, t]);
 
   const handleAnimate = useCallback(
     (layerId: string) => {
       if (!currentScene) return;
-      const layer = currentScene.layers.find((l: any) => l.id === layerId);
+      const layer = currentScene.layers.find((l: Layer) => l.id === layerId);
       if (!layer) return;
 
       openBottomSheet({
-        title: layer.animation ? "Edit Animation" : "Add Animation",
+        title: layer.animation
+          ? t("editor.layers.animation.edit")
+          : t("editor.layers.animation.add"),
         children: (
           <AnimationEditor
             animation={layer.animation}
@@ -148,6 +153,7 @@ export function useLayerActions({
       layers.updateLayerAnimation,
       openBottomSheet,
       closeBottomSheet,
+      t,
     ],
   );
 

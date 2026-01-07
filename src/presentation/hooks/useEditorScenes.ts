@@ -5,13 +5,14 @@
 
 import { useCallback } from "react";
 import { Alert } from "react-native";
+import { useLocalization } from "@umituz/react-native-localization";
 import { sceneOperationsService } from "../../infrastructure/services/scene-operations.service";
-import type { Audio } from "../../domain/entities";
+import type { Scene, Audio } from "../../domain/entities";
 
 export interface UseEditorScenesParams {
-  scenes: any[];
+  scenes: Scene[];
   currentSceneIndex: number;
-  onUpdateScenes: (scenes: any[]) => void;
+  onUpdateScenes: (scenes: Scene[]) => void;
   onSceneIndexChange: (index: number) => void;
 }
 
@@ -28,6 +29,8 @@ export function useEditorScenes({
   onUpdateScenes,
   onSceneIndexChange,
 }: UseEditorScenesParams): UseEditorScenesReturn {
+  const { t } = useLocalization();
+
   const addScene = useCallback(() => {
     const result = sceneOperationsService.addScene(scenes);
     if (result.success) {
@@ -35,11 +38,11 @@ export function useEditorScenes({
       if (result.newSceneIndex !== undefined) {
         onSceneIndexChange(result.newSceneIndex);
       }
-      Alert.alert("Success", "New scene added!");
+      Alert.alert(t("editor.scenes.add.success"));
     } else {
-      Alert.alert("Error", result.error || "Failed to add scene");
+      Alert.alert(t("editor.scenes.add.error"));
     }
-  }, [scenes, onUpdateScenes, onSceneIndexChange]);
+  }, [scenes, onUpdateScenes, onSceneIndexChange, t]);
 
   const duplicateScene = useCallback(
     (sceneIndex: number) => {
@@ -49,12 +52,12 @@ export function useEditorScenes({
         if (result.newSceneIndex !== undefined) {
           onSceneIndexChange(result.newSceneIndex);
         }
-        Alert.alert("Success", "Scene duplicated!");
+        Alert.alert(t("editor.scenes.duplicate.success"));
       } else {
-        Alert.alert("Error", result.error || "Failed to duplicate scene");
+        Alert.alert(t("editor.scenes.duplicate.error"));
       }
     },
-    [scenes, onUpdateScenes, onSceneIndexChange],
+    [scenes, onUpdateScenes, onSceneIndexChange, t],
   );
 
   const deleteScene = useCallback(
@@ -69,12 +72,12 @@ export function useEditorScenes({
         if (result.newSceneIndex !== undefined) {
           onSceneIndexChange(result.newSceneIndex);
         }
-        Alert.alert("Success", "Scene deleted");
+        Alert.alert(t("editor.scenes.delete.success"));
       } else {
-        Alert.alert("Error", result.error || "Failed to delete scene");
+        Alert.alert(t("editor.scenes.delete.error"));
       }
     },
-    [scenes, currentSceneIndex, onUpdateScenes, onSceneIndexChange],
+    [scenes, currentSceneIndex, onUpdateScenes, onSceneIndexChange, t],
   );
 
   const updateSceneAudio = useCallback(
@@ -87,14 +90,14 @@ export function useEditorScenes({
       if (result.success) {
         onUpdateScenes(result.updatedScenes);
         Alert.alert(
-          "Success",
-          audio ? "Audio added to scene!" : "Audio removed from scene",
+          t("editor.scenes.audio.success"),
+          t(audio ? "editor.scenes.audio.added" : "editor.scenes.audio.removed"),
         );
       } else {
-        Alert.alert("Error", result.error || "Failed to update scene audio");
+        Alert.alert(t("editor.scenes.audio.error"));
       }
     },
-    [scenes, currentSceneIndex, onUpdateScenes],
+    [scenes, currentSceneIndex, onUpdateScenes, t],
   );
 
   return {

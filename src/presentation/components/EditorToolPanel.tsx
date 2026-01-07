@@ -135,8 +135,8 @@ export const EditorToolPanel: React.FC<EditorToolPanelProps> = ({
           ]}
           onPress={() =>
             Alert.alert(
-              t("editor.tools.effects", "Effects"),
-              t("editor.tools.effectsComingSoon", "Coming soon!"),
+              t("editor.tools.effects"),
+              t("editor.tools.effectsComingSoon"),
             )
           }
         >

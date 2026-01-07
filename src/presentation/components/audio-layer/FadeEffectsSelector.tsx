@@ -73,7 +73,7 @@ export const FadeEffectsSelector: React.FC<FadeEffectsSelectorProps> = ({
                   type="labelSmall"
                   style={{
                     color:
-                      fadeIn === val ? "#FFFFFF" : tokens.colors.textPrimary,
+                      fadeIn === val ? tokens.colors.onPrimary : tokens.colors.textPrimary,
                     fontSize: 11,
                   }}
                 >
@@ -114,7 +114,7 @@ export const FadeEffectsSelector: React.FC<FadeEffectsSelectorProps> = ({
                   type="labelSmall"
                   style={{
                     color:
-                      fadeOut === val ? "#FFFFFF" : tokens.colors.textPrimary,
+                      fadeOut === val ? tokens.colors.onPrimary : tokens.colors.textPrimary,
                     fontSize: 11,
                   }}
                 >

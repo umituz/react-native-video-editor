@@ -68,7 +68,13 @@ export const AudioFileSelector: React.FC<AudioFileSelectorProps> = ({
 
   return (
     <TouchableOpacity
-      style={[styles.pickButton, { backgroundColor: tokens.colors.surface }]}
+      style={[
+        styles.pickButton,
+        {
+          backgroundColor: tokens.colors.surface,
+          borderColor: tokens.colors.borderLight,
+        },
+      ]}
       onPress={onPickAudio}
     >
       <AtomicIcon name="cloud-upload-outline" size="md" color="primary" />
@@ -102,7 +108,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 2,
-    borderColor: "rgba(0, 0, 0, 0.1)",
     borderStyle: "dashed",
   },
   fileCard: {

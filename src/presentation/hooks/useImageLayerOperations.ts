@@ -5,14 +5,14 @@
 
 import { useCallback } from "react";
 import { Alert } from "react-native";
+import { useLocalization } from "@umituz/react-native-localization";
 import { layerOperationsService } from "../../infrastructure/services/layer-operations.service";
-import type { AddImageLayerData } from "../../domain/entities";
-import type { ImageLayer } from "../../domain/entities";
+import type { AddImageLayerData, Scene, ImageLayer } from "../../domain/entities";
 
 export interface UseImageLayerOperationsParams {
-  scenes: any[];
+  scenes: Scene[];
   sceneIndex: number;
-  onUpdateScenes: (scenes: any[]) => void;
+  onUpdateScenes: (scenes: Scene[]) => void;
   onCloseBottomSheet: () => void;
 }
 
@@ -27,6 +27,8 @@ export function useImageLayerOperations({
   onUpdateScenes,
   onCloseBottomSheet,
 }: UseImageLayerOperationsParams): UseImageLayerOperationsReturn {
+  const { t } = useLocalization();
+
   const addImageLayer = useCallback(
     (data: AddImageLayerData) => {
       const result = layerOperationsService.addImageLayer(
@@ -37,12 +39,12 @@ export function useImageLayerOperations({
       if (result.success) {
         onUpdateScenes(result.updatedScenes);
         onCloseBottomSheet();
-        Alert.alert("Success", "Image layer added!");
+        Alert.alert(t("editor.layers.image.add.success"));
       } else {
-        Alert.alert("Error", result.error || "Failed to add image layer");
+        Alert.alert(t("editor.layers.image.add.error"));
       }
     },
-    [scenes, sceneIndex, onUpdateScenes, onCloseBottomSheet],
+    [scenes, sceneIndex, onUpdateScenes, onCloseBottomSheet, t],
   );
 
   const editImageLayer = useCallback(
@@ -56,12 +58,12 @@ export function useImageLayerOperations({
       if (result.success) {
         onUpdateScenes(result.updatedScenes);
         onCloseBottomSheet();
-        Alert.alert("Success", "Image layer updated!");
+        Alert.alert(t("editor.layers.image.update.success"));
       } else {
-        Alert.alert("Error", result.error || "Failed to update image layer");
+        Alert.alert(t("editor.layers.image.update.error"));
       }
     },
-    [scenes, sceneIndex, onUpdateScenes, onCloseBottomSheet],
+    [scenes, sceneIndex, onUpdateScenes, onCloseBottomSheet, t],
   );
 
   return {

@@ -70,7 +70,7 @@ export const AnimationTypeSelector: React.FC<AnimationTypeSelectorProps> = ({
               style={{
                 color:
                   selectedType === anim.type
-                    ? "#FFFFFF"
+                    ? tokens.colors.onPrimary
                     : tokens.colors.textPrimary,
                 marginTop: 6,
                 fontWeight: selectedType === anim.type ? "600" : "400",

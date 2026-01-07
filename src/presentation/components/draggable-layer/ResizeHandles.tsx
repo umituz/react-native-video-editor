@@ -31,7 +31,10 @@ export const ResizeHandles: React.FC<ResizeHandlesProps> = ({
           style={[
             styles.handle,
             styles.handleTopLeft,
-            { backgroundColor: tokens.colors.primary },
+            {
+              backgroundColor: tokens.colors.primary,
+              borderColor: tokens.colors.onPrimary,
+            },
           ]}
         />
       </GestureDetector>
@@ -41,7 +44,10 @@ export const ResizeHandles: React.FC<ResizeHandlesProps> = ({
           style={[
             styles.handle,
             styles.handleTopRight,
-            { backgroundColor: tokens.colors.primary },
+            {
+              backgroundColor: tokens.colors.primary,
+              borderColor: tokens.colors.onPrimary,
+            },
           ]}
         />
       </GestureDetector>
@@ -51,7 +57,10 @@ export const ResizeHandles: React.FC<ResizeHandlesProps> = ({
           style={[
             styles.handle,
             styles.handleBottomLeft,
-            { backgroundColor: tokens.colors.primary },
+            {
+              backgroundColor: tokens.colors.primary,
+              borderColor: tokens.colors.onPrimary,
+            },
           ]}
         />
       </GestureDetector>
@@ -61,7 +70,10 @@ export const ResizeHandles: React.FC<ResizeHandlesProps> = ({
           style={[
             styles.handle,
             styles.handleBottomRight,
-            { backgroundColor: tokens.colors.primary },
+            {
+              backgroundColor: tokens.colors.primary,
+              borderColor: tokens.colors.onPrimary,
+            },
           ]}
         />
       </GestureDetector>
@@ -76,7 +88,6 @@ const styles = StyleSheet.create({
     height: 12,
     borderRadius: 6,
     borderWidth: 2,
-    borderColor: "#FFFFFF",
   },
   handleTopLeft: {
     top: -6,

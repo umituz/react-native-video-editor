@@ -81,7 +81,7 @@ export const AudioEditorActions: React.FC<AudioEditorActionsProps> = ({
         <AtomicIcon name="checkmark-outline" size="sm" color="onSurface" />
         <AtomicText
           type="bodyMedium"
-          style={{ color: "#FFFFFF", fontWeight: "600", marginLeft: 6 }}
+          style={{ color: tokens.colors.onPrimary, fontWeight: "600", marginLeft: 6 }}
         >
           Save
         </AtomicText>

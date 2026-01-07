@@ -80,7 +80,7 @@ export const EditorTimeline: React.FC<EditorTimelineProps> = ({
             >
               <AtomicText
                 type="labelSmall"
-                style={{ color: "#FFFFFF", fontWeight: "600" }}
+                style={{ color: tokens.colors.onPrimary, fontWeight: "600" }}
               >
                 {index + 1}
               </AtomicText>

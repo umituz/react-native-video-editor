@@ -5,11 +5,12 @@
 
 import { useCallback } from "react";
 import { Alert } from "react-native";
+import { useLocalization } from "@umituz/react-native-localization";
 // TODO: Refactor to use TanStack Query instead of store
 // Temporary stub until refactor
 const useHistoryStore = () => ({
   addToHistory: () => {},
-  pushHistory: (_project: any, _action: string) => {},
+  pushHistory: (_project: VideoProject | undefined, _action: string) => {},
   undo: () => undefined,
   redo: () => undefined,
   canUndo: () => false,
@@ -36,6 +37,7 @@ export function useEditorHistory({
   projectId,
   onUpdateProject,
 }: UseEditorHistoryParams): UseEditorHistoryReturn {
+  const { t } = useLocalization();
   const {
     pushHistory,
     undo: historyUndo,
@@ -58,17 +60,17 @@ export function useEditorHistory({
     const previousState = historyUndo();
     if (previousState) {
       onUpdateProject(previousState);
-      Alert.alert("Undo", "Action undone");
+      Alert.alert(t("editor.history.undo.success"));
     }
-  }, [historyUndo, onUpdateProject]);
+  }, [historyUndo, onUpdateProject, t]);
 
   const redo = useCallback(() => {
     const nextState = historyRedo();
     if (nextState) {
       onUpdateProject(nextState);
-      Alert.alert("Redo", "Action redone");
+      Alert.alert(t("editor.history.redo.success"));
     }
-  }, [historyRedo, onUpdateProject]);
+  }, [historyRedo, onUpdateProject, t]);
 
   return {
     undo,

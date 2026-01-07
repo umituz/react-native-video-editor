@@ -66,7 +66,7 @@ export const ValueSelector: React.FC<ValueSelectorProps> = ({
             <AtomicText
               type="labelSmall"
               style={{
-                color: value === option ? "#FFFFFF" : tokens.colors.textPrimary,
+                color: value === option ? tokens.colors.onPrimary : tokens.colors.textPrimary,
                 fontWeight: value === option ? "600" : "400",
               }}
             >

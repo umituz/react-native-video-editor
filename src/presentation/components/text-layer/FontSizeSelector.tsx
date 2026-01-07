@@ -59,7 +59,7 @@ export const FontSizeSelector: React.FC<FontSizeSelectorProps> = ({
               type="bodySmall"
               style={{
                 color:
-                  fontSize === size ? "#FFFFFF" : tokens.colors.textPrimary,
+                  fontSize === size ? tokens.colors.onPrimary : tokens.colors.textPrimary,
                 fontWeight: fontSize === size ? "600" : "400",
               }}
             >

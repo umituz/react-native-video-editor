@@ -51,7 +51,7 @@ export const LayerContent: React.FC<LayerContentProps> = ({ layer }) => {
           resizeMode="cover"
         />
       ) : (
-        <View style={styles.imagePlaceholder}>
+        <View style={[styles.imagePlaceholder, { backgroundColor: tokens.colors.surface }]}>
           <AtomicIcon name="image-outline" size="md" color="secondary" />
         </View>
       );
@@ -95,7 +95,6 @@ const styles = StyleSheet.create({
   imagePlaceholder: {
     width: "100%",
     height: "100%",
-    backgroundColor: "rgba(0,0,0,0.1)",
     alignItems: "center",
     justifyContent: "center",
   },

@@ -53,7 +53,7 @@ export const ColorPickerHorizontal: React.FC<ColorPickerHorizontalProps> = ({
                 borderColor:
                   selectedColor === color.value
                     ? tokens.colors.primary
-                    : "#E5E7EB",
+                    : tokens.colors.borderLight,
                 borderWidth: selectedColor === color.value ? 3 : 2,
               },
             ]}

@@ -5,14 +5,14 @@
 
 import { useCallback } from "react";
 import { Alert } from "react-native";
+import { useLocalization } from "@umituz/react-native-localization";
 import { layerOperationsService } from "../../infrastructure/services/layer-operations.service";
-import type { LayerOrderAction } from "../../domain/entities";
-import type { Animation } from "../../domain/entities";
+import type { Scene, LayerOrderAction, Animation } from "../../domain/entities";
 
 export interface UseLayerManipulationParams {
-  scenes: any[];
+  scenes: Scene[];
   sceneIndex: number;
-  onUpdateScenes: (scenes: any[]) => void;
+  onUpdateScenes: (scenes: Scene[]) => void;
   onCloseBottomSheet: () => void;
   onLayerDeleted?: () => void;
 }
@@ -36,15 +36,17 @@ export function useLayerManipulation({
   onCloseBottomSheet,
   onLayerDeleted,
 }: UseLayerManipulationParams): UseLayerManipulationReturn {
+  const { t } = useLocalization();
+
   const deleteLayer = useCallback(
     (layerId: string) => {
       Alert.alert(
-        "Delete Layer",
-        "Are you sure you want to delete this layer?",
+        t("editor.layers.delete.title"),
+        t("editor.layers.delete.message"),
         [
-          { text: "Cancel", style: "cancel" },
+          { text: t("common.buttons.cancel"), style: "cancel" },
           {
-            text: "Delete",
+            text: t("editor.layers.delete.confirm"),
             style: "destructive",
             onPress: () => {
               const result = layerOperationsService.deleteLayer(
@@ -55,16 +57,16 @@ export function useLayerManipulation({
               if (result.success) {
                 onUpdateScenes(result.updatedScenes);
                 onLayerDeleted?.();
-                Alert.alert("Success", "Layer deleted");
+                Alert.alert(t("editor.layers.delete.success"));
               } else {
-                Alert.alert("Error", result.error || "Failed to delete layer");
+                Alert.alert(t("editor.layers.delete.error"));
               }
             },
           },
         ],
       );
     },
-    [scenes, sceneIndex, onUpdateScenes, onLayerDeleted],
+    [scenes, sceneIndex, onUpdateScenes, onLayerDeleted, t],
   );
 
   const changeLayerOrder = useCallback(
@@ -77,18 +79,12 @@ export function useLayerManipulation({
       );
       if (result.success) {
         onUpdateScenes(result.updatedScenes);
-        const actionNames = {
-          front: "Layer moved to front",
-          back: "Layer moved to back",
-          up: "Layer moved up",
-          down: "Layer moved down",
-        };
-        Alert.alert("Success", actionNames[action]);
+        Alert.alert(t("editor.layers.order.success"), t(`editor.layers.order.${action}`));
       } else {
-        Alert.alert("Error", result.error || "Failed to change layer order");
+        Alert.alert(t("editor.layers.order.error"));
       }
     },
-    [scenes, sceneIndex, onUpdateScenes],
+    [scenes, sceneIndex, onUpdateScenes, t],
   );
 
   const duplicateLayer = useCallback(
@@ -100,12 +96,12 @@ export function useLayerManipulation({
       );
       if (result.success) {
         onUpdateScenes(result.updatedScenes);
-        Alert.alert("Success", "Layer duplicated!");
+        Alert.alert(t("editor.layers.duplicate.success"));
       } else {
-        Alert.alert("Error", result.error || "Failed to duplicate layer");
+        Alert.alert(t("editor.layers.duplicate.error"));
       }
     },
-    [scenes, sceneIndex, onUpdateScenes],
+    [scenes, sceneIndex, onUpdateScenes, t],
   );
 
   const updateLayerPosition = useCallback(
@@ -152,19 +148,16 @@ export function useLayerManipulation({
         onUpdateScenes(result.updatedScenes);
         onCloseBottomSheet();
         Alert.alert(
-          "Success",
-          animation
-            ? "Animation applied to layer!"
-            : "Animation removed from layer",
+          t("editor.layers.animation.success"),
+          t(animation
+            ? "editor.layers.animation.applied"
+            : "editor.layers.animation.removed"),
         );
       } else {
-        Alert.alert(
-          "Error",
-          result.error || "Failed to update layer animation",
-        );
+        Alert.alert(t("editor.layers.animation.error"));
       }
     },
-    [scenes, sceneIndex, onUpdateScenes, onCloseBottomSheet],
+    [scenes, sceneIndex, onUpdateScenes, onCloseBottomSheet, t],
   );
 
   return {
