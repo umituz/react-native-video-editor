@@ -1,2 +1,8 @@
 node_modules
+lib
+dist
+.turbo
 .DS_Store
+coverage
+.nyc_output
+*.log
