@@ -40,7 +40,7 @@ export interface Transition {
 }
 
 export interface Background {
-  type: "color" | "gradient" | "image" | "video";
+  type: "color" | "image" | "video";
   value: string;
 }
 
