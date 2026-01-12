@@ -4,7 +4,6 @@
  */
 
 import { useState, useCallback } from "react";
-import { Alert } from "react-native";
 
 export interface BottomSheetContent {
   title: string;

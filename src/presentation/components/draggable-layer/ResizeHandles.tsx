@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
 import { useAppDesignTokens } from "@umituz/react-native-design-system";

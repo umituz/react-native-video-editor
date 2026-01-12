@@ -5,7 +5,7 @@
 
 import React from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
-import { useAppDesignTokens } from "@umituz/react-native-design-system";
+
 import type { Animation } from "../../domain/entities";
 import { useAnimationLayerForm } from "../hooks/useAnimationLayerForm";
 import {

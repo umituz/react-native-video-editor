@@ -44,7 +44,7 @@ export const safePause = (player: VideoPlayer | null): boolean => {
     return true;
   } catch (error) {
     if (typeof __DEV__ !== "undefined" && __DEV__) {
-      // eslint-disable-next-line no-console
+       
       console.log("[VideoPlayer] Pause error ignored:", error);
     }
     return false;
@@ -96,7 +96,7 @@ export const configurePlayer = (
     }
   } catch (error) {
     if (typeof __DEV__ !== "undefined" && __DEV__) {
-      // eslint-disable-next-line no-console
+       
       console.log("[VideoPlayer] Configure error ignored:", error);
     }
   }

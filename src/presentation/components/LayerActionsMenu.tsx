@@ -11,7 +11,7 @@ import {
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
 import { useLocalization } from "@umituz/react-native-localization";
-import type { Layer, ImageLayer } from "../../domain/entities";
+import type { Layer } from "../../domain/entities";
 
 export interface LayerActionsMenuProps {
   layer: Layer;

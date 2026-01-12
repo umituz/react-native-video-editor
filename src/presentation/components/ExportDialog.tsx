@@ -13,9 +13,6 @@ import {
   RESOLUTIONS,
   QUALITIES,
   FORMATS,
-  type Resolution,
-  type Quality,
-  type Format,
 } from "../../infrastructure/constants/export.constants";
 import {
   ProjectInfoBox,

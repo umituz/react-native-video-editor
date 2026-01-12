@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { DesignTokens } from "@umituz/react-native-design-system";
 
-export const createPreviewStyles = (tokens: DesignTokens) =>
+export const createPreviewStyles = (_tokens: DesignTokens) =>
   StyleSheet.create({
     previewSection: {
       padding: 16,

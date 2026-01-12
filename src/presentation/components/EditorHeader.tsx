@@ -10,7 +10,6 @@ import {
   AtomicIcon,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
-import { AppNavigation } from "@umituz/react-native-design-system";
 
 export interface EditorHeaderProps {
   projectTitle: string;

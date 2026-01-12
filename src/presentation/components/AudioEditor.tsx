@@ -57,7 +57,7 @@ export const AudioEditor: React.FC<AudioEditorProps> = ({
       if (!result.canceled && result.assets && result.assets.length > 0) {
         setAudioUri(result.assets[0].uri);
       }
-    } catch (error) {
+    } catch {
       Alert.alert(t("audio.errors.pickFailed"));
     }
   }, [setAudioUri, t]);

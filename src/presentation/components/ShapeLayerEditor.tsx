@@ -5,11 +5,6 @@
 
 import React from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
-import {
-  AtomicText,
-  AtomicIcon,
-  useAppDesignTokens,
-} from "@umituz/react-native-design-system";
 import type { ShapeLayer } from "../../domain/entities";
 import { useShapeLayerForm } from "../hooks/useShapeLayerForm";
 import {
@@ -35,7 +30,6 @@ export const ShapeLayerEditor: React.FC<ShapeLayerEditorProps> = ({
   onSave,
   onCancel,
 }) => {
-  const tokens = useAppDesignTokens();
   const {
     formState,
     setShape,

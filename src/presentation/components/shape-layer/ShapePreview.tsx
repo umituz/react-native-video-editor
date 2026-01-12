@@ -9,7 +9,6 @@ import {
   AtomicText,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
-import type { ShapeType } from "../../../infrastructure/constants/shape-layer.constants";
 import type { ShapeLayerFormState } from "../../hooks/useShapeLayerForm";
 
 interface ShapePreviewProps {

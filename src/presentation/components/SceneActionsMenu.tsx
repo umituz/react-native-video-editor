@@ -19,7 +19,7 @@ export interface SceneActionsMenuProps {
 }
 
 export const SceneActionsMenu: React.FC<SceneActionsMenuProps> = ({
-  sceneIndex,
+  sceneIndex: _sceneIndex,
   canDelete,
   onDuplicate,
   onDelete,

@@ -3,24 +3,12 @@
  * Single Responsibility: History operations for editor
  */
 
-import { useCallback } from "react";
-import { Alert } from "react-native";
-import { useLocalization } from "@umituz/react-native-localization";
-// TODO: Refactor to use TanStack Query instead of store
-// Temporary stub until refactor
-const useHistoryStore = () => ({
-  addToHistory: () => {},
-  pushHistory: (_project: VideoProject | undefined, _action: string) => {},
-  undo: () => undefined,
-  redo: () => undefined,
-  canUndo: () => false,
-  canRedo: () => false,
-});
+import { useCallback, useState } from "react";
 import type { VideoProject } from "../../domain/entities";
 
 export interface UseEditorHistoryParams {
   project: VideoProject | undefined;
-  projectId: string;
+  projectId: string; // Kept for interface compatibility, used for reset if needed
   onUpdateProject: (updates: Partial<VideoProject>) => void;
 }
 
@@ -34,49 +22,56 @@ export interface UseEditorHistoryReturn {
 
 export function useEditorHistory({
   project,
-  projectId,
   onUpdateProject,
 }: UseEditorHistoryParams): UseEditorHistoryReturn {
-  const { t } = useLocalization();
-  const {
-    pushHistory,
-    undo: historyUndo,
-    redo: historyRedo,
-    canUndo,
-    canRedo,
-  } = useHistoryStore();
+  const [history, setHistory] = useState<VideoProject[]>([]);
+  const [future, setFuture] = useState<VideoProject[]>([]);
 
   const updateWithHistory = useCallback(
-    (updates: Partial<VideoProject>, action: string) => {
+    (updates: Partial<VideoProject>, _action: string) => {
       if (project) {
-        pushHistory(project, action);
+        // Push current state to history before updating
+        setHistory((prev) => [...prev, project]);
+        // Clear future
+        setFuture([]);
+        
         onUpdateProject(updates);
       }
     },
-    [project, pushHistory, onUpdateProject],
+    [project, onUpdateProject],
   );
 
   const undo = useCallback(() => {
-    const previousState = historyUndo();
-    if (previousState) {
-      onUpdateProject(previousState);
-      Alert.alert(t("editor.history.undo.success"));
-    }
-  }, [historyUndo, onUpdateProject, t]);
+    if (history.length === 0 || !project) return;
+
+    const previousState = history[history.length - 1];
+    const newHistory = history.slice(0, -1);
+
+    setFuture((prev) => [project, ...prev]);
+    setHistory(newHistory);
+
+    // Full replacement of state
+    // We assume onUpdateProject can handle a full object which is a superset of Partial
+    onUpdateProject(previousState);
+  }, [history, project, onUpdateProject]);
 
   const redo = useCallback(() => {
-    const nextState = historyRedo();
-    if (nextState) {
-      onUpdateProject(nextState);
-      Alert.alert(t("editor.history.redo.success"));
-    }
-  }, [historyRedo, onUpdateProject, t]);
+    if (future.length === 0 || !project) return;
+
+    const nextState = future[0];
+    const newFuture = future.slice(1);
+
+    setHistory((prev) => [...prev, project]);
+    setFuture(newFuture);
+
+    onUpdateProject(nextState);
+  }, [future, project, onUpdateProject]);
 
   return {
     undo,
     redo,
-    canUndo: canUndo(),
-    canRedo: canRedo(),
+    canUndo: history.length > 0,
+    canRedo: future.length > 0,
     updateWithHistory,
   };
 }
