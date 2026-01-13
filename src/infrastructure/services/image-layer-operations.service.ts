@@ -3,7 +3,7 @@
  * Single Responsibility: Image layer business logic
  */
 
-import { generateUUID } from "@umituz/react-native-uuid";
+import { generateUUID } from "@umituz/react-native-design-system";
 import type { Scene, ImageLayer } from "../../domain/entities";
 import type { LayerOperationResult, AddImageLayerData } from "../../domain/entities";
 

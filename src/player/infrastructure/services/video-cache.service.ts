@@ -13,7 +13,7 @@ import {
   clearCache,
   type DownloadProgressCallback,
   type DownloadProgress,
-} from "@umituz/react-native-filesystem";
+} from "@umituz/react-native-design-system";
 
 declare const __DEV__: boolean;
 

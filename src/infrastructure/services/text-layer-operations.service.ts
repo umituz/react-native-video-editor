@@ -3,7 +3,7 @@
  * Single Responsibility: Text layer business logic
  */
 
-import { generateUUID } from "@umituz/react-native-uuid";
+import { generateUUID } from "@umituz/react-native-design-system";
 import type { Scene, TextLayer } from "../../domain/entities";
 import type { LayerOperationResult, AddTextLayerData } from "../../domain/entities";
 

@@ -3,7 +3,7 @@
  * Single Responsibility: Shape layer business logic
  */
 
-import { generateUUID } from "@umituz/react-native-uuid";
+import { generateUUID } from "@umituz/react-native-design-system";
 import type { Scene, ShapeLayer } from "../../domain/entities";
 import type { LayerOperationResult, AddShapeLayerData } from "../../domain/entities";
 

@@ -1,6 +1,6 @@
 {
   "name": "@umituz/react-native-video-editor",
-  "version": "1.0.33",
+  "version": "1.0.35",
   "description": "Professional video editor with layer-based timeline, text/image/shape/audio/animation layers, and export functionality",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -31,7 +31,6 @@
     "url": "https://github.com/umituz/react-native-video-editor"
   },
   "dependencies": {
-    "@umituz/react-native-filesystem": "latest",
     "expo-document-picker": ">=14.0.0"
   },
   "peerDependencies": {
@@ -48,9 +47,7 @@
     "@gorhom/bottom-sheet": "^5.2.8",
     "@types/react": "~19.1.10",
     "@umituz/react-native-design-system": "latest",
-    "@umituz/react-native-filesystem": "latest",
     "@umituz/react-native-localization": "latest",
-    "@umituz/react-native-uuid": "latest",
     "expo-application": "^7.0.8",
     "expo-crypto": "^13.0.2",
     "expo-device": "^8.0.10",

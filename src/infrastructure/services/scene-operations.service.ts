@@ -3,7 +3,7 @@
  * Single Responsibility: Business logic for scene operations
  */
 
-import { generateUUID } from "@umituz/react-native-uuid";
+import { generateUUID } from "@umituz/react-native-design-system";
 import type { Scene, Audio } from "../../domain/entities";
 import type { SceneOperationResult } from "../../domain/entities";
 

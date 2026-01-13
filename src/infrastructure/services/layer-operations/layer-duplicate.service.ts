@@ -3,7 +3,7 @@
  * Single Responsibility: Handle layer duplication operations
  */
 
-import { generateUUID } from "@umituz/react-native-uuid";
+import { generateUUID } from "@umituz/react-native-design-system";
 import type { Scene } from "../../../domain/entities";
 import type { LayerOperationResult } from "../../../domain/entities";
 
