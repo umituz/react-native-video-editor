@@ -4,9 +4,8 @@
  */
 
 import React from "react";
-import { StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { GestureDetector } from "react-native-gesture-handler";
-import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { useAppDesignTokens } from "@umituz/react-native-design-system";
 import type { Layer } from "../../domain/entities";
 import { useDraggableLayerGestures } from "../hooks/useDraggableLayerGestures";
@@ -40,10 +39,7 @@ export const DraggableLayer: React.FC<DraggableLayerProps> = ({
   const initialHeight = (layer.size.height / 100) * canvasHeight;
 
   const {
-    translateX,
-    translateY,
-    width,
-    height,
+    state,
     composedGesture,
     topLeftResizeHandler,
     topRightResizeHandler,
@@ -61,30 +57,27 @@ export const DraggableLayer: React.FC<DraggableLayerProps> = ({
     onSizeChange,
   });
 
-  const animatedStyle = useAnimatedStyle(() => {
-    const rotationStr = `${layer.rotation}deg`;
-    return {
-      transform: [
-        { translateX: translateX.value },
-        { translateY: translateY.value },
-        { rotate: rotationStr },
-      ],
-      opacity: layer.opacity,
-      width: width.value,
-      height: height.value,
-    };
-  });
+  const layerStyle = {
+    transform: [
+      { translateX: state.x },
+      { translateY: state.y },
+      { rotate: `${layer.rotation}deg` },
+    ],
+    opacity: layer.opacity,
+    width: state.width,
+    height: state.height,
+  };
 
   return (
     <GestureDetector gesture={composedGesture}>
-      <Animated.View
+      <View
         style={[
           styles.layer,
           {
             borderColor: isSelected ? tokens.colors.primary : "transparent",
             borderWidth: isSelected ? 2 : 0,
           },
-          animatedStyle,
+          layerStyle,
         ]}
       >
         <LayerContent layer={layer} />
@@ -97,7 +90,7 @@ export const DraggableLayer: React.FC<DraggableLayerProps> = ({
             bottomRightGesture={bottomRightResizeHandler}
           />
         )}
-      </Animated.View>
+      </View>
     </GestureDetector>
   );
 };

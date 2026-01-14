@@ -4,9 +4,8 @@
  */
 
 import React from "react";
-import { StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import Animated from "react-native-reanimated";
 import { useAppDesignTokens } from "@umituz/react-native-design-system";
 
 interface ResizeHandlesProps {
@@ -27,7 +26,7 @@ export const ResizeHandles: React.FC<ResizeHandlesProps> = ({
   return (
     <>
       <GestureDetector gesture={topLeftGesture}>
-        <Animated.View
+        <View
           style={[
             styles.handle,
             styles.handleTopLeft,
@@ -40,7 +39,7 @@ export const ResizeHandles: React.FC<ResizeHandlesProps> = ({
       </GestureDetector>
 
       <GestureDetector gesture={topRightGesture}>
-        <Animated.View
+        <View
           style={[
             styles.handle,
             styles.handleTopRight,
@@ -53,7 +52,7 @@ export const ResizeHandles: React.FC<ResizeHandlesProps> = ({
       </GestureDetector>
 
       <GestureDetector gesture={bottomLeftGesture}>
-        <Animated.View
+        <View
           style={[
             styles.handle,
             styles.handleBottomLeft,
@@ -66,7 +65,7 @@ export const ResizeHandles: React.FC<ResizeHandlesProps> = ({
       </GestureDetector>
 
       <GestureDetector gesture={bottomRightGesture}>
-        <Animated.View
+        <View
           style={[
             styles.handle,
             styles.handleBottomRight,
