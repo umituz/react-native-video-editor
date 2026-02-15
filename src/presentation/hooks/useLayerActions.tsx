@@ -4,7 +4,7 @@
  */
 
 import { useCallback } from "react";
-import { useLocalization } from "@umituz/react-native-localization";
+import { useLocalization } from "@umituz/react-native-settings";
 import { TextLayerEditor } from "../components/TextLayerEditor";
 import { ImageLayerEditor } from "../components/ImageLayerEditor";
 import { ShapeLayerEditor } from "../components/ShapeLayerEditor";

@@ -5,7 +5,7 @@
 
 import React, { useCallback } from "react";
 import { View, ScrollView, StyleSheet, Alert } from "react-native";
-import { useLocalization } from "@umituz/react-native-localization";
+import { useLocalization } from "@umituz/react-native-settings";
 import type { ExportSettings, VideoProject } from "../../domain/entities";
 import { useExportForm } from "../hooks/useExportForm";
 import { useExport, type UseExportConfig, type ExportResult } from "../hooks/useExport";

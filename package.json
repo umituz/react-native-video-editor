@@ -49,7 +49,7 @@
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",
     "@umituz/react-native-design-system": "^2.9.29",
-    "@umituz/react-native-localization": "latest",
+    "@umituz/react-native-settings": "latest",
     "eslint": "*",
     "expo-application": "^7.0.8",
     "expo-crypto": "^13.0.2",

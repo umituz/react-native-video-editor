@@ -5,7 +5,7 @@
 
 import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { useLocalization } from "@umituz/react-native-localization";
+import { useLocalization } from "@umituz/react-native-settings";
 import {
   AtomicText,
   AtomicIcon,

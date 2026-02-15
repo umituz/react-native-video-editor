@@ -10,7 +10,7 @@ import {
   AtomicIcon,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
-import { useLocalization } from "@umituz/react-native-localization";
+import { useLocalization } from "@umituz/react-native-settings";
 import type { Layer } from "../../domain/entities";
 
 export interface LayerActionsMenuProps {

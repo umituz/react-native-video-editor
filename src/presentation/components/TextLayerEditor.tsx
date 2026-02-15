@@ -5,7 +5,7 @@
 
 import React from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
-import { useLocalization } from "@umituz/react-native-localization";
+import { useLocalization } from "@umituz/react-native-settings";
 import type { TextLayer } from "../../domain/entities";
 import { useTextLayerForm } from "../hooks/useTextLayerForm";
 import {
