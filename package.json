@@ -48,7 +48,7 @@
     "@types/react-native": "*",
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",
-    "@umituz/react-native-design-system": "^2.9.29",
+    "@umituz/react-native-design-system": "latest",
     "@umituz/react-native-settings": "latest",
     "eslint": "*",
     "expo-application": "^7.0.8",
