@@ -24,8 +24,6 @@ export function useEditorBottomSheet(): UseEditorBottomSheetReturn {
   const openBottomSheet = useCallback((sheetContent: BottomSheetContent) => {
     setContent(sheetContent);
     setIsOpen(true);
-    // TODO: Implement actual bottom sheet
-    // For now, using Alert as fallback
   }, []);
 
   const closeBottomSheet = useCallback(() => {
