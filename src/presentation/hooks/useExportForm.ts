@@ -16,14 +16,14 @@ import {
   QUALITY_MULTIPLIERS,
 } from "../../infrastructure/constants/export.constants";
 
-export interface ExportFormState {
+interface ExportFormState {
   resolution: Resolution;
   quality: Quality;
   format: Format;
   includeWatermark: boolean;
 }
 
-export interface UseExportFormReturn {
+interface UseExportFormReturn {
   formState: ExportFormState;
   setResolution: (resolution: Resolution) => void;
   setQuality: (quality: Quality) => void;

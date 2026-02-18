@@ -9,7 +9,7 @@ import { useLocalization } from "@umituz/react-native-settings";
 import { sceneOperationsService } from "../../infrastructure/services/scene-operations.service";
 import type { Scene, Audio } from "../../domain/entities";
 
-export interface UseEditorScenesParams {
+interface UseEditorScenesParams {
   scenes: Scene[];
   currentSceneIndex: number;
   onUpdateScenes: (scenes: Scene[]) => void;

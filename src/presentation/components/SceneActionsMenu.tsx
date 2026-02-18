@@ -11,7 +11,7 @@ import {
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
 
-export interface SceneActionsMenuProps {
+interface SceneActionsMenuProps {
   sceneIndex: number;
   canDelete: boolean;
   onDuplicate: () => void;

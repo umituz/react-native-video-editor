@@ -3,7 +3,7 @@
  * Reusable video player with caching, thumbnail and controls
  */
 
-import React, { useState, useCallback, useMemo, useEffect } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { View, TouchableOpacity, StyleSheet, type ViewStyle } from "react-native";
 import { Image } from "expo-image";
 import { VideoView } from "expo-video";
@@ -43,7 +43,8 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   // IMPORTANT: Call useResponsive BEFORE useAppDesignTokens to maintain hook order
   const { width: screenWidth, horizontalPadding } = useResponsive();
   const tokens = useAppDesignTokens();
-  const [showVideo, setShowVideo] = useState(autoPlay);
+  const [userTriggeredPlay, setUserTriggeredPlay] = useState(false);
+  const showVideo = autoPlay || userTriggeredPlay;
 
   // Cache the video first (downloads if needed)
   const { localUri, isDownloading, downloadProgress, error } = useVideoCaching(source);
@@ -53,24 +54,16 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     source: localUri,
     loop,
     muted,
-    autoPlay: false,
+    autoPlay,
   });
-
-  useEffect(() => {
-    if (showVideo && state.isPlayerValid && player) {
-      if (__DEV__) {
-        console.log("[VideoPlayer] Starting playback from:", localUri);
-      }
-      controls.play();
-    }
-  }, [showVideo, state.isPlayerValid, player, controls, localUri]);
 
   const handlePlay = useCallback(() => {
     if (__DEV__) {
       console.log("[VideoPlayer] handlePlay, localUri:", localUri);
     }
-    setShowVideo(true);
-  }, [localUri]);
+    setUserTriggeredPlay(true);
+    controls.play();
+  }, [localUri, controls]);
 
   // Calculate dimensions
   const videoWidth = getWidthFromStyle(style as ViewStyle) ?? (screenWidth - horizontalPadding * 2);

@@ -15,7 +15,7 @@ import type {
 } from "../../domain/entities";
 import type { TextLayer, ImageLayer, Animation } from "../../domain/entities";
 
-export interface UseEditorLayersParams {
+interface UseEditorLayersParams {
   projectId: string;
   scenes: any[];
   sceneIndex: number;

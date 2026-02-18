@@ -18,7 +18,7 @@ import {
 } from "@umituz/react-native-design-system";
 import { useLocalization } from "@umituz/react-native-settings";
 
-export interface EditorToolPanelProps {
+interface EditorToolPanelProps {
   onAddText: () => void;
   onAddImage: () => void;
   onAddShape: () => void;

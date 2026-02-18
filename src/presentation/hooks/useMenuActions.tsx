@@ -8,7 +8,7 @@ import { LayerActionsMenu } from "../components/LayerActionsMenu";
 import type { UseEditorLayersReturn } from "./useEditorLayers";
 import type { UseEditorBottomSheetReturn } from "./useEditorBottomSheet";
 
-export interface UseMenuActionsParams {
+interface UseMenuActionsParams {
   layers: UseEditorLayersReturn;
   bottomSheet: UseEditorBottomSheetReturn;
   handleEditLayer: () => void;
@@ -16,7 +16,7 @@ export interface UseMenuActionsParams {
   handleAnimate: (layerId: string) => void;
 }
 
-export interface UseMenuActionsReturn {
+interface UseMenuActionsReturn {
   handleLayerActionsPress: (layer: any) => void;
 }
 

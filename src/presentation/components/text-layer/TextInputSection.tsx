@@ -49,7 +49,6 @@ export const TextInputSection: React.FC<TextInputSectionProps> = ({
         value={text}
         onChangeText={onChangeText}
         multiline
-        autoFocus
       />
     </View>
   );

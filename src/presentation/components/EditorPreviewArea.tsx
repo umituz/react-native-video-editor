@@ -18,7 +18,7 @@ const { width } = Dimensions.get("window");
 const PREVIEW_ASPECT_RATIO = 16 / 9;
 const PREVIEW_HEIGHT = width / PREVIEW_ASPECT_RATIO;
 
-export interface EditorPreviewAreaProps {
+interface EditorPreviewAreaProps {
   scene: Scene;
   selectedLayerId: string | null;
   isPlaying: boolean;

@@ -9,7 +9,7 @@ import { useLocalization } from "@umituz/react-native-settings";
 import { layerOperationsService } from "../../infrastructure/services/layer-operations.service";
 import type { Scene, LayerOrderAction, Animation } from "../../domain/entities";
 
-export interface UseLayerManipulationParams {
+interface UseLayerManipulationParams {
   scenes: Scene[];
   sceneIndex: number;
   onUpdateScenes: (scenes: Scene[]) => void;
@@ -17,7 +17,7 @@ export interface UseLayerManipulationParams {
   onLayerDeleted?: () => void;
 }
 
-export interface UseLayerManipulationReturn {
+interface UseLayerManipulationReturn {
   deleteLayer: (layerId: string) => void;
   changeLayerOrder: (layerId: string, action: LayerOrderAction) => void;
   duplicateLayer: (layerId: string) => void;

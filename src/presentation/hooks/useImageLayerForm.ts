@@ -6,12 +6,12 @@
 import { useState, useCallback } from "react";
 import type { ImageLayer } from "../../domain/entities";
 
-export interface ImageLayerFormState {
+interface ImageLayerFormState {
   imageUri: string;
   opacity: number;
 }
 
-export interface UseImageLayerFormReturn {
+interface UseImageLayerFormReturn {
   formState: ImageLayerFormState;
   setImageUri: (uri: string) => void;
   setOpacity: (opacity: number) => void;

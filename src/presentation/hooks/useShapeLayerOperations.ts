@@ -9,7 +9,7 @@ import { useLocalization } from "@umituz/react-native-settings";
 import { layerOperationsService } from "../../infrastructure/services/layer-operations.service";
 import type { AddShapeLayerData, Scene } from "../../domain/entities";
 
-export interface UseShapeLayerOperationsParams {
+interface UseShapeLayerOperationsParams {
   scenes: Scene[];
   sceneIndex: number;
   onUpdateScenes: (scenes: Scene[]) => void;
@@ -17,7 +17,7 @@ export interface UseShapeLayerOperationsParams {
   defaultColor: string;
 }
 
-export interface UseShapeLayerOperationsReturn {
+interface UseShapeLayerOperationsReturn {
   addShapeLayer: (data: AddShapeLayerData) => void;
 }
 

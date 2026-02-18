@@ -13,7 +13,7 @@ import {
 import { useLocalization } from "@umituz/react-native-settings";
 import type { VideoProject, Scene } from "../../domain/entities";
 
-export interface EditorTimelineProps {
+interface EditorTimelineProps {
   project: VideoProject;
   currentSceneIndex: number;
   onSceneSelect: (index: number) => void;

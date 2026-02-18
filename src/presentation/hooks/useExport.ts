@@ -30,7 +30,7 @@ export interface UseExportConfig {
   ) => Promise<ExportResult>;
 }
 
-export interface UseExportReturn {
+interface UseExportReturn {
   isExporting: boolean;
   exportProgress: ExportProgress | null;
   exportVideo: (

@@ -6,13 +6,13 @@
 import { useCallback, useState } from "react";
 import type { VideoProject } from "../../domain/entities";
 
-export interface UseEditorHistoryParams {
+interface UseEditorHistoryParams {
   project: VideoProject | undefined;
   projectId: string; // Kept for interface compatibility, used for reset if needed
   onUpdateProject: (updates: Partial<VideoProject>) => void;
 }
 
-export interface UseEditorHistoryReturn {
+interface UseEditorHistoryReturn {
   undo: () => void;
   redo: () => void;
   canUndo: boolean;

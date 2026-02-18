@@ -16,7 +16,7 @@ export interface TextLayerFormState {
   textAlign: "left" | "center" | "right";
 }
 
-export interface UseTextLayerFormReturn {
+interface UseTextLayerFormReturn {
   formState: TextLayerFormState;
   setText: (text: string) => void;
   setFontSize: (size: number) => void;

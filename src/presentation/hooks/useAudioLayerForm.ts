@@ -6,14 +6,14 @@
 import { useState, useCallback } from "react";
 import type { Audio } from "../../domain/entities";
 
-export interface AudioLayerFormState {
+interface AudioLayerFormState {
   audioUri: string;
   volume: number;
   fadeIn: number;
   fadeOut: number;
 }
 
-export interface UseAudioLayerFormReturn {
+interface UseAudioLayerFormReturn {
   formState: AudioLayerFormState;
   setAudioUri: (uri: string) => void;
   setVolume: (volume: number) => void;

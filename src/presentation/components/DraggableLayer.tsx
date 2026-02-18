@@ -62,7 +62,7 @@ export const DraggableLayer: React.FC<DraggableLayerProps> = ({
       { translateX: state.x },
       { translateY: state.y },
       { rotate: `${layer.rotation}deg` },
-    ],
+    ] as const,
     opacity: layer.opacity,
     width: state.width,
     height: state.height,

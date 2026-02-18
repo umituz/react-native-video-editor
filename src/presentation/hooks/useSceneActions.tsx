@@ -9,13 +9,13 @@ import { SceneActionsMenu } from "../components/SceneActionsMenu";
 import type { UseEditorScenesReturn } from "./useEditorScenes";
 import type { UseEditorBottomSheetReturn } from "./useEditorBottomSheet";
 
-export interface UseSceneActionsParams {
+interface UseSceneActionsParams {
   currentScene: any;
   scenes: UseEditorScenesReturn;
   bottomSheet: UseEditorBottomSheetReturn;
 }
 
-export interface UseSceneActionsReturn {
+interface UseSceneActionsReturn {
   handleAudio: () => void;
   handleSceneLongPress: (index: number, canDelete: boolean) => void;
 }

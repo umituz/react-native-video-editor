@@ -12,7 +12,7 @@ import { useSceneActions } from "./useSceneActions";
 import { useMenuActions } from "./useMenuActions";
 import { useExportActions } from "./useExportActions";
 
-export interface UseEditorActionsParams {
+interface UseEditorActionsParams {
   project: VideoProject | undefined;
   selectedLayerId: string | null;
   currentScene: any;
@@ -22,7 +22,7 @@ export interface UseEditorActionsParams {
   onExportComplete: (settings: any, uri?: string) => void;
 }
 
-export interface UseEditorActionsReturn {
+interface UseEditorActionsReturn {
   handleAddText: () => void;
   handleEditLayer: () => void;
   handleAddImage: () => void;

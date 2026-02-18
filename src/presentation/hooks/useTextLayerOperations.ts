@@ -9,7 +9,7 @@ import { useLocalization } from "@umituz/react-native-settings";
 import { layerOperationsService } from "../../infrastructure/services/layer-operations.service";
 import type { AddTextLayerData, Scene, TextLayer } from "../../domain/entities";
 
-export interface UseTextLayerOperationsParams {
+interface UseTextLayerOperationsParams {
   scenes: Scene[];
   sceneIndex: number;
   onUpdateScenes: (scenes: Scene[]) => void;
@@ -17,7 +17,7 @@ export interface UseTextLayerOperationsParams {
   defaultColor: string;
 }
 
-export interface UseTextLayerOperationsReturn {
+interface UseTextLayerOperationsReturn {
   addTextLayer: (data: AddTextLayerData) => void;
   editTextLayer: (layerId: string, data: Partial<TextLayer>) => void;
 }

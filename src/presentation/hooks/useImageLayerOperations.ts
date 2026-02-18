@@ -9,14 +9,14 @@ import { useLocalization } from "@umituz/react-native-settings";
 import { layerOperationsService } from "../../infrastructure/services/layer-operations.service";
 import type { AddImageLayerData, Scene, ImageLayer } from "../../domain/entities";
 
-export interface UseImageLayerOperationsParams {
+interface UseImageLayerOperationsParams {
   scenes: Scene[];
   sceneIndex: number;
   onUpdateScenes: (scenes: Scene[]) => void;
   onCloseBottomSheet: () => void;
 }
 
-export interface UseImageLayerOperationsReturn {
+interface UseImageLayerOperationsReturn {
   addImageLayer: (data: AddImageLayerData) => void;
   editImageLayer: (layerId: string, data: Partial<ImageLayer>) => void;
 }

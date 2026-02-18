@@ -13,14 +13,14 @@ import type { Scene, ImageLayer, Layer } from "../../domain/entities";
 import type { UseEditorLayersReturn } from "./useEditorLayers";
 import type { UseEditorBottomSheetReturn } from "./useEditorBottomSheet";
 
-export interface UseLayerActionsParams {
+interface UseLayerActionsParams {
   selectedLayerId: string | null;
   currentScene: Scene | undefined;
   layers: UseEditorLayersReturn;
   bottomSheet: UseEditorBottomSheetReturn;
 }
 
-export interface UseLayerActionsReturn {
+interface UseLayerActionsReturn {
   handleAddText: () => void;
   handleEditLayer: () => void;
   handleAddImage: () => void;

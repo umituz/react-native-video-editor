@@ -11,7 +11,7 @@ import {
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
 
-export interface EditorHeaderProps {
+interface EditorHeaderProps {
   projectTitle: string;
   canUndo: boolean;
   canRedo: boolean;

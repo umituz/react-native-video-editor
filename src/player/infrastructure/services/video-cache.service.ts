@@ -130,7 +130,7 @@ export const clearVideoCache = async (): Promise<void> => {
 /**
  * Delete a specific cached video
  */
-export const deleteSpecificCachedVideo = (url: string): boolean => {
+export const deleteSpecificCachedVideo = async (url: string): Promise<boolean> => {
   if (!url || url.startsWith("file://")) return false;
   return deleteCachedFile(url, getVideoCacheDir());
 };

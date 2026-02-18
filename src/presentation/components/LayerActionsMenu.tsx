@@ -13,7 +13,7 @@ import {
 import { useLocalization } from "@umituz/react-native-settings";
 import type { Layer } from "../../domain/entities";
 
-export interface LayerActionsMenuProps {
+interface LayerActionsMenuProps {
   layer: Layer;
   onEditText: () => void;
   onEditImage: () => void;

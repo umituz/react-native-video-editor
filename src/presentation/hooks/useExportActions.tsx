@@ -8,13 +8,13 @@ import { ExportDialog } from "../components/ExportDialog";
 import type { VideoProject, ExportSettings } from "../../domain/entities";
 import type { UseEditorBottomSheetReturn } from "./useEditorBottomSheet";
 
-export interface UseExportActionsParams {
+interface UseExportActionsParams {
   project: VideoProject | undefined;
   bottomSheet: UseEditorBottomSheetReturn;
   onExportComplete: (settings: ExportSettings, uri?: string) => void;
 }
 
-export interface UseExportActionsReturn {
+interface UseExportActionsReturn {
   handleExport: () => void;
   handleSave: () => void;
 }

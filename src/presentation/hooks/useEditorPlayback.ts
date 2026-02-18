@@ -6,11 +6,11 @@
 import { useState, useEffect, useCallback } from "react";
 import type { Scene } from "../../domain/entities";
 
-export interface UseEditorPlaybackParams {
+interface UseEditorPlaybackParams {
   currentScene: Scene | undefined;
 }
 
-export interface UseEditorPlaybackReturn {
+interface UseEditorPlaybackReturn {
   isPlaying: boolean;
   currentTime: number;
   playPause: () => void;

@@ -16,7 +16,7 @@ export interface ShapeLayerFormState {
   opacity: number;
 }
 
-export interface UseShapeLayerFormReturn {
+interface UseShapeLayerFormReturn {
   formState: ShapeLayerFormState;
   setShape: (shape: ShapeType) => void;
   setFillColor: (color: string) => void;

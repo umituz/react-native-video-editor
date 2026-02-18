@@ -7,14 +7,14 @@ import { useState, useCallback } from "react";
 import type { Animation, AnimationType } from "../../domain/entities";
 import type { Easing } from "../../infrastructure/constants/animation-layer.constants";
 
-export interface AnimationLayerFormState {
+interface AnimationLayerFormState {
   animationType: AnimationType;
   duration: number;
   delay: number;
   easing: Easing;
 }
 
-export interface UseAnimationLayerFormReturn {
+interface UseAnimationLayerFormReturn {
   formState: AnimationLayerFormState;
   setAnimationType: (type: AnimationType) => void;
   setDuration: (duration: number) => void;
