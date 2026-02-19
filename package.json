@@ -9,7 +9,7 @@
     "./player": "./src/player/index.ts"
   },
   "scripts": {
-    "typecheck": "npx tsc --noEmit",
+    "typecheck": "npx tsc --noEmit --project tsconfig.typecheck.json",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
     "version:patch": "npm version patch -m 'chore: release v%s'",
