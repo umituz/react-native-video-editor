@@ -47,30 +47,30 @@ export function useTextLayerForm(
   });
 
   const setText = useCallback((text: string) => {
-    setFormState((prev) => ({ ...prev, text }));
+    setFormState((prev: TextLayerFormState) => ({ ...prev, text }));
   }, []);
 
   const setFontSize = useCallback((size: number) => {
-    setFormState((prev) => ({ ...prev, fontSize: size }));
+    setFormState((prev: TextLayerFormState) => ({ ...prev, fontSize: size }));
   }, []);
 
   const setFontFamily = useCallback((family: string) => {
-    setFormState((prev) => ({ ...prev, fontFamily: family }));
+    setFormState((prev: TextLayerFormState) => ({ ...prev, fontFamily: family }));
   }, []);
 
   const setFontWeight = useCallback(
     (weight: "normal" | "bold" | "300" | "700") => {
-      setFormState((prev) => ({ ...prev, fontWeight: weight }));
+      setFormState((prev: TextLayerFormState) => ({ ...prev, fontWeight: weight }));
     },
     [],
   );
 
   const setColor = useCallback((color: string) => {
-    setFormState((prev) => ({ ...prev, color }));
+    setFormState((prev: TextLayerFormState) => ({ ...prev, color }));
   }, []);
 
   const setTextAlign = useCallback((align: "left" | "center" | "right") => {
-    setFormState((prev) => ({ ...prev, textAlign: align }));
+    setFormState((prev: TextLayerFormState) => ({ ...prev, textAlign: align }));
   }, []);
 
   const buildLayerData = useCallback((): Partial<TextLayer> => {
