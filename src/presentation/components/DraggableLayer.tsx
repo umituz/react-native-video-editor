@@ -33,10 +33,13 @@ export const DraggableLayer: React.FC<DraggableLayerProps> = ({
 }) => {
   const tokens = useAppDesignTokens();
 
-  const initialX = (layer.position.x / 100) * canvasWidth;
-  const initialY = (layer.position.y / 100) * canvasHeight;
-  const initialWidth = (layer.size.width / 100) * canvasWidth;
-  const initialHeight = (layer.size.height / 100) * canvasHeight;
+  const safeCanvasWidth = canvasWidth > 0 ? canvasWidth : 1;
+  const safeCanvasHeight = canvasHeight > 0 ? canvasHeight : 1;
+
+  const initialX = (layer.position.x / 100) * safeCanvasWidth;
+  const initialY = (layer.position.y / 100) * safeCanvasHeight;
+  const initialWidth = (layer.size.width / 100) * safeCanvasWidth;
+  const initialHeight = (layer.size.height / 100) * safeCanvasHeight;
 
   const {
     state,
@@ -50,8 +53,8 @@ export const DraggableLayer: React.FC<DraggableLayerProps> = ({
     initialY,
     initialWidth,
     initialHeight,
-    canvasWidth,
-    canvasHeight,
+    canvasWidth: safeCanvasWidth,
+    canvasHeight: safeCanvasHeight,
     onSelect,
     onPositionChange,
     onSizeChange,

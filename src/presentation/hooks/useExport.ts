@@ -58,12 +58,20 @@ export function useExport(config: UseExportConfig): UseExportReturn {
       setIsExporting(true);
       setExportProgress(null);
 
-      const result = await config.exportFunction(project, settings, (progress) => {
-        setExportProgress(progress);
-      });
+      try {
+        const result = await config.exportFunction(project, settings, (progress) => {
+          setExportProgress(progress);
+        });
 
-      setIsExporting(false);
-      return result;
+        return result;
+      } catch (error) {
+        return {
+          success: false,
+          error: error instanceof Error ? error.message : String(error),
+        };
+      } finally {
+        setIsExporting(false);
+      }
     },
     [config],
   );

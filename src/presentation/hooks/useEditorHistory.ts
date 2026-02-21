@@ -20,6 +20,8 @@ interface UseEditorHistoryReturn {
   updateWithHistory: (updates: Partial<VideoProject>, action: string) => void;
 }
 
+const MAX_HISTORY_SIZE = 50;
+
 export function useEditorHistory({
   project,
   onUpdateProject,
@@ -30,9 +32,10 @@ export function useEditorHistory({
   const updateWithHistory = useCallback(
     (updates: Partial<VideoProject>, _action: string) => {
       if (project) {
-        // Push current state to history before updating
-        setHistory((prev) => [...prev, project]);
-        // Clear future
+        setHistory((prev) => {
+          const next = [...prev, project];
+          return next.length > MAX_HISTORY_SIZE ? next.slice(-MAX_HISTORY_SIZE) : next;
+        });
         setFuture([]);
         
         onUpdateProject(updates);
