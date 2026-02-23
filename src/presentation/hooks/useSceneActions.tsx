@@ -6,11 +6,12 @@
 import { useCallback } from "react";
 import { AudioEditor } from "../components/AudioEditor";
 import { SceneActionsMenu } from "../components/SceneActionsMenu";
+import type { Scene } from "../../domain/entities";
 import type { UseEditorScenesReturn } from "./useEditorScenes";
 import type { UseEditorBottomSheetReturn } from "./useEditorBottomSheet";
 
 interface UseSceneActionsParams {
-  currentScene: any;
+  currentScene: Scene | undefined;
   scenes: UseEditorScenesReturn;
   bottomSheet: UseEditorBottomSheetReturn;
 }

@@ -12,14 +12,15 @@ import type {
   AddImageLayerData,
   AddShapeLayerData,
   LayerOrderAction,
+  Scene,
 } from "../../domain/entities";
 import type { TextLayer, ImageLayer, Animation } from "../../domain/entities";
 
 interface UseEditorLayersParams {
   projectId: string;
-  scenes: any[];
+  scenes: Scene[];
   sceneIndex: number;
-  onUpdateScenes: (scenes: any[]) => void;
+  onUpdateScenes: (scenes: Scene[]) => void;
   onCloseBottomSheet: () => void;
   defaultColor: string;
   onLayerDeleted?: () => void;

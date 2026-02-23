@@ -5,6 +5,7 @@
 
 import { useCallback } from "react";
 import { LayerActionsMenu } from "../components/LayerActionsMenu";
+import type { Layer } from "../../domain/entities";
 import type { UseEditorLayersReturn } from "./useEditorLayers";
 import type { UseEditorBottomSheetReturn } from "./useEditorBottomSheet";
 
@@ -17,7 +18,7 @@ interface UseMenuActionsParams {
 }
 
 interface UseMenuActionsReturn {
-  handleLayerActionsPress: (layer: any) => void;
+  handleLayerActionsPress: (layer: Layer) => void;
 }
 
 export function useMenuActions({
@@ -30,7 +31,7 @@ export function useMenuActions({
   const { openBottomSheet, closeBottomSheet } = bottomSheet;
 
   const handleLayerActionsPress = useCallback(
-    (layer: any) => {
+    (layer: Layer) => {
       openBottomSheet({
         title: "Layer Actions",
         children: (

@@ -3,7 +3,7 @@
  * Single Responsibility: Compose editor action handlers
  */
 
-import type { VideoProject } from "../../domain/entities";
+import type { VideoProject, Scene, ExportSettings, Layer } from "../../domain/entities";
 import type { UseEditorLayersReturn } from "./useEditorLayers";
 import type { UseEditorScenesReturn } from "./useEditorScenes";
 import type { UseEditorBottomSheetReturn } from "./useEditorBottomSheet";
@@ -15,11 +15,11 @@ import { useExportActions } from "./useExportActions";
 interface UseEditorActionsParams {
   project: VideoProject | undefined;
   selectedLayerId: string | null;
-  currentScene: any;
+  currentScene: Scene | undefined;
   layers: UseEditorLayersReturn;
   scenes: UseEditorScenesReturn;
   bottomSheet: UseEditorBottomSheetReturn;
-  onExportComplete: (settings: any, uri?: string) => void;
+  onExportComplete: (settings: ExportSettings, uri?: string) => void;
 }
 
 interface UseEditorActionsReturn {
@@ -30,7 +30,7 @@ interface UseEditorActionsReturn {
   handleAddShape: () => void;
   handleAudio: () => void;
   handleAnimate: (layerId: string) => void;
-  handleLayerActionsPress: (layer: any) => void;
+  handleLayerActionsPress: (layer: Layer) => void;
   handleSceneLongPress: (index: number) => void;
   handleExport: () => void;
   handleSave: () => void;
