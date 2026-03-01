@@ -35,7 +35,6 @@ export const useVideoPlayerControl = (
 
   const player = useExpoVideoPlayer(source || "", (p) => {
     if (typeof __DEV__ !== "undefined" && __DEV__) {
-       
       console.log("[useVideoPlayerControl] Player callback, source:", source, "player:", !!p);
     }
     if (source && p) {
@@ -45,14 +44,11 @@ export const useVideoPlayerControl = (
         setIsPlaying(true);
       }
       if (typeof __DEV__ !== "undefined" && __DEV__) {
-         
-        console.log("[useVideoPlayerControl] Player status:", {
-          currentTime: p.currentTime,
-          duration: p.duration,
+        console.log("[useVideoPlayerControl] Player configured:", {
           status: p.status,
           playing: p.playing,
           muted: p.muted,
-          volume: p.volume,
+          loop: p.loop,
         });
       }
     }

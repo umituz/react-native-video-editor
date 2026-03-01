@@ -9,12 +9,8 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import {
-  AtomicText,
-  AtomicIcon,
-  AtomicSpinner,
-  useAppDesignTokens,
-} from "@umituz/react-native-design-system";
+import { AtomicText, AtomicIcon, AtomicSpinner } from "@umituz/react-native-design-system/atoms";
+import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 
 interface ExportActionsProps {
   isExporting: boolean;

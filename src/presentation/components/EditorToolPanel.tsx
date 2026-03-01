@@ -11,11 +11,8 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
-import {
-  AtomicText,
-  AtomicIcon,
-  useAppDesignTokens,
-} from "@umituz/react-native-design-system";
+import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system/atoms";
+import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { useLocalization } from "@umituz/react-native-settings";
 
 interface EditorToolPanelProps {

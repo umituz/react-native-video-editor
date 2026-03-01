@@ -5,11 +5,8 @@
 
 import React from "react";
 import { View, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
-import {
-  AtomicText,
-  AtomicIcon,
-  useAppDesignTokens,
-} from "@umituz/react-native-design-system";
+import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system/atoms";
+import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { ANIMATION_TYPES } from "../../../infrastructure/constants/animation-layer.constants";
 import type { AnimationType } from "../../../domain/entities";
 

@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { DesignTokens } from "@umituz/react-native-design-system";
+import { DesignTokens } from "@umituz/react-native-design-system/theme";
 
 export const createPreviewStyles = (_tokens: DesignTokens) =>
   StyleSheet.create({

@@ -4,7 +4,7 @@
  */
 
 import { useState, useCallback } from "react";
-import { useAppDesignTokens } from "@umituz/react-native-design-system";
+import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import type { ShapeLayer } from "../../domain/entities";
 import type { ShapeType } from "../../infrastructure/constants/shape-layer.constants";
 

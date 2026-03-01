@@ -6,10 +6,8 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { useLocalization } from "@umituz/react-native-settings";
-import {
-  AtomicText,
-  useAppDesignTokens,
-} from "@umituz/react-native-design-system";
+import { AtomicText } from "@umituz/react-native-design-system/atoms";
+import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { IMAGE_OPACITY_OPTIONS } from "../../../infrastructure/constants/image-layer.constants";
 
 interface OpacitySelectorProps {

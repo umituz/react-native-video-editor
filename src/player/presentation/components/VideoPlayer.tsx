@@ -7,12 +7,9 @@ import React, { useState, useCallback, useMemo } from "react";
 import { View, TouchableOpacity, StyleSheet, type ViewStyle } from "react-native";
 import { Image } from "expo-image";
 import { VideoView } from "expo-video";
-import {
-  useResponsive,
-  useAppDesignTokens,
-  AtomicIcon,
-  AtomicText,
-} from "@umituz/react-native-design-system";
+import { AtomicIcon, AtomicText } from "@umituz/react-native-design-system/atoms";
+import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
+import { useResponsive } from "@umituz/react-native-design-system/responsive";
 
 import type { VideoPlayerProps } from "../../types";
 import { useVideoPlayerControl } from "../hooks/useVideoPlayerControl";

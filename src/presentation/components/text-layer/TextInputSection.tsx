@@ -6,10 +6,8 @@
 import React from "react";
 import { View, TextInput, StyleSheet } from "react-native";
 import { useLocalization } from "@umituz/react-native-settings";
-import {
-  AtomicText,
-  useAppDesignTokens,
-} from "@umituz/react-native-design-system";
+import { AtomicText } from "@umituz/react-native-design-system/atoms";
+import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 
 interface TextInputSectionProps {
   text: string;

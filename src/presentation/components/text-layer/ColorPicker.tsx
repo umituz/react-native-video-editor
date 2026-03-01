@@ -6,11 +6,8 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { useLocalization } from "@umituz/react-native-settings";
-import {
-  AtomicText,
-  AtomicIcon,
-  useAppDesignTokens,
-} from "@umituz/react-native-design-system";
+import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system/atoms";
+import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { TEXT_COLORS } from "../../../infrastructure/constants/text-layer.constants";
 
 interface ColorPickerProps {

@@ -6,10 +6,8 @@
 import React, { useCallback } from "react";
 import { View, ScrollView, StyleSheet, Alert } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
-import {
-  AtomicText,
-  useAppDesignTokens,
-} from "@umituz/react-native-design-system";
+import { AtomicText } from "@umituz/react-native-design-system/atoms";
+import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { useLocalization } from "@umituz/react-native-settings";
 import type { Audio } from "../../domain/entities";
 import { useAudioLayerForm } from "../hooks/useAudioLayerForm";

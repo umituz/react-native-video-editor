@@ -4,16 +4,8 @@
  * Bypasses CDN Range request issues by downloading entire file first
  */
 
-import {
-  downloadFileWithProgress,
-  getCachedFileUri,
-  isUrlCached,
-  deleteCachedFile,
-  getCacheDirectory,
-  clearCache,
-  type DownloadProgressCallback,
-  type DownloadProgress,
-} from "@umituz/react-native-design-system";
+import { getCachedFileUri, isUrlCached, getCacheDirectory, downloadFileWithProgress, deleteCachedFile, clearCache } from "@umituz/react-native-design-system/filesystem";
+import type { DownloadProgressCallback, DownloadProgress } from "@umituz/react-native-design-system/filesystem";
 
 declare const __DEV__: boolean;
 

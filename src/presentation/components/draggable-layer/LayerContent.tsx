@@ -5,10 +5,8 @@
 
 import React from "react";
 import { View, Image, Text as RNText, StyleSheet } from "react-native";
-import {
-  AtomicIcon,
-  useAppDesignTokens,
-} from "@umituz/react-native-design-system";
+import { AtomicIcon } from "@umituz/react-native-design-system/atoms";
+import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import type { Layer, TextLayer, ImageLayer, ShapeLayer } from "../../../domain/entities";
 
 interface LayerContentProps {
