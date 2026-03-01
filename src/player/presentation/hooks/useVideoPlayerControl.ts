@@ -4,7 +4,15 @@
  */
 
 import { useState, useCallback, useMemo } from "react";
-import { useVideoPlayer as useExpoVideoPlayer } from "expo-video";
+// expo-video is optional — module-level lazy require with null stub
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let useExpoVideoPlayer: (...args: any[]) => any = () => null;
+try {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  useExpoVideoPlayer = require("expo-video").useVideoPlayer;
+} catch {
+  // expo-video not installed in consuming app
+}
 
 import type {
   VideoPlayerConfig,

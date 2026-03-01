@@ -6,7 +6,15 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { View, TouchableOpacity, StyleSheet, type ViewStyle } from "react-native";
 import { Image } from "expo-image";
-import { VideoView } from "expo-video";
+// expo-video is optional — lazy require so it is not auto-installed
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let VideoView: React.ComponentType<any> = () => null;
+try {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  VideoView = require("expo-video").VideoView;
+} catch {
+  // expo-video not installed in consuming app
+}
 import { AtomicIcon, AtomicText } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { useResponsive } from "@umituz/react-native-design-system/responsive";
