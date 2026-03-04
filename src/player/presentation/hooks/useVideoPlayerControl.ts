@@ -41,7 +41,7 @@ export const useVideoPlayerControl = (
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const player = useExpoVideoPlayer(source || "", (p) => {
+  const player = useExpoVideoPlayer(source || "", (p: any) => {
     if (typeof __DEV__ !== "undefined" && __DEV__) {
       console.log("[useVideoPlayerControl] Player callback, source:", source, "player:", !!p);
     }
