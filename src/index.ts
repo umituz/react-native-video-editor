@@ -33,6 +33,9 @@ export type {
   AddTextLayerData,
   AddImageLayerData,
   AddShapeLayerData,
+  FilterPreset,
+  SubtitleStyle,
+  Subtitle,
 } from "./domain/entities";
 
 // =============================================================================
@@ -59,6 +62,9 @@ export {
 // PRESENTATION LAYER - Components & Hooks
 // =============================================================================
 
+export { VideoEditor } from "./VideoEditor";
+export type { VideoEditorProps } from "./VideoEditor";
+
 export {
   EditorHeader,
   EditorPreviewArea,
@@ -73,6 +79,9 @@ export {
   DraggableLayer,
   ImageLayerEditor,
   ExportDialog,
+  SpeedControlPanel,
+  VideoFilterPicker,
+  CollageEditorCanvas,
 } from "./presentation/components";
 
 export { useEditorLayers } from "./presentation/hooks/useEditorLayers";
@@ -97,6 +106,12 @@ export { useLayerActions } from "./presentation/hooks/useLayerActions";
 export { useSceneActions } from "./presentation/hooks/useSceneActions";
 export { useMenuActions } from "./presentation/hooks/useMenuActions";
 export { useExportActions } from "./presentation/hooks/useExportActions";
+export { useCollageEditor } from "./presentation/hooks/useCollageEditor";
+export type { UseCollageEditorReturn } from "./presentation/hooks/useCollageEditor";
+export { useSubtitleEditor } from "./presentation/hooks/useSubtitleEditor";
+export type { UseSubtitleEditorReturn } from "./presentation/hooks/useSubtitleEditor";
+
+export { generateSRT, formatTimeDisplay, formatTimeDetailed } from "./infrastructure/utils/srt.utils";
 
 // =============================================================================
 // VIDEO PLAYER MODULE

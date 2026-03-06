@@ -14,6 +14,7 @@ export interface VideoPlayerConfig {
   readonly loop?: boolean;
   readonly muted?: boolean;
   readonly autoPlay?: boolean;
+  readonly playbackRate?: number;
 }
 
 /**
@@ -23,6 +24,7 @@ export interface VideoPlayerState {
   readonly isPlaying: boolean;
   readonly isPlayerValid: boolean;
   readonly isLoading: boolean;
+  readonly playbackRate: number;
 }
 
 /**
@@ -32,6 +34,7 @@ export interface VideoPlayerControls {
   readonly play: () => void;
   readonly pause: () => void;
   readonly toggle: () => void;
+  readonly setPlaybackRate: (rate: number) => void;
 }
 
 /**
@@ -69,6 +72,8 @@ export interface VideoPlayerProps {
   readonly style?: ViewStyle;
   readonly contentFit?: "contain" | "cover" | "fill";
   readonly thumbnailUrl?: string;
+  readonly playbackRate?: number;
+  readonly filterOverlay?: { overlay: string; opacity: number };
 }
 
 export type { VideoPlayer } from "expo-video";

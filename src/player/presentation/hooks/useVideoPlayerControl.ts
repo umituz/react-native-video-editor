@@ -36,10 +36,11 @@ declare const __DEV__: boolean;
 export const useVideoPlayerControl = (
   config: VideoPlayerConfig,
 ): UseVideoPlayerControlResult => {
-  const { source, loop = true, muted = false, autoPlay = false } = config;
+  const { source, loop = true, muted = false, autoPlay = false, playbackRate: initialRate = 1 } = config;
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [playbackRate, setPlaybackRateState] = useState(initialRate);
 
   const player = useExpoVideoPlayer(source || "", (p: any) => {
     if (typeof __DEV__ !== "undefined" && __DEV__) {
@@ -85,18 +86,25 @@ export const useVideoPlayerControl = (
     if (success) setIsPlaying(!isPlaying);
   }, [player, isPlayerValid, isPlaying]);
 
+  const setPlaybackRate = useCallback((rate: number) => {
+    if (!isPlayerValid || !player) return;
+    (player as any).playbackRate = rate;
+    setPlaybackRateState(rate);
+  }, [player, isPlayerValid]);
+
   const state: VideoPlayerState = useMemo(
     () => ({
       isPlaying,
       isPlayerValid,
       isLoading: isLoading && Boolean(source),
+      playbackRate,
     }),
-    [isPlaying, isPlayerValid, isLoading, source],
+    [isPlaying, isPlayerValid, isLoading, source, playbackRate],
   );
 
   const controls: VideoPlayerControls = useMemo(
-    () => ({ play, pause, toggle }),
-    [play, pause, toggle],
+    () => ({ play, pause, toggle, setPlaybackRate }),
+    [play, pause, toggle, setPlaybackRate],
   );
 
   return { player, state, controls };

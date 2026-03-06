@@ -5,7 +5,29 @@
 
 export type AspectRatio = "16:9" | "9:16" | "1:1" | "4:5";
 
+export interface FilterPreset {
+  readonly id: string;
+  readonly name: string;
+  readonly overlay: string;
+  readonly opacity: number;
+}
+
 export type LayerType = "text" | "image" | "video" | "shape";
+
+export interface SubtitleStyle {
+  fontSize: "small" | "medium" | "large" | "extraLarge";
+  fontColor: string;
+  backgroundColor: string;
+  position: "top" | "center" | "bottom";
+}
+
+export interface Subtitle {
+  id: string;
+  text: string;
+  startTime: number;
+  endTime: number;
+  style: SubtitleStyle;
+}
 
 export type TransitionType = "fade" | "slide" | "zoom" | "wipe" | "none";
 
@@ -127,6 +149,7 @@ export interface Scene {
   layers: Layer[];
   transition: Transition;
   audio?: Audio;
+  filter?: FilterPreset;
 }
 
 export interface ExportSettings {

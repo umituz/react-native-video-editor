@@ -9,7 +9,6 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
-  Alert,
 } from "react-native";
 import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
@@ -21,6 +20,8 @@ interface EditorToolPanelProps {
   onAddShape: () => void;
   onAudio: () => void;
   hasAudio: boolean;
+  onFilters?: () => void;
+  onSpeed?: () => void;
 }
 
 export const EditorToolPanel: React.FC<EditorToolPanelProps> = ({
@@ -29,6 +30,8 @@ export const EditorToolPanel: React.FC<EditorToolPanelProps> = ({
   onAddShape,
   onAudio,
   hasAudio,
+  onFilters,
+  onSpeed,
 }) => {
   const { t } = useLocalization();
   const tokens = useAppDesignTokens();
@@ -124,26 +127,41 @@ export const EditorToolPanel: React.FC<EditorToolPanelProps> = ({
           )}
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[
-            styles.toolButton,
-            { backgroundColor: tokens.colors.backgroundPrimary },
-          ]}
-          onPress={() =>
-            Alert.alert(
-              t("editor.tools.effects"),
-              t("editor.tools.effectsComingSoon"),
-            )
-          }
-        >
-          <AtomicIcon name="sparkles-outline" size="md" color="primary" />
-          <AtomicText
-            type="labelSmall"
-            style={{ color: tokens.colors.textPrimary, marginTop: 4 }}
+        {onFilters && (
+          <TouchableOpacity
+            style={[
+              styles.toolButton,
+              { backgroundColor: tokens.colors.backgroundPrimary },
+            ]}
+            onPress={onFilters}
           >
-            {t("editor.tools.effects")}
-          </AtomicText>
-        </TouchableOpacity>
+            <AtomicIcon name="sparkles" size="md" color="primary" />
+            <AtomicText
+              type="labelSmall"
+              style={{ color: tokens.colors.textPrimary, marginTop: 4 }}
+            >
+              {t("editor.tools.filters") || "Filters"}
+            </AtomicText>
+          </TouchableOpacity>
+        )}
+
+        {onSpeed && (
+          <TouchableOpacity
+            style={[
+              styles.toolButton,
+              { backgroundColor: tokens.colors.backgroundPrimary },
+            ]}
+            onPress={onSpeed}
+          >
+            <AtomicIcon name="flash" size="md" color="primary" />
+            <AtomicText
+              type="labelSmall"
+              style={{ color: tokens.colors.textPrimary, marginTop: 4 }}
+            >
+              {t("editor.tools.speed") || "Speed"}
+            </AtomicText>
+          </TouchableOpacity>
+        )}
       </ScrollView>
     </View>
   );

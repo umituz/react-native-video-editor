@@ -44,6 +44,8 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   nativeControls = true,
   contentFit = "cover",
   style,
+  playbackRate = 1,
+  filterOverlay,
 }) => {
   // IMPORTANT: Call useResponsive BEFORE useAppDesignTokens to maintain hook order
   const { width: screenWidth, horizontalPadding } = useResponsive();
@@ -60,6 +62,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     loop,
     muted,
     autoPlay,
+    playbackRate,
   });
 
   const handlePlay = useCallback(() => {
@@ -147,6 +150,15 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
           contentFit={contentFit}
           nativeControls={nativeControls}
         />
+        {filterOverlay && filterOverlay.opacity > 0 && (
+          <View
+            style={[
+              StyleSheet.absoluteFill,
+              { backgroundColor: filterOverlay.overlay, opacity: filterOverlay.opacity },
+            ]}
+            pointerEvents="none"
+          />
+        )}
       </View>
     );
   }
