@@ -7,7 +7,7 @@
 import React, { useState, useMemo, useRef, useCallback } from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system/atoms";
-import { BottomSheetModal } from "@umituz/react-native-design-system/molecules";
+import { BottomSheetModal, type BottomSheetModalRef } from "@umituz/react-native-design-system/molecules";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { useSafeAreaInsets } from "@umituz/react-native-design-system/safe-area";
 
@@ -42,8 +42,8 @@ export const VideoEditor: React.FC<VideoEditorProps> = ({
   const [playbackRate, setPlaybackRate] = useState(DEFAULT_PLAYBACK_RATE);
   const [activeTool, setActiveTool] = useState<ActiveTool>(null);
 
-  const filterSheetRef = useRef<{ present: () => void; dismiss: () => void }>(null);
-  const speedSheetRef = useRef<{ present: () => void; dismiss: () => void }>(null);
+  const filterSheetRef = useRef<BottomSheetModalRef>(null);
+  const speedSheetRef = useRef<BottomSheetModalRef>(null);
 
   const handleToggleTool = useCallback((tool: Exclude<ActiveTool, null>) => {
     if (activeTool === tool) {
