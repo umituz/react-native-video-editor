@@ -15,6 +15,12 @@ export type {
   VideoDownloadProgressCallback,
   VideoCacheResult,
   VideoCachingState,
+  PlaybackProgressState,
+  ControlsAutoHideConfig,
+  ControlsAutoHideResult,
+  VideoProgressBarProps,
+  VideoPlayerOverlayProps,
+  FullScreenVideoPlayerProps,
 } from "./types";
 
 // Services
@@ -24,6 +30,9 @@ export {
   safeToggle,
   isPlayerReady,
   configurePlayer,
+  safeSeekTo,
+  safeMute,
+  safeReplay,
 } from "./infrastructure/services/player-control.service";
 
 export {
@@ -39,6 +48,11 @@ export {
 export { useVideoPlayerControl } from "./presentation/hooks/useVideoPlayerControl";
 export { useVideoVisibility } from "./presentation/hooks/useVideoVisibility";
 export { useVideoCaching } from "./presentation/hooks/useVideoCaching";
+export { useVideoPlaybackProgress } from "./presentation/hooks/useVideoPlaybackProgress";
+export { useControlsAutoHide } from "./presentation/hooks/useControlsAutoHide";
 
 // Components
 export { VideoPlayer } from "./presentation/components/VideoPlayer";
+export { VideoProgressBar } from "./presentation/components/VideoProgressBar";
+export { VideoPlayerOverlay } from "./presentation/components/VideoPlayerOverlay";
+export { FullScreenVideoPlayer } from "./presentation/components/FullScreenVideoPlayer";

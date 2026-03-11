@@ -26,9 +26,11 @@ import {
   safeToggle,
   isPlayerReady,
   configurePlayer,
+  safeSeekTo,
+  safeMute,
+  safeReplay,
 } from "../../infrastructure/services/player-control.service";
-
-declare const __DEV__: boolean;
+import { useVideoPlaybackProgress } from "./useVideoPlaybackProgress";
 
 /**
  * Hook for managing video player with safe operations
@@ -41,24 +43,15 @@ export const useVideoPlayerControl = (
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [playbackRate, setPlaybackRateState] = useState(initialRate);
+  const [isMuted, setIsMuted] = useState(muted);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const player = useExpoVideoPlayer(source || "", (p: any) => {
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.log("[useVideoPlayerControl] Player callback, source:", source, "player:", !!p);
-    }
     if (source && p) {
       configurePlayer(p, { loop, muted, autoPlay });
       setIsLoading(false);
       if (autoPlay) {
         setIsPlaying(true);
-      }
-      if (typeof __DEV__ !== "undefined" && __DEV__) {
-        console.log("[useVideoPlayerControl] Player configured:", {
-          status: p.status,
-          playing: p.playing,
-          muted: p.muted,
-          loop: p.loop,
-        });
       }
     }
   });
@@ -66,6 +59,19 @@ export const useVideoPlayerControl = (
   const isPlayerValid = useMemo(
     () => isPlayerReady(player, source),
     [player, source],
+  );
+
+  // Sync isPlaying with actual player state (handles video end, system pause, etc.)
+  const handlePlayingStateChanged = useCallback((actuallyPlaying: boolean) => {
+    setIsPlaying(actuallyPlaying);
+  }, []);
+
+  // Track playback progress + sync playing state
+  const { currentTime, duration, progress } = useVideoPlaybackProgress(
+    player,
+    isPlayerValid,
+    isPlaying,
+    handlePlayingStateChanged,
   );
 
   const play = useCallback(() => {
@@ -88,8 +94,33 @@ export const useVideoPlayerControl = (
 
   const setPlaybackRate = useCallback((rate: number) => {
     if (!isPlayerValid || !player) return;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (player as any).playbackRate = rate;
     setPlaybackRateState(rate);
+  }, [player, isPlayerValid]);
+
+  const toggleMute = useCallback(() => {
+    if (!isPlayerValid) return;
+    const newMuted = !isMuted;
+    const success = safeMute(player, newMuted);
+    if (success) setIsMuted(newMuted);
+  }, [player, isPlayerValid, isMuted]);
+
+  const setMutedFn = useCallback((value: boolean) => {
+    if (!isPlayerValid) return;
+    const success = safeMute(player, value);
+    if (success) setIsMuted(value);
+  }, [player, isPlayerValid]);
+
+  const seekTo = useCallback((seconds: number) => {
+    if (!isPlayerValid) return;
+    safeSeekTo(player, seconds);
+  }, [player, isPlayerValid]);
+
+  const replay = useCallback(() => {
+    if (!isPlayerValid) return;
+    const success = safeReplay(player);
+    if (success) setIsPlaying(true);
   }, [player, isPlayerValid]);
 
   const state: VideoPlayerState = useMemo(
@@ -98,13 +129,17 @@ export const useVideoPlayerControl = (
       isPlayerValid,
       isLoading: isLoading && Boolean(source),
       playbackRate,
+      isMuted,
+      currentTime,
+      duration,
+      progress,
     }),
-    [isPlaying, isPlayerValid, isLoading, source, playbackRate],
+    [isPlaying, isPlayerValid, isLoading, source, playbackRate, isMuted, currentTime, duration, progress],
   );
 
   const controls: VideoPlayerControls = useMemo(
-    () => ({ play, pause, toggle, setPlaybackRate }),
-    [play, pause, toggle, setPlaybackRate],
+    () => ({ play, pause, toggle, setPlaybackRate, toggleMute, setMuted: setMutedFn, seekTo, replay }),
+    [play, pause, toggle, setPlaybackRate, toggleMute, setMutedFn, seekTo, replay],
   );
 
   return { player, state, controls };

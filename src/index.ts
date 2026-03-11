@@ -125,6 +125,12 @@ export type {
   VideoVisibilityConfig,
   VideoPlayerProps,
   VideoPlayerType,
+  PlaybackProgressState,
+  ControlsAutoHideConfig,
+  ControlsAutoHideResult,
+  VideoProgressBarProps,
+  VideoPlayerOverlayProps,
+  FullScreenVideoPlayerProps,
 } from "./player";
 
 export {
@@ -133,7 +139,15 @@ export {
   safeToggle,
   isPlayerReady,
   configurePlayer,
+  safeSeekTo,
+  safeMute,
+  safeReplay,
   useVideoPlayerControl,
   useVideoVisibility,
+  useVideoPlaybackProgress,
+  useControlsAutoHide,
   VideoPlayer,
+  VideoProgressBar,
+  VideoPlayerOverlay,
+  FullScreenVideoPlayer,
 } from "./player";

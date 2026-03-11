@@ -5,29 +5,18 @@
 
 import type { VideoPlayer } from "expo-video";
 
-declare const __DEV__: boolean;
-
 /**
  * Safely play video with error handling
  */
 export const safePlay = (player: VideoPlayer | null): boolean => {
-  if (__DEV__) {
-    console.log("[safePlay] called, player:", !!player);
-  }
   if (!player) return false;
 
   try {
-    if (__DEV__) {
-      console.log("[safePlay] calling player.play()");
-    }
     player.play();
-    if (__DEV__) {
-      console.log("[safePlay] player.play() called successfully");
-    }
     return true;
   } catch (error) {
-    if (__DEV__) {
-      console.log("[safePlay] Play error:", error);
+    if (typeof __DEV__ !== "undefined" && __DEV__) {
+      console.log("[VideoPlayer] Play error:", error);
     }
     return false;
   }
@@ -44,8 +33,7 @@ export const safePause = (player: VideoPlayer | null): boolean => {
     return true;
   } catch (error) {
     if (typeof __DEV__ !== "undefined" && __DEV__) {
-       
-      console.log("[VideoPlayer] Pause error ignored:", error);
+      console.log("[VideoPlayer] Pause error:", error);
     }
     return false;
   }
@@ -96,8 +84,59 @@ export const configurePlayer = (
     }
   } catch (error) {
     if (typeof __DEV__ !== "undefined" && __DEV__) {
-       
-      console.log("[VideoPlayer] Configure error ignored:", error);
+      console.log("[VideoPlayer] Configure error:", error);
     }
+  }
+};
+
+/**
+ * Safely seek to a specific time position (in seconds)
+ */
+export const safeSeekTo = (player: VideoPlayer | null, seconds: number): boolean => {
+  if (!player) return false;
+
+  try {
+    player.currentTime = Math.max(0, seconds);
+    return true;
+  } catch (error) {
+    if (typeof __DEV__ !== "undefined" && __DEV__) {
+      console.log("[VideoPlayer] SeekTo error:", error);
+    }
+    return false;
+  }
+};
+
+/**
+ * Safely set muted state
+ */
+export const safeMute = (player: VideoPlayer | null, muted: boolean): boolean => {
+  if (!player) return false;
+
+  try {
+    player.muted = muted;
+    return true;
+  } catch (error) {
+    if (typeof __DEV__ !== "undefined" && __DEV__) {
+      console.log("[VideoPlayer] Mute error:", error);
+    }
+    return false;
+  }
+};
+
+/**
+ * Safely replay video from beginning
+ */
+export const safeReplay = (player: VideoPlayer | null): boolean => {
+  if (!player) return false;
+
+  try {
+    player.currentTime = 0;
+    player.play();
+    return true;
+  } catch (error) {
+    if (typeof __DEV__ !== "undefined" && __DEV__) {
+      console.log("[VideoPlayer] Replay error:", error);
+    }
+    return false;
   }
 };

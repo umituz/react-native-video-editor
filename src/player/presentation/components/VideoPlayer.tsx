@@ -1,9 +1,9 @@
 /**
  * VideoPlayer Component
- * Reusable video player with caching, thumbnail and controls
+ * Reusable video player with caching, thumbnail, controls, and optional custom overlay
  */
 
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { View, TouchableOpacity, StyleSheet, type ViewStyle } from "react-native";
 import { Image } from "expo-image";
 // expo-video is optional — lazy require so it is not auto-installed
@@ -22,17 +22,20 @@ import { useResponsive } from "@umituz/react-native-design-system/responsive";
 import type { VideoPlayerProps } from "../../types";
 import { useVideoPlayerControl } from "../hooks/useVideoPlayerControl";
 import { useVideoCaching } from "../hooks/useVideoCaching";
+import { useControlsAutoHide } from "../hooks/useControlsAutoHide";
+import { VideoPlayerOverlay } from "./VideoPlayerOverlay";
 
-declare const __DEV__: boolean;
+const DEFAULT_ASPECT_RATIO = 16 / 9;
 
-const ASPECT_RATIO = 16 / 9;
-
-/** Extract numeric width from style prop */
-const getWidthFromStyle = (style: ViewStyle | undefined): number | null => {
-  if (!style) return null;
-  const w = style.width;
-  if (typeof w === "number") return w;
-  return null;
+/** Check if style provides its own sizing (width/height/aspectRatio/flex) */
+const hasCustomSizing = (style: ViewStyle | undefined): boolean => {
+  if (!style) return false;
+  return (
+    style.width !== undefined ||
+    style.height !== undefined ||
+    style.aspectRatio !== undefined ||
+    style.flex !== undefined
+  );
 };
 
 export const VideoPlayer: React.FC<VideoPlayerProps> = ({
@@ -41,22 +44,27 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   loop = true,
   muted = false,
   autoPlay = false,
+  showControls = false,
   nativeControls = true,
   contentFit = "cover",
   style,
   playbackRate = 1,
   filterOverlay,
+  title,
+  subtitle,
+  onBack,
+  onProgress,
 }) => {
-  // IMPORTANT: Call useResponsive BEFORE useAppDesignTokens to maintain hook order
   const { width: screenWidth, horizontalPadding } = useResponsive();
   const tokens = useAppDesignTokens();
   const [userTriggeredPlay, setUserTriggeredPlay] = useState(false);
   const showVideo = autoPlay || userTriggeredPlay;
 
-  // Cache the video first (downloads if needed)
+  // When showControls is true, disable native controls and show custom overlay
+  const useNativeControls = showControls ? false : nativeControls;
+
   const { localUri, isDownloading, downloadProgress, error } = useVideoCaching(source);
 
-  // Use cached local URI for player
   const { player, state, controls } = useVideoPlayerControl({
     source: localUri,
     loop,
@@ -65,31 +73,48 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     playbackRate,
   });
 
-  const handlePlay = useCallback(() => {
-    if (__DEV__) {
-      console.log("[VideoPlayer] handlePlay, localUri:", localUri);
+  const { visible: controlsVisible, toggle: toggleControls } = useControlsAutoHide({
+    isPlaying: state.isPlaying,
+    autoHideDelay: 3000,
+  });
+
+  // Notify parent of progress changes
+  useEffect(() => {
+    if (onProgress && state.duration > 0) {
+      onProgress(state.currentTime, state.duration);
     }
+  }, [onProgress, state.currentTime, state.duration]);
+
+  const handlePlay = useCallback(() => {
     setUserTriggeredPlay(true);
     controls.play();
-  }, [localUri, controls]);
+  }, [controls]);
 
-  // Calculate dimensions
-  const videoWidth = getWidthFromStyle(style as ViewStyle) ?? (screenWidth - horizontalPadding * 2);
-  const videoHeight = videoWidth / ASPECT_RATIO;
+  // Calculate fallback dimensions only when style doesn't provide sizing
+  const customSizing = hasCustomSizing(style as ViewStyle);
+  const videoWidth = customSizing ? undefined : (screenWidth - horizontalPadding * 2);
+  const videoHeight = videoWidth ? videoWidth / DEFAULT_ASPECT_RATIO : undefined;
 
   const containerStyle = useMemo(() => ({
-    width: videoWidth,
-    height: videoHeight,
+    ...(videoWidth !== undefined && { width: videoWidth }),
+    ...(videoHeight !== undefined && { height: videoHeight }),
     backgroundColor: tokens.colors.surface,
     borderRadius: 16,
     overflow: "hidden" as const,
   }), [tokens.colors.surface, videoWidth, videoHeight]);
 
   const styles = useMemo(() => StyleSheet.create({
-    video: { width: videoWidth, height: videoHeight },
+    video: videoWidth !== undefined
+      ? { width: videoWidth, height: videoHeight! }
+      : { width: "100%", height: "100%" },
     thumbnailContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
-    thumbnail: { width: videoWidth, height: videoHeight },
-    placeholder: { width: videoWidth, height: videoHeight, backgroundColor: tokens.colors.surfaceSecondary },
+    thumbnail: videoWidth !== undefined
+      ? { width: videoWidth, height: videoHeight! }
+      : { width: "100%", height: "100%" },
+    placeholder: {
+      ...(videoWidth !== undefined ? { width: videoWidth, height: videoHeight! } : { flex: 1, width: "100%" }),
+      backgroundColor: tokens.colors.surfaceSecondary,
+    },
     playButtonContainer: { ...StyleSheet.absoluteFillObject, justifyContent: "center", alignItems: "center" },
     playButton: {
       width: 64, height: 64, borderRadius: 32,
@@ -104,7 +129,6 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     errorText: { color: tokens.colors.error, fontSize: 14, textAlign: "center", padding: 16 },
   }), [tokens, videoWidth, videoHeight]);
 
-  // Show error state
   if (error) {
     return (
       <View style={[containerStyle, style]}>
@@ -118,7 +142,6 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     );
   }
 
-  // Show download progress
   if (isDownloading) {
     const progressPercent = Math.round(downloadProgress * 100);
     return (
@@ -137,18 +160,14 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     );
   }
 
-  // Show video player
   if (showVideo && state.isPlayerValid && player) {
-    if (__DEV__) {
-      console.log("[VideoPlayer] Rendering VideoView:", { videoWidth, videoHeight });
-    }
     return (
       <View style={[containerStyle, style]}>
         <VideoView
           player={player}
           style={styles.video}
           contentFit={contentFit}
-          nativeControls={nativeControls}
+          nativeControls={useNativeControls}
         />
         {filterOverlay && filterOverlay.opacity > 0 && (
           <View
@@ -159,11 +178,26 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
             pointerEvents="none"
           />
         )}
+        {showControls && (
+          <VideoPlayerOverlay
+            visible={controlsVisible}
+            isPlaying={state.isPlaying}
+            isMuted={state.isMuted}
+            currentTime={state.currentTime}
+            duration={state.duration}
+            title={title}
+            subtitle={subtitle}
+            onTogglePlay={controls.toggle}
+            onToggleMute={controls.toggleMute}
+            onSeek={controls.seekTo}
+            onBack={onBack}
+            onTap={toggleControls}
+          />
+        )}
       </View>
     );
   }
 
-  // Show thumbnail with play button
   return (
     <TouchableOpacity style={[containerStyle, style]} onPress={handlePlay} activeOpacity={0.8}>
       <View style={styles.thumbnailContainer}>
