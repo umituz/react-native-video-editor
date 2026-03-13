@@ -14,7 +14,7 @@ import { useSafeAreaInsets } from "@umituz/react-native-design-system/safe-area"
 import { VideoPlayer } from "./player/presentation/components/VideoPlayer";
 import { VideoFilterPicker } from "./presentation/components/VideoFilterPicker";
 import { SpeedControlPanel } from "./presentation/components/SpeedControlPanel";
-import { FILTER_PRESETS, DEFAULT_FILTER } from "./infrastructure/constants/filter.constants";
+import { DEFAULT_FILTER } from "./infrastructure/constants/filter.constants";
 import { DEFAULT_PLAYBACK_RATE } from "./infrastructure/constants/speed.constants";
 import type { FilterPreset } from "./domain/entities/video-project.types";
 

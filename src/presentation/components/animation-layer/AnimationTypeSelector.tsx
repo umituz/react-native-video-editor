@@ -8,7 +8,7 @@ import { View, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { ANIMATION_TYPES } from "../../../infrastructure/constants/animation-layer.constants";
-import type { AnimationType } from "../../../domain/entities";
+import type { AnimationType } from "../../../domain/entities/video-project.types";
 
 interface AnimationTypeSelectorProps {
   selectedType: AnimationType;
@@ -58,7 +58,7 @@ export const AnimationTypeSelector: React.FC<AnimationTypeSelectorProps> = ({
             onPress={() => onTypeChange(anim.type)}
           >
             <AtomicIcon
-              name={anim.icon as any}
+              name={anim.icon as "Ban" | "Eye" | "MoveRight" | "ArrowUp" | "Maximize2" | "RotateCw"}
               size="md"
               color={selectedType === anim.type ? "onSurface" : "primary"}
             />

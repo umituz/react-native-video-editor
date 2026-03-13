@@ -168,5 +168,6 @@ export type { VideoPlayer } from "expo-video";
 export type {
   VideoDownloadProgressCallback,
   VideoCacheResult,
-} from "../infrastructure/services/video-cache.service";
-export type { VideoCachingState } from "../presentation/hooks/useVideoCaching";
+} from "./infrastructure/services/video-cache.service";
+
+export type { VideoCachingState } from "./presentation/hooks/useVideoCaching";

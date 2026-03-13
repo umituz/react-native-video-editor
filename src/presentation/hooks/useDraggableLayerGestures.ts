@@ -3,7 +3,7 @@
  * Manages gesture handling for draggable layers
  */
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { Gesture } from "react-native-gesture-handler";
 
 interface UseDraggableLayerGesturesParams {
@@ -55,6 +55,17 @@ export function useDraggableLayerGestures({
   });
 
   const startRef = useRef({ x: initialX, y: initialY, width: initialWidth, height: initialHeight });
+
+  // Sync state when initial values change (e.g., layer props update from parent)
+  useEffect(() => {
+    setState({
+      x: initialX,
+      y: initialY,
+      width: initialWidth,
+      height: initialHeight,
+    });
+    startRef.current = { x: initialX, y: initialY, width: initialWidth, height: initialHeight };
+  }, [initialX, initialY, initialWidth, initialHeight]);
 
   const clamp = useCallback((value: number, min: number, max: number) => {
     return Math.max(min, Math.min(max, value));
@@ -110,13 +121,19 @@ export function useDraggableLayerGestures({
       })
       .onEnd(() => {
         setState((prev) => {
+          // Clamp position to canvas bounds
+          const clampedX = Math.max(0, Math.min(prev.x, canvasWidth - prev.width));
+          const clampedY = Math.max(0, Math.min(prev.y, canvasHeight - prev.height));
+
           const newWidth = (prev.width / canvasWidth) * 100;
           const newHeight = (prev.height / canvasHeight) * 100;
-          const newX = (prev.x / canvasWidth) * 100;
-          const newY = (prev.y / canvasHeight) * 100;
+          const newX = (clampedX / canvasWidth) * 100;
+          const newY = (clampedY / canvasHeight) * 100;
+
           onSizeChange(newWidth, newHeight);
           onPositionChange(newX, newY);
-          return prev;
+
+          return { ...prev, x: clampedX, y: clampedY };
         });
       });
   };

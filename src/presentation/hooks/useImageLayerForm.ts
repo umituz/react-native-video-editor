@@ -4,7 +4,7 @@
  */
 
 import { useState, useCallback } from "react";
-import type { ImageLayer } from "../../domain/entities";
+import type { ImageLayer } from "../../domain/entities/video-project.types";
 
 interface ImageLayerFormState {
   imageUri: string;

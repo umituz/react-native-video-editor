@@ -4,8 +4,8 @@
  */
 
 import { generateUUID } from "@umituz/react-native-design-system/uuid";
-import type { Scene, Audio } from "../../domain/entities";
-import type { SceneOperationResult } from "../../domain/entities";
+import type { Scene, Audio } from "../../domain/entities/video-project.types";
+import type { SceneOperationResult } from "../../domain/entities/video-project.types";
 
 class SceneOperationsService {
   /**

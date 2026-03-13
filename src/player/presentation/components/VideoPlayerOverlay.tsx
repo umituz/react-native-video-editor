@@ -3,7 +3,7 @@
  * Custom overlay controls: top bar (title, back), center play/pause, bottom bar (progress, mute)
  */
 
-import React, { useMemo } from "react";
+import React from "react";
 import { View, TouchableOpacity, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { AtomicIcon, AtomicText } from "@umituz/react-native-design-system/atoms";
 

@@ -5,7 +5,7 @@
 
 import { useState, useCallback } from "react";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
-import type { TextLayer } from "../../domain/entities";
+import type { TextLayer } from "../../domain/entities/video-project.types";
 
 export interface TextLayerFormState {
   text: string;

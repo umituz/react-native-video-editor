@@ -3,8 +3,8 @@
  * Single Responsibility: Handle layer deletion operations
  */
 
-import type { Scene } from "../../../domain/entities";
-import type { LayerOperationResult } from "../../../domain/entities";
+import type { Scene } from "../../../domain/entities/video-project.types";
+import type { LayerOperationResult } from "../../../domain/entities/video-project.types";
 
 class LayerDeleteService {
   /**

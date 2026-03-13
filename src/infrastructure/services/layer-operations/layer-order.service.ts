@@ -3,8 +3,8 @@
  * Single Responsibility: Handle layer ordering operations
  */
 
-import type { Scene } from "../../../domain/entities";
-import type { LayerOperationResult, LayerOrderAction } from "../../../domain/entities";
+import type { Scene } from "../../../domain/entities/video-project.types";
+import type { LayerOperationResult, LayerOrderAction } from "../../../domain/entities/video-project.types";
 
 class LayerOrderService {
   /**
@@ -48,9 +48,23 @@ class LayerOrderService {
           newIndex = 0;
           break;
         case "up":
+          if (updatedLayers.length === 1) {
+            return {
+              success: false,
+              updatedScenes: scenes,
+              error: "Cannot move layer - only one layer exists",
+            };
+          }
           newIndex = Math.min(layerIndex + 1, updatedLayers.length - 1);
           break;
         case "down":
+          if (updatedLayers.length === 1) {
+            return {
+              success: false,
+              updatedScenes: scenes,
+              error: "Cannot move layer - only one layer exists",
+            };
+          }
           newIndex = Math.max(layerIndex - 1, 0);
           break;
       }

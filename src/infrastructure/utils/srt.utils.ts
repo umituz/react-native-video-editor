@@ -13,7 +13,14 @@ function toSrtTime(seconds: number): string {
 }
 
 export function generateSRT(subtitles: Subtitle[]): string {
-  const sorted = [...subtitles].sort((a, b) => a.startTime - b.startTime);
+  const validSubtitles = subtitles.filter((sub) => (
+    sub.startTime >= 0 &&
+    sub.endTime >= 0 &&
+    sub.startTime < sub.endTime &&
+    sub.text.trim().length > 0
+  ));
+
+  const sorted = [...validSubtitles].sort((a, b) => a.startTime - b.startTime);
   return sorted
     .map((sub, index) => `${index + 1}\n${toSrtTime(sub.startTime)} --> ${toSrtTime(sub.endTime)}\n${sub.text}\n`)
     .join("\n");

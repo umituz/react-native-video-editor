@@ -7,7 +7,7 @@ import { useCallback } from "react";
 import { Alert } from "react-native";
 import { useLocalization } from "@umituz/react-native-settings";
 import { layerOperationsService } from "../../infrastructure/services/layer-operations.service";
-import type { AddShapeLayerData, Scene } from "../../domain/entities";
+import type { AddShapeLayerData, Scene } from "../../domain/entities/video-project.types";
 
 interface UseShapeLayerOperationsParams {
   scenes: Scene[];

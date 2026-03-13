@@ -8,7 +8,7 @@ import { View, ScrollView, TouchableOpacity, StyleSheet } from "react-native";
 import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { FILTER_PRESETS } from "../../infrastructure/constants/filter.constants";
-import type { FilterPreset } from "../../domain/entities";
+import type { FilterPreset } from "../../domain/entities/video-project.types";
 
 interface VideoFilterPickerProps {
   activeFilter: FilterPreset;

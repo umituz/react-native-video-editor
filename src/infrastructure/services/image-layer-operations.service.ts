@@ -4,8 +4,8 @@
  */
 
 import { generateUUID } from "@umituz/react-native-design-system/uuid";
-import type { Scene, ImageLayer } from "../../domain/entities";
-import type { LayerOperationResult, AddImageLayerData } from "../../domain/entities";
+import type { Scene, ImageLayer } from "../../domain/entities/video-project.types";
+import type { LayerOperationResult, AddImageLayerData } from "../../domain/entities/video-project.types";
 
 class ImageLayerOperationsService {
   /**
@@ -25,14 +25,23 @@ class ImageLayerOperationsService {
         };
       }
 
+      // Validate URI
+      if (!layerData.uri || layerData.uri.trim().length === 0) {
+        return {
+          success: false,
+          updatedScenes: scenes,
+          error: "Image URI is required",
+        };
+      }
+
       const newLayer: ImageLayer = {
         id: generateUUID(),
         type: "image",
-        uri: layerData.uri || "",
+        uri: layerData.uri ?? "",
         position: { x: 15, y: 30 },
         size: { width: 70, height: 40 },
         rotation: 0,
-        opacity: layerData.opacity || 1,
+        opacity: layerData.opacity ?? 1,
         animation: {
           type: "fade",
           duration: 500,
@@ -88,10 +97,19 @@ class ImageLayerOperationsService {
         };
       }
 
+      const existingLayer = updatedScenes[sceneIndex].layers[layerIndex];
+      if (existingLayer.type !== "image") {
+        return {
+          success: false,
+          updatedScenes: scenes,
+          error: "Layer is not an image layer",
+        };
+      }
+
       updatedScenes[sceneIndex].layers[layerIndex] = {
-        ...updatedScenes[sceneIndex].layers[layerIndex],
+        ...existingLayer,
         ...layerData,
-      } as ImageLayer;
+      };
 
       return { success: true, updatedScenes };
     } catch (error) {

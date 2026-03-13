@@ -13,8 +13,8 @@ import type {
   AddShapeLayerData,
   LayerOrderAction,
   Scene,
-} from "../../domain/entities";
-import type { TextLayer, ImageLayer, Animation } from "../../domain/entities";
+} from "../../domain/entities/video-project.types";
+import type { TextLayer, ImageLayer, Animation } from "../../domain/entities/video-project.types";
 
 interface UseEditorLayersParams {
   projectId: string;

@@ -6,21 +6,19 @@
 import React from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
 import { useLocalization } from "@umituz/react-native-settings";
-import type { TextLayer } from "../../domain/entities";
+import type { TextLayer } from "../../domain/entities/video-project.types";
 import { useTextLayerForm } from "../hooks/useTextLayerForm";
 import {
   FONT_FAMILIES,
   FONT_WEIGHTS,
 } from "../../infrastructure/constants/text-layer.constants";
-import {
-  TextInputSection,
-  FontSizeSelector,
-  OptionSelector,
-  TextAlignSelector,
-  ColorPicker,
-  TextPreview,
-  EditorActions,
-} from "./text-layer";
+import { TextInputSection } from "./text-layer/TextInputSection";
+import { FontSizeSelector } from "./text-layer/FontSizeSelector";
+import { OptionSelector } from "./text-layer/OptionSelector";
+import { TextAlignSelector } from "./text-layer/TextAlignSelector";
+import { ColorPicker } from "./text-layer/ColorPicker";
+import { TextPreview } from "./text-layer/TextPreview";
+import { EditorActions } from "./text-layer/EditorActions";
 
 interface TextLayerEditorProps {
   layer?: TextLayer;

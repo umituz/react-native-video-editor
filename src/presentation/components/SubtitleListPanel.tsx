@@ -28,7 +28,7 @@ export const SubtitleListPanel: React.FC<SubtitleListPanelProps> = ({
   currentTime,
   onAdd,
   onUpdate,
-  onDelete,
+  onDelete: _onDelete,
   onSeek,
   t,
 }) => {

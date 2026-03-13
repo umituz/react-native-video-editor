@@ -4,11 +4,10 @@
  */
 
 import { useCallback, useState } from "react";
-import type { VideoProject } from "../../domain/entities";
+import type { VideoProject } from "../../domain/entities/video-project.types";
 
 interface UseEditorHistoryParams {
   project: VideoProject | undefined;
-  projectId: string; // Kept for interface compatibility, used for reset if needed
   onUpdateProject: (updates: Partial<VideoProject>) => void;
 }
 
@@ -32,12 +31,14 @@ export function useEditorHistory({
   const updateWithHistory = useCallback(
     (updates: Partial<VideoProject>, _action: string) => {
       if (project) {
+        // Deep clone the project to avoid reference issues
+        const clonedProject = JSON.parse(JSON.stringify(project)) as VideoProject;
         setHistory((prev) => {
-          const next = [...prev, project];
+          const next = [...prev, clonedProject];
           return next.length > MAX_HISTORY_SIZE ? next.slice(-MAX_HISTORY_SIZE) : next;
         });
         setFuture([]);
-        
+
         onUpdateProject(updates);
       }
     },

@@ -7,7 +7,6 @@ import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { View, TouchableOpacity, StyleSheet, type ViewStyle } from "react-native";
 import { Image } from "expo-image";
 // expo-video is optional — lazy require so it is not auto-installed
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let VideoView: React.ComponentType<any> = () => null;
 try {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -93,7 +92,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   // Calculate fallback dimensions only when style doesn't provide sizing
   const customSizing = hasCustomSizing(style as ViewStyle);
   const videoWidth = customSizing ? undefined : (screenWidth - horizontalPadding * 2);
-  const videoHeight = videoWidth ? videoWidth / DEFAULT_ASPECT_RATIO : undefined;
+  const videoHeight = videoWidth !== undefined ? videoWidth / DEFAULT_ASPECT_RATIO : undefined;
 
   const containerStyle = useMemo(() => ({
     ...(videoWidth !== undefined && { width: videoWidth }),
@@ -104,15 +103,17 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   }), [tokens.colors.surface, videoWidth, videoHeight]);
 
   const styles = useMemo(() => StyleSheet.create({
-    video: videoWidth !== undefined
-      ? { width: videoWidth, height: videoHeight! }
+    video: videoWidth !== undefined && videoHeight !== undefined
+      ? { width: videoWidth, height: videoHeight }
       : { width: "100%", height: "100%" },
     thumbnailContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
-    thumbnail: videoWidth !== undefined
-      ? { width: videoWidth, height: videoHeight! }
+    thumbnail: videoWidth !== undefined && videoHeight !== undefined
+      ? { width: videoWidth, height: videoHeight }
       : { width: "100%", height: "100%" },
     placeholder: {
-      ...(videoWidth !== undefined ? { width: videoWidth, height: videoHeight! } : { flex: 1, width: "100%" }),
+      ...(videoWidth !== undefined && videoHeight !== undefined
+        ? { width: videoWidth, height: videoHeight }
+        : { flex: 1, width: "100%" }),
       backgroundColor: tokens.colors.surfaceSecondary,
     },
     playButtonContainer: { ...StyleSheet.absoluteFillObject, justifyContent: "center", alignItems: "center" },

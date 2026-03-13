@@ -7,7 +7,7 @@ import React from "react";
 import { View, Image, Text as RNText, StyleSheet } from "react-native";
 import { AtomicIcon } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
-import type { Layer, TextLayer, ImageLayer, ShapeLayer } from "../../../domain/entities";
+import type { Layer, TextLayer, ImageLayer, ShapeLayer } from "../../../domain/entities/video-project.types";
 
 interface LayerContentProps {
   layer: Layer;

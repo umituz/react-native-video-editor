@@ -8,7 +8,7 @@ import { View, TouchableOpacity, Dimensions } from "react-native";
 import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { DraggableLayer } from "./DraggableLayer";
-import type { Scene, Layer } from "../../domain/entities";
+import type { Scene, Layer } from "../../domain/entities/video-project.types";
 import { createPreviewStyles } from "./EditorPreviewArea.styles";
 
 const { width } = Dimensions.get("window");

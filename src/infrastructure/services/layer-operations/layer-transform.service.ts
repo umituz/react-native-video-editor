@@ -3,8 +3,8 @@
  * Single Responsibility: Handle layer position, size, and animation updates
  */
 
-import type { Scene, Animation, Layer } from "../../../domain/entities";
-import type { LayerOperationResult } from "../../../domain/entities";
+import type { Scene, Animation } from "../../../domain/entities/video-project.types";
+import type { LayerOperationResult } from "../../../domain/entities/video-project.types";
 
 class LayerTransformService {
   /**
@@ -26,6 +26,10 @@ class LayerTransformService {
         };
       }
 
+      // Validate position values (percentage: 0-100)
+      const clampedX = Math.max(0, Math.min(100, x));
+      const clampedY = Math.max(0, Math.min(100, y));
+
       const updatedScenes = [...scenes];
       const layerIndex = updatedScenes[sceneIndex].layers.findIndex(
         (l) => l.id === layerId,
@@ -41,7 +45,7 @@ class LayerTransformService {
 
       updatedScenes[sceneIndex].layers[layerIndex] = {
         ...updatedScenes[sceneIndex].layers[layerIndex],
-        position: { x, y },
+        position: { x: clampedX, y: clampedY },
       };
 
       return { success: true, updatedScenes };
@@ -76,6 +80,10 @@ class LayerTransformService {
         };
       }
 
+      // Validate size values (percentage: 1-100, minimum 1% to prevent invisible layers)
+      const clampedWidth = Math.max(1, Math.min(100, width));
+      const clampedHeight = Math.max(1, Math.min(100, height));
+
       const updatedScenes = [...scenes];
       const layerIndex = updatedScenes[sceneIndex].layers.findIndex(
         (l) => l.id === layerId,
@@ -91,7 +99,7 @@ class LayerTransformService {
 
       updatedScenes[sceneIndex].layers[layerIndex] = {
         ...updatedScenes[sceneIndex].layers[layerIndex],
-        size: { width, height },
+        size: { width: clampedWidth, height: clampedHeight },
       };
 
       return { success: true, updatedScenes };
@@ -138,10 +146,11 @@ class LayerTransformService {
         };
       }
 
+      const existingLayer = updatedScenes[sceneIndex].layers[layerIndex];
       updatedScenes[sceneIndex].layers[layerIndex] = {
-        ...updatedScenes[sceneIndex].layers[layerIndex],
+        ...existingLayer,
         animation,
-      } as Layer;
+      };
 
       return { success: true, updatedScenes };
     } catch (error) {

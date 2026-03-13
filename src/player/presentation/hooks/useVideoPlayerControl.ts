@@ -5,7 +5,6 @@
 
 import { useState, useCallback, useMemo } from "react";
 // expo-video is optional — module-level lazy require with null stub
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let useExpoVideoPlayer: (...args: any[]) => any = () => null;
 try {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -20,6 +19,11 @@ import type {
   VideoPlayerControls,
   UseVideoPlayerControlResult,
 } from "../../types";
+
+// Extend VideoPlayer type to include playbackRate property
+interface ExtendedVideoPlayer {
+  playbackRate?: number;
+}
 import {
   safePlay,
   safePause,
@@ -45,7 +49,6 @@ export const useVideoPlayerControl = (
   const [playbackRate, setPlaybackRateState] = useState(initialRate);
   const [isMuted, setIsMuted] = useState(muted);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const player = useExpoVideoPlayer(source || "", (p: any) => {
     if (source && p) {
       configurePlayer(p, { loop, muted, autoPlay });
@@ -94,8 +97,7 @@ export const useVideoPlayerControl = (
 
   const setPlaybackRate = useCallback((rate: number) => {
     if (!isPlayerValid || !player) return;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (player as any).playbackRate = rate;
+    (player as ExtendedVideoPlayer).playbackRate = rate;
     setPlaybackRateState(rate);
   }, [player, isPlayerValid]);
 

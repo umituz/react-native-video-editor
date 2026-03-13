@@ -6,7 +6,7 @@
 import React from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
 
-import type { Animation } from "../../domain/entities";
+import type { Animation } from "../../domain/entities/video-project.types";
 import { useAnimationLayerForm } from "../hooks/useAnimationLayerForm";
 import {
   DURATIONS,
@@ -16,11 +16,9 @@ import {
 } from "../../infrastructure/constants/animation-layer.constants";
 import { ValueSelector } from "./shape-layer/ValueSelector";
 import { OptionSelector } from "./text-layer/OptionSelector";
-import {
-  AnimationTypeSelector,
-  AnimationEditorActions,
-} from "./animation-layer";
-import { AnimationInfoBanner } from "./animation-layer";
+import { AnimationTypeSelector } from "./animation-layer/AnimationTypeSelector";
+import { AnimationEditorActions } from "./animation-layer/AnimationEditorActions";
+import { AnimationInfoBanner } from "./animation-layer/AnimationInfoBanner";
 
 interface AnimationEditorProps {
   animation?: Animation;

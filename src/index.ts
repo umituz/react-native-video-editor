@@ -36,13 +36,14 @@ export type {
   FilterPreset,
   SubtitleStyle,
   Subtitle,
-} from "./domain/entities";
+} from "./domain/entities/video-project.types";
 
 // =============================================================================
 // INFRASTRUCTURE LAYER - Services & Constants
 // =============================================================================
 
-export * from "./infrastructure/constants";
+export { FILTER_PRESETS, DEFAULT_FILTER } from "./infrastructure/constants/filter.constants";
+export { DEFAULT_PLAYBACK_RATE, SPEED_PRESETS } from "./infrastructure/constants/speed.constants";
 
 export { layerOperationsService } from "./infrastructure/services/layer-operations.service";
 export { sceneOperationsService } from "./infrastructure/services/scene-operations.service";
@@ -51,12 +52,10 @@ export { imageLayerOperationsService } from "./infrastructure/services/image-lay
 export { shapeLayerOperationsService } from "./infrastructure/services/shape-layer-operations.service";
 export { layerManipulationService } from "./infrastructure/services/layer-manipulation.service";
 
-export {
-  layerDeleteService,
-  layerDuplicateService,
-  layerOrderService,
-  layerTransformService,
-} from "./infrastructure/services/layer-operations";
+export { layerDeleteService } from "./infrastructure/services/layer-operations/layer-delete.service";
+export { layerDuplicateService } from "./infrastructure/services/layer-operations/layer-duplicate.service";
+export { layerOrderService } from "./infrastructure/services/layer-operations/layer-order.service";
+export { layerTransformService } from "./infrastructure/services/layer-operations/layer-transform.service";
 
 // =============================================================================
 // PRESENTATION LAYER - Components & Hooks
@@ -65,24 +64,26 @@ export {
 export { VideoEditor } from "./VideoEditor";
 export type { VideoEditorProps } from "./VideoEditor";
 
-export {
-  EditorHeader,
-  EditorPreviewArea,
-  EditorToolPanel,
-  EditorTimeline,
-  LayerActionsMenu,
-  SceneActionsMenu,
-  TextLayerEditor,
-  AudioEditor,
-  ShapeLayerEditor,
-  AnimationEditor,
-  DraggableLayer,
-  ImageLayerEditor,
-  ExportDialog,
-  SpeedControlPanel,
-  VideoFilterPicker,
-  CollageEditorCanvas,
-} from "./presentation/components";
+export { EditorHeader } from "./presentation/components/EditorHeader";
+export { EditorPreviewArea } from "./presentation/components/EditorPreviewArea";
+export { EditorToolPanel } from "./presentation/components/EditorToolPanel";
+export { EditorTimeline } from "./presentation/components/EditorTimeline";
+export { LayerActionsMenu } from "./presentation/components/LayerActionsMenu";
+export { SceneActionsMenu } from "./presentation/components/SceneActionsMenu";
+export { TextLayerEditor } from "./presentation/components/TextLayerEditor";
+export { AudioEditor } from "./presentation/components/AudioEditor";
+export { ShapeLayerEditor } from "./presentation/components/ShapeLayerEditor";
+export { AnimationEditor } from "./presentation/components/AnimationEditor";
+export { DraggableLayer } from "./presentation/components/DraggableLayer";
+export { ImageLayerEditor } from "./presentation/components/ImageLayerEditor";
+export { ExportDialog } from "./presentation/components/ExportDialog";
+export { SpeedControlPanel } from "./presentation/components/SpeedControlPanel";
+export { VideoFilterPicker } from "./presentation/components/VideoFilterPicker";
+export { CollageEditorCanvas } from "./presentation/components/CollageEditorCanvas";
+export { SubtitleTimeInput } from "./presentation/components/SubtitleTimeInput";
+export { SubtitleStylePicker } from "./presentation/components/SubtitleStylePicker";
+export { SubtitleOverlay } from "./presentation/components/SubtitleOverlay";
+export { SubtitleListPanel } from "./presentation/components/SubtitleListPanel";
 
 export { useEditorLayers } from "./presentation/hooks/useEditorLayers";
 export { useEditorScenes } from "./presentation/hooks/useEditorScenes";
@@ -131,7 +132,7 @@ export type {
   VideoProgressBarProps,
   VideoPlayerOverlayProps,
   FullScreenVideoPlayerProps,
-} from "./player";
+} from "./player/index";
 
 export {
   safePlay,

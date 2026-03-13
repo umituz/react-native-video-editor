@@ -174,3 +174,52 @@ export interface VideoProject {
   folderId?: string;
   tags: string[];
 }
+
+// Editor State
+export interface EditorState {
+  project: VideoProject | null;
+  currentSceneIndex: number;
+  selectedLayerId: string | null;
+  isPlaying: boolean;
+  currentTime: number;
+}
+
+// Operation Results
+export interface LayerOperationResult {
+  success: boolean;
+  updatedScenes: Scene[];
+  error?: string;
+}
+
+export interface SceneOperationResult {
+  success: boolean;
+  updatedScenes: Scene[];
+  newSceneIndex?: number;
+  error?: string;
+}
+
+// Layer Actions
+export type LayerOrderAction = "front" | "back" | "up" | "down";
+
+// Layer Data
+export interface AddTextLayerData {
+  content?: string;
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string;
+  color?: string;
+  textAlign?: "left" | "center" | "right";
+}
+
+export interface AddImageLayerData {
+  uri?: string;
+  opacity?: number;
+}
+
+export interface AddShapeLayerData {
+  shape?: string;
+  opacity?: number;
+  fillColor?: string;
+  borderColor?: string;
+  borderWidth?: number;
+}

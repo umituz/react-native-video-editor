@@ -7,7 +7,6 @@ import React, { useMemo, useCallback } from "react";
 import { View, Modal, StyleSheet, StatusBar } from "react-native";
 import { Image } from "expo-image";
 // expo-video is optional — lazy require
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let VideoView: React.ComponentType<any> = () => null;
 try {
   // eslint-disable-next-line @typescript-eslint/no-require-imports

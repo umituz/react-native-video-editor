@@ -9,16 +9,14 @@ import * as DocumentPicker from "expo-document-picker";
 import { AtomicText } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { useLocalization } from "@umituz/react-native-settings";
-import type { Audio } from "../../domain/entities";
+import type { Audio } from "../../domain/entities/video-project.types";
 import { useAudioLayerForm } from "../hooks/useAudioLayerForm";
 import { AUDIO_FILE_TYPES } from "../../infrastructure/constants/audio-layer.constants";
-import {
-  AudioFileSelector,
-  VolumeSelector,
-  FadeEffectsSelector,
-  InfoBanner,
-  AudioEditorActions,
-} from "./audio-layer";
+import { AudioFileSelector } from "./audio-layer/AudioFileSelector";
+import { VolumeSelector } from "./audio-layer/VolumeSelector";
+import { FadeEffectsSelector } from "./audio-layer/FadeEffectsSelector";
+import { InfoBanner } from "./audio-layer/InfoBanner";
+import { AudioEditorActions } from "./audio-layer/AudioEditorActions";
 
 interface AudioEditorProps {
   audio?: Audio;

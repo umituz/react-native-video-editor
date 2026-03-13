@@ -3,7 +3,7 @@
  * Color overlay-based filters for video and photo editing
  */
 
-import type { FilterPreset } from "../../domain/entities";
+import type { FilterPreset } from "../../domain/entities/video-project.types";
 
 export const FILTER_PRESETS: FilterPreset[] = [
   { id: "none", name: "Original", overlay: "transparent", opacity: 0 },

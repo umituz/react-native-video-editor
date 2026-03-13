@@ -8,7 +8,7 @@ import { View, ScrollView, TouchableOpacity, StyleSheet } from "react-native";
 import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { useLocalization } from "@umituz/react-native-settings";
-import type { VideoProject, Scene } from "../../domain/entities";
+import type { VideoProject, Scene } from "../../domain/entities/video-project.types";
 
 interface EditorTimelineProps {
   project: VideoProject;

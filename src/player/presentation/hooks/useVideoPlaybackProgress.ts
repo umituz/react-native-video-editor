@@ -14,7 +14,6 @@ const POLL_INTERVAL_MS = 250;
  * Also returns the player's actual playing state to detect out-of-sync conditions
  */
 export const useVideoPlaybackProgress = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   player: any,
   isPlayerValid: boolean,
   isPlaying: boolean,

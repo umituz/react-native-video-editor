@@ -56,7 +56,7 @@ export const ShapeTypeSelector: React.FC<ShapeTypeSelectorProps> = ({
             onPress={() => onShapeChange(s.type)}
           >
             <AtomicIcon
-              name={s.icon as any}
+              name={s.icon as "Square" | "Circle" | "Triangle"}
               size="lg"
               color={selectedShape === s.type ? "onSurface" : "primary"}
             />

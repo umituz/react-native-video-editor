@@ -7,7 +7,7 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import { GestureDetector } from "react-native-gesture-handler";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
-import type { Layer } from "../../domain/entities";
+import type { Layer } from "../../domain/entities/video-project.types";
 import { useDraggableLayerGestures } from "../hooks/useDraggableLayerGestures";
 import { LayerContent } from "./draggable-layer/LayerContent";
 import { ResizeHandles } from "./draggable-layer/ResizeHandles";

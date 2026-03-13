@@ -6,7 +6,7 @@
 import { useCallback } from "react";
 import { AudioEditor } from "../components/AudioEditor";
 import { SceneActionsMenu } from "../components/SceneActionsMenu";
-import type { Scene } from "../../domain/entities";
+import type { Scene } from "../../domain/entities/video-project.types";
 import type { UseEditorScenesReturn } from "./useEditorScenes";
 import type { UseEditorBottomSheetReturn } from "./useEditorBottomSheet";
 

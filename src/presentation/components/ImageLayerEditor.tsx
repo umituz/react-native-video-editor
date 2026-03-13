@@ -5,13 +5,11 @@
 
 import React, { useCallback } from "react";
 import { View, ScrollView, StyleSheet, Alert } from "react-native";
-import type { ImageLayer } from "../../domain/entities";
+import type { ImageLayer } from "../../domain/entities/video-project.types";
 import { useImageLayerForm } from "../hooks/useImageLayerForm";
-import {
-  ImagePreview,
-  ImageSelectionButtons,
-  OpacitySelector,
-} from "./image-layer";
+import { ImagePreview } from "./image-layer/ImagePreview";
+import { ImageSelectionButtons } from "./image-layer/ImageSelectionButtons";
+import { OpacitySelector } from "./image-layer/OpacitySelector";
 import { EditorActions } from "./text-layer/EditorActions";
 
 interface ImagePickerResult {

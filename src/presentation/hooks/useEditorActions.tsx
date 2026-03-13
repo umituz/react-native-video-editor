@@ -3,7 +3,7 @@
  * Single Responsibility: Compose editor action handlers
  */
 
-import type { VideoProject, Scene, ExportSettings, Layer } from "../../domain/entities";
+import type { VideoProject, Scene, ExportSettings, Layer } from "../../domain/entities/video-project.types";
 import type { UseEditorLayersReturn } from "./useEditorLayers";
 import type { UseEditorScenesReturn } from "./useEditorScenes";
 import type { UseEditorBottomSheetReturn } from "./useEditorBottomSheet";

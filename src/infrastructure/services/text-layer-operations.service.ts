@@ -4,8 +4,8 @@
  */
 
 import { generateUUID } from "@umituz/react-native-design-system/uuid";
-import type { Scene, TextLayer } from "../../domain/entities";
-import type { LayerOperationResult, AddTextLayerData } from "../../domain/entities";
+import type { Scene, TextLayer } from "../../domain/entities/video-project.types";
+import type { LayerOperationResult, AddTextLayerData } from "../../domain/entities/video-project.types";
 
 class TextLayerOperationsService {
   /**
@@ -94,10 +94,19 @@ class TextLayerOperationsService {
         };
       }
 
+      const existingLayer = updatedScenes[sceneIndex].layers[layerIndex];
+      if (existingLayer.type !== "text") {
+        return {
+          success: false,
+          updatedScenes: scenes,
+          error: "Layer is not a text layer",
+        };
+      }
+
       updatedScenes[sceneIndex].layers[layerIndex] = {
-        ...updatedScenes[sceneIndex].layers[layerIndex],
+        ...existingLayer,
         ...layerData,
-      } as TextLayer;
+      };
 
       return { success: true, updatedScenes };
     } catch (error) {

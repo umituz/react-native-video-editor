@@ -8,7 +8,7 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { useLocalization } from "@umituz/react-native-settings";
-import type { Layer } from "../../domain/entities";
+import type { Layer } from "../../domain/entities/video-project.types";
 
 interface LayerActionsMenuProps {
   layer: Layer;

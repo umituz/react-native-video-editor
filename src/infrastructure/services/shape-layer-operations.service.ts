@@ -4,8 +4,8 @@
  */
 
 import { generateUUID } from "@umituz/react-native-design-system/uuid";
-import type { Scene, ShapeLayer } from "../../domain/entities";
-import type { LayerOperationResult, AddShapeLayerData } from "../../domain/entities";
+import type { Scene, ShapeLayer } from "../../domain/entities/video-project.types";
+import type { LayerOperationResult, AddShapeLayerData } from "../../domain/entities/video-project.types";
 
 class ShapeLayerOperationsService {
   /**
@@ -29,12 +29,12 @@ class ShapeLayerOperationsService {
       const newLayer: ShapeLayer = {
         id: generateUUID(),
         type: "shape",
-        shape: (layerData.shape as ShapeLayer["shape"]) || "rectangle",
+        shape: (layerData.shape ?? "rectangle") as ShapeLayer["shape"],
         position: { x: 25, y: 25 },
         size: { width: 50, height: 50 },
         rotation: 0,
-        opacity: layerData.opacity || 1,
-        fillColor: layerData.fillColor || defaultColor,
+        opacity: layerData.opacity ?? 1,
+        fillColor: layerData.fillColor ?? defaultColor,
         borderColor: layerData.borderColor,
         borderWidth: layerData.borderWidth,
         animation: {

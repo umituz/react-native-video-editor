@@ -9,7 +9,7 @@ import { TextLayerEditor } from "../components/TextLayerEditor";
 import { ImageLayerEditor } from "../components/ImageLayerEditor";
 import { ShapeLayerEditor } from "../components/ShapeLayerEditor";
 import { AnimationEditor } from "../components/AnimationEditor";
-import type { Scene, ImageLayer, Layer } from "../../domain/entities";
+import type { Scene, Layer } from "../../domain/entities/video-project.types";
 import type { UseEditorLayersReturn } from "./useEditorLayers";
 import type { UseEditorBottomSheetReturn } from "./useEditorBottomSheet";
 
@@ -91,10 +91,8 @@ export function useLayerActions({
   const handleEditImageLayer = useCallback(
     (layerId: string) => {
       if (!currentScene) return;
-      const layer = currentScene.layers.find((l: Layer) => l.id === layerId) as
-        | ImageLayer
-        | undefined;
-      if (!layer) return;
+      const layer = currentScene.layers.find((l: Layer) => l.id === layerId);
+      if (!layer || layer.type !== "image") return;
 
       openBottomSheet({
         title: t("editor.layers.image.edit"),

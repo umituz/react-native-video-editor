@@ -6,7 +6,7 @@
 import React, { useCallback } from "react";
 import { View, ScrollView, StyleSheet, Alert } from "react-native";
 import { useLocalization } from "@umituz/react-native-settings";
-import type { ExportSettings, VideoProject } from "../../domain/entities";
+import type { ExportSettings, VideoProject } from "../../domain/entities/video-project.types";
 import { useExportForm } from "../hooks/useExportForm";
 import { useExport, type UseExportConfig, type ExportResult } from "../hooks/useExport";
 import {
@@ -14,14 +14,12 @@ import {
   QUALITIES,
   FORMATS,
 } from "../../infrastructure/constants/export.constants";
-import {
-  ProjectInfoBox,
-  OptionSelectorRow,
-  WatermarkToggle,
-  ExportProgress,
-  ExportInfoBanner,
-  ExportActions,
-} from "./export";
+import { ProjectInfoBox } from "./export/ProjectInfoBox";
+import { OptionSelectorRow } from "./export/OptionSelectorRow";
+import { WatermarkToggle } from "./export/WatermarkToggle";
+import { ExportProgress } from "./export/ExportProgress";
+import { ExportInfoBanner } from "./export/ExportInfoBanner";
+import { ExportActions } from "./export/ExportActions";
 
 interface ExportDialogProps {
   readonly project: VideoProject;

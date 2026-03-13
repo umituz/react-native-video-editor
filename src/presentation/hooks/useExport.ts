@@ -5,7 +5,7 @@
  */
 
 import { useState, useCallback } from "react";
-import type { ExportSettings, VideoProject } from "../../domain/entities";
+import type { ExportSettings, VideoProject } from "../../domain/entities/video-project.types";
 
 export interface ExportProgress {
   status: "preparing" | "encoding" | "saving" | "complete" | "error";

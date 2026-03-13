@@ -5,18 +5,16 @@
 
 import React from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
-import type { ShapeLayer } from "../../domain/entities";
+import type { ShapeLayer } from "../../domain/entities/video-project.types";
 import { useShapeLayerForm } from "../hooks/useShapeLayerForm";
 import {
   BORDER_WIDTHS,
   OPACITY_OPTIONS,
 } from "../../infrastructure/constants/shape-layer.constants";
-import {
-  ShapeTypeSelector,
-  ColorPickerHorizontal,
-  ValueSelector,
-  ShapePreview,
-} from "./shape-layer";
+import { ShapeTypeSelector } from "./shape-layer/ShapeTypeSelector";
+import { ColorPickerHorizontal } from "./shape-layer/ColorPickerHorizontal";
+import { ValueSelector } from "./shape-layer/ValueSelector";
+import { ShapePreview } from "./shape-layer/ShapePreview";
 import { EditorActions } from "./text-layer/EditorActions";
 
 interface ShapeLayerEditorProps {

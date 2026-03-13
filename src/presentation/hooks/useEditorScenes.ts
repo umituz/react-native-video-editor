@@ -7,7 +7,7 @@ import { useCallback } from "react";
 import { Alert } from "react-native";
 import { useLocalization } from "@umituz/react-native-settings";
 import { sceneOperationsService } from "../../infrastructure/services/scene-operations.service";
-import type { Scene, Audio } from "../../domain/entities";
+import type { Scene, Audio } from "../../domain/entities/video-project.types";
 
 interface UseEditorScenesParams {
   scenes: Scene[];

@@ -5,7 +5,7 @@
 
 import { useCallback } from "react";
 import { LayerActionsMenu } from "../components/LayerActionsMenu";
-import type { Layer } from "../../domain/entities";
+import type { Layer } from "../../domain/entities/video-project.types";
 import type { UseEditorLayersReturn } from "./useEditorLayers";
 import type { UseEditorBottomSheetReturn } from "./useEditorBottomSheet";
 
