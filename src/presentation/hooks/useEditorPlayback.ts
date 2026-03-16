@@ -1,10 +1,16 @@
 /**
  * useEditorPlayback Hook
  * Single Responsibility: Playback control for editor
+ * Optimized for performance with stable animation loop
  */
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import type { Scene } from "../../domain/entities/video-project.types";
+import {
+  calculateDelta,
+  addDeltaTime,
+  isTimeAtEnd,
+} from "../../infrastructure/utils/time-calculations.utils";
 
 interface UseEditorPlaybackParams {
   currentScene: Scene | undefined;
@@ -24,56 +30,87 @@ export function useEditorPlayback({
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
 
-  // Video playback animation loop
+  // Use refs to avoid re-creating animation loop on every render
+  const animationFrameRef = useRef<number | null>(null);
+  const lastTimestampRef = useRef<number>(0);
+  const isPlayingRef = useRef(isPlaying);
+  const currentSceneRef = useRef(currentScene);
+  const durationRef = useRef(0);
+
+  // Keep refs in sync
+  useEffect(() => {
+    isPlayingRef.current = isPlaying;
+  }, [isPlaying]);
+
+  useEffect(() => {
+    currentSceneRef.current = currentScene;
+    if (currentScene) {
+      durationRef.current = currentScene.duration;
+    }
+  }, [currentScene]);
+
+  // Video playback animation loop - optimized with refs
   useEffect(() => {
     if (!currentScene) return;
-    let animationFrameId: number;
-    let lastTimestamp = 0;
 
     const animate = (timestamp: number) => {
-      if (!isPlaying || !currentScene) return;
-
-      if (lastTimestamp === 0) {
-        lastTimestamp = timestamp;
+      // Use refs for checks to avoid closure staleness
+      if (!isPlayingRef.current || !currentSceneRef.current) {
+        animationFrameRef.current = null;
+        return;
       }
-      const deltaTime = timestamp - lastTimestamp;
-      lastTimestamp = timestamp;
+
+      if (lastTimestampRef.current === 0) {
+        lastTimestampRef.current = timestamp;
+      }
+
+      const deltaTime = calculateDelta(timestamp, lastTimestampRef.current);
+      lastTimestampRef.current = timestamp;
 
       setCurrentTime((prevTime) => {
-        const newTime = prevTime + deltaTime;
-        const sceneDuration = currentScene.duration;
+        const newTime = addDeltaTime(prevTime, deltaTime);
+        const sceneDuration = durationRef.current;
 
-        if (newTime >= sceneDuration) {
-          setIsPlaying(false);
+        if (isTimeAtEnd(newTime, sceneDuration)) {
+          // Defer state update to avoid in-render setState
+          Promise.resolve().then(() => {
+            setIsPlaying(false);
+          });
           return sceneDuration;
         }
 
         return newTime;
       });
 
-      animationFrameId = requestAnimationFrame(animate);
+      animationFrameRef.current = requestAnimationFrame(animate);
     };
 
     if (isPlaying) {
-      lastTimestamp = 0;
-      animationFrameId = requestAnimationFrame(animate);
+      lastTimestampRef.current = 0;
+      animationFrameRef.current = requestAnimationFrame(animate);
     }
 
     return () => {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
+      if (animationFrameRef.current !== null) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
       }
     };
-  }, [isPlaying, currentScene?.duration]);
+  }, [isPlaying, currentScene]); // Only re-create loop when these change
 
   const playPause = useCallback(() => {
     if (!currentScene) return;
 
-    if (currentTime >= currentScene.duration) {
-      setCurrentTime(0);
-    }
-    setIsPlaying(!isPlaying);
-  }, [currentScene, currentTime, isPlaying]);
+    setCurrentTime((prevTime) => {
+      // Reset to 0 if at end
+      if (prevTime >= currentScene.duration) {
+        return 0;
+      }
+      return prevTime;
+    });
+
+    setIsPlaying((prev) => !prev);
+  }, [currentScene]);
 
   const reset = useCallback(() => {
     setCurrentTime(0);

@@ -6,10 +6,12 @@
 import { generateUUID } from "@umituz/react-native-design-system/uuid";
 import type { Scene } from "../../../domain/entities/video-project.types";
 import type { LayerOperationResult } from "../../../domain/entities/video-project.types";
+import { cloneLayerWithNewId } from "../../../infrastructure/utils/data-clone.utils";
 
 class LayerDuplicateService {
   /**
    * Duplicate layer
+   * Optimized using clone utility for better performance
    */
   duplicateLayer(
     scenes: Scene[],
@@ -37,9 +39,9 @@ class LayerDuplicateService {
         };
       }
 
+      // Use clone utility for consistent duplication
       const duplicatedLayer = {
-        ...JSON.parse(JSON.stringify(layerToDuplicate)),
-        id: generateUUID(),
+        ...cloneLayerWithNewId(layerToDuplicate, generateUUID),
         position: {
           x: layerToDuplicate.position.x + 5,
           y: layerToDuplicate.position.y + 5,

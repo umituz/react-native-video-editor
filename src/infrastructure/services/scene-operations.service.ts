@@ -6,6 +6,7 @@
 import { generateUUID } from "@umituz/react-native-design-system/uuid";
 import type { Scene, Audio } from "../../domain/entities/video-project.types";
 import type { SceneOperationResult } from "../../domain/entities/video-project.types";
+import { cloneSceneWithNewId } from "../utils/data-clone.utils";
 
 class SceneOperationsService {
   /**
@@ -38,6 +39,7 @@ class SceneOperationsService {
 
   /**
    * Duplicate scene
+   * Optimized using clone utility for better performance
    */
   duplicateScene(scenes: Scene[], sceneIndex: number): SceneOperationResult {
     try {
@@ -50,14 +52,9 @@ class SceneOperationsService {
       }
 
       const sceneToDuplicate = scenes[sceneIndex];
-      const duplicatedScene: Scene = {
-        ...JSON.parse(JSON.stringify(sceneToDuplicate)),
-        id: generateUUID(),
-        layers: sceneToDuplicate.layers.map((layer) => ({
-          ...layer,
-          id: generateUUID(),
-        })),
-      };
+
+      // Use clone utility for consistent duplication
+      const duplicatedScene = cloneSceneWithNewId(sceneToDuplicate, generateUUID);
 
       const updatedScenes = [...scenes];
       updatedScenes.splice(sceneIndex + 1, 0, duplicatedScene);

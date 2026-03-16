@@ -3,7 +3,7 @@
  * Draggable and resizable layer component
  */
 
-import React from "react";
+import React, { useMemo, useCallback } from "react";
 import { View, StyleSheet } from "react-native";
 import { GestureDetector } from "react-native-gesture-handler";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
@@ -11,6 +11,7 @@ import type { Layer } from "../../domain/entities/video-project.types";
 import { useDraggableLayerGestures } from "../hooks/useDraggableLayerGestures";
 import { LayerContent } from "./draggable-layer/LayerContent";
 import { ResizeHandles } from "./draggable-layer/ResizeHandles";
+import { percentageToPixels } from "../../infrastructure/utils/position-calculations.utils";
 
 interface DraggableLayerProps {
   layer: Layer;
@@ -22,7 +23,7 @@ interface DraggableLayerProps {
   onSizeChange: (width: number, height: number) => void;
 }
 
-export const DraggableLayer: React.FC<DraggableLayerProps> = ({
+export const DraggableLayer: React.FC<DraggableLayerProps> = React.memo(({
   layer,
   canvasWidth,
   canvasHeight,
@@ -36,10 +37,23 @@ export const DraggableLayer: React.FC<DraggableLayerProps> = ({
   const safeCanvasWidth = canvasWidth > 0 ? canvasWidth : 1;
   const safeCanvasHeight = canvasHeight > 0 ? canvasHeight : 1;
 
-  const initialX = (layer.position.x / 100) * safeCanvasWidth;
-  const initialY = (layer.position.y / 100) * safeCanvasHeight;
-  const initialWidth = (layer.size.width / 100) * safeCanvasWidth;
-  const initialHeight = (layer.size.height / 100) * safeCanvasHeight;
+  const initialX = percentageToPixels(layer.position.x, safeCanvasWidth);
+  const initialY = percentageToPixels(layer.position.y, safeCanvasHeight);
+  const initialWidth = percentageToPixels(layer.size.width, safeCanvasWidth);
+  const initialHeight = percentageToPixels(layer.size.height, safeCanvasHeight);
+
+  // Stable callbacks to prevent gesture re-creation
+  const handlePositionChange = useCallback((x: number, y: number) => {
+    onPositionChange(x, y);
+  }, [onPositionChange]);
+
+  const handleSizeChange = useCallback((width: number, height: number) => {
+    onSizeChange(width, height);
+  }, [onSizeChange]);
+
+  const handleSelect = useCallback(() => {
+    onSelect();
+  }, [onSelect]);
 
   const {
     state,
@@ -55,12 +69,13 @@ export const DraggableLayer: React.FC<DraggableLayerProps> = ({
     initialHeight,
     canvasWidth: safeCanvasWidth,
     canvasHeight: safeCanvasHeight,
-    onSelect,
-    onPositionChange,
-    onSizeChange,
+    onSelect: handleSelect,
+    onPositionChange: handlePositionChange,
+    onSizeChange: handleSizeChange,
   });
 
-  const layerStyle = {
+  // Memoize layer style to prevent new object on every render
+  const layerStyle = useMemo(() => ({
     transform: [
       { translateX: state.x },
       { translateY: state.y },
@@ -69,17 +84,20 @@ export const DraggableLayer: React.FC<DraggableLayerProps> = ({
     opacity: layer.opacity,
     width: state.width,
     height: state.height,
-  };
+  }), [state.x, state.y, state.width, state.height, layer.rotation, layer.opacity]);
+
+  // Memoize border style
+  const borderStyle = useMemo(() => ({
+    borderColor: isSelected ? tokens.colors.primary : "transparent",
+    borderWidth: isSelected ? 2 : 0,
+  }), [isSelected, tokens.colors.primary]);
 
   return (
     <GestureDetector gesture={composedGesture}>
       <View
         style={[
           styles.layer,
-          {
-            borderColor: isSelected ? tokens.colors.primary : "transparent",
-            borderWidth: isSelected ? 2 : 0,
-          },
+          borderStyle,
           layerStyle,
         ]}
       >
@@ -96,7 +114,9 @@ export const DraggableLayer: React.FC<DraggableLayerProps> = ({
       </View>
     </GestureDetector>
   );
-};
+});
+
+DraggableLayer.displayName = 'DraggableLayer';
 
 const styles = StyleSheet.create({
   layer: {

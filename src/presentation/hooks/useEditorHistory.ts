@@ -3,8 +3,9 @@
  * Single Responsibility: History operations for editor
  */
 
-import { useCallback, useState } from "react";
+import { useCallback, useState, useRef } from "react";
 import type { VideoProject } from "../../domain/entities/video-project.types";
+import { cloneVideoProject } from "../../infrastructure/utils/data-clone.utils";
 
 interface UseEditorHistoryParams {
   project: VideoProject | undefined;
@@ -27,20 +28,30 @@ export function useEditorHistory({
 }: UseEditorHistoryParams): UseEditorHistoryReturn {
   const [history, setHistory] = useState<VideoProject[]>([]);
   const [future, setFuture] = useState<VideoProject[]>([]);
+  const lastProjectRef = useRef<string | null>(null);
 
   const updateWithHistory = useCallback(
     (updates: Partial<VideoProject>, _action: string) => {
-      if (project) {
-        // Deep clone the project to avoid reference issues
-        const clonedProject = JSON.parse(JSON.stringify(project)) as VideoProject;
-        setHistory((prev) => {
-          const next = [...prev, clonedProject];
-          return next.length > MAX_HISTORY_SIZE ? next.slice(-MAX_HISTORY_SIZE) : next;
-        });
-        setFuture([]);
+      if (!project) return;
 
+      // Prevent duplicate history entries for same project state
+      const projectHash = JSON.stringify({ id: project.id, updatedAt: project.updatedAt });
+      if (lastProjectRef.current === projectHash) {
         onUpdateProject(updates);
+        return;
       }
+      lastProjectRef.current = projectHash;
+
+      // Optimized deep clone
+      const clonedProject = cloneVideoProject(project);
+
+      setHistory((prev) => {
+        const next = [...prev, clonedProject];
+        return next.length > MAX_HISTORY_SIZE ? next.slice(-MAX_HISTORY_SIZE) : next;
+      });
+      setFuture([]);
+
+      onUpdateProject(updates);
     },
     [project, onUpdateProject],
   );

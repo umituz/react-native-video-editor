@@ -11,10 +11,9 @@ import type {
   Format,
 } from "../../infrastructure/constants/export.constants";
 import {
-  BASE_SIZE_PER_SECOND,
-  RESOLUTION_MULTIPLIERS,
-  QUALITY_MULTIPLIERS,
-} from "../../infrastructure/constants/export.constants";
+  calculateEstimatedFileSize,
+  calculateVideoProjectDuration,
+} from "../../infrastructure/utils/video-calculations.utils";
 
 interface ExportFormState {
   resolution: Resolution;
@@ -46,16 +45,15 @@ export function useExportForm(project: VideoProject): UseExportFormReturn {
   });
 
   const projectDuration = useMemo(() => {
-    return (
-      project.scenes.reduce((acc, scene) => acc + scene.duration, 0) / 1000
-    );
-  }, [project.scenes]);
+    return calculateVideoProjectDuration(project);
+  }, [project]);
 
   const estimatedSize = useMemo(() => {
-    const baseSize = projectDuration * BASE_SIZE_PER_SECOND;
-    const resolutionMultiplier = RESOLUTION_MULTIPLIERS[formState.resolution];
-    const qualityMultiplier = QUALITY_MULTIPLIERS[formState.quality];
-    return (baseSize * resolutionMultiplier * qualityMultiplier).toFixed(1);
+    return calculateEstimatedFileSize(
+      projectDuration,
+      formState.resolution,
+      formState.quality,
+    ).toFixed(1);
   }, [projectDuration, formState.resolution, formState.quality]);
 
   const setResolution = useCallback((resolution: Resolution) => {

@@ -1,16 +1,10 @@
 /**
  * SRT Subtitle Utilities
+ * Re-exports time utilities for backward compatibility
  */
 
 import type { Subtitle } from "../../domain/entities/video-project.types";
-
-function toSrtTime(seconds: number): string {
-  const h = Math.floor(seconds / 3600);
-  const m = Math.floor((seconds % 3600) / 60);
-  const s = Math.floor(seconds % 60);
-  const ms = Math.floor((seconds % 1) * 1000);
-  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")},${String(ms).padStart(3, "0")}`;
-}
+import { toSrtTime } from "./time-calculations.utils";
 
 export function generateSRT(subtitles: Subtitle[]): string {
   const validSubtitles = subtitles.filter((sub) => (
@@ -26,15 +20,5 @@ export function generateSRT(subtitles: Subtitle[]): string {
     .join("\n");
 }
 
-export function formatTimeDisplay(seconds: number): string {
-  const m = Math.floor(seconds / 60);
-  const s = Math.floor(seconds % 60);
-  return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
-}
-
-export function formatTimeDetailed(seconds: number): string {
-  const m = Math.floor(seconds / 60);
-  const s = Math.floor(seconds % 60);
-  const t = Math.floor((seconds % 1) * 10);
-  return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}.${t}`;
-}
+// Re-export time utilities for backward compatibility
+export { formatTimeDisplay, formatTimeDetailed, toSrtTime } from "./time-calculations.utils";

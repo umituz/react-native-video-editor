@@ -3,7 +3,7 @@
  * Single Responsibility: Display editor tool buttons
  */
 
-import React from "react";
+import React, { useMemo, useCallback } from "react";
 import {
   View,
   ScrollView,
@@ -24,7 +24,70 @@ interface EditorToolPanelProps {
   onSpeed?: () => void;
 }
 
-export const EditorToolPanel: React.FC<EditorToolPanelProps> = ({
+interface ToolButtonProps {
+  icon: string;
+  label: string;
+  onPress: () => void;
+  backgroundColor: string;
+  textColor: string;
+  showBadge?: boolean;
+  badgeColor?: string;
+  badgeBorderColor?: string;
+}
+
+/**
+ * Memoized ToolButton component to prevent unnecessary re-renders
+ */
+const ToolButton = React.memo<ToolButtonProps>(({
+  icon,
+  label,
+  onPress,
+  backgroundColor,
+  textColor,
+  showBadge,
+  badgeColor,
+  badgeBorderColor,
+}) => {
+  const buttonStyle = useMemo(() => [
+    styles.toolButton,
+    { backgroundColor }
+  ], [backgroundColor]);
+
+  const textStyle = useMemo(() => ({
+    color: textColor,
+    marginTop: 4
+  }), [textColor]);
+
+  const badgeStyle = useMemo(() => [
+    styles.audioBadge,
+    {
+      backgroundColor: badgeColor,
+      borderColor: badgeBorderColor,
+    }
+  ], [badgeColor, badgeBorderColor]);
+
+  return (
+    <TouchableOpacity
+      style={buttonStyle}
+      onPress={onPress}
+    >
+      <AtomicIcon name={icon as any} size="md" color="primary" />
+      <AtomicText
+        type="labelSmall"
+        style={textStyle}
+      >
+        {label}
+      </AtomicText>
+      {showBadge && badgeColor && (
+        <View style={badgeStyle} />
+      )}
+    </TouchableOpacity>
+  );
+});
+
+ToolButton.displayName = 'ToolButton';
+
+export const EditorToolPanel: React.FC<EditorToolPanelProps> = React.memo(({
   onAddText,
   onAddImage,
   onAddShape,
@@ -36,136 +99,99 @@ export const EditorToolPanel: React.FC<EditorToolPanelProps> = ({
   const { t } = useLocalization();
   const tokens = useAppDesignTokens();
 
+  // Memoize styles
+  const containerStyle = useMemo(() => [
+    styles.toolPanel,
+    { backgroundColor: tokens.colors.surface }
+  ], [tokens.colors.surface]);
+
+  const titleStyle = useMemo(() => ({
+    color: tokens.colors.textPrimary,
+    fontWeight: "600" as const,
+    marginBottom: 12,
+  }), [tokens.colors.textPrimary]);
+
+  const backgroundColor = tokens.colors.backgroundPrimary;
+  const textColor = tokens.colors.textPrimary;
+
+  // Stable callbacks
+  const handleAddText = useCallback(() => onAddText(), [onAddText]);
+  const handleAddImage = useCallback(() => onAddImage(), [onAddImage]);
+  const handleAddShape = useCallback(() => onAddShape(), [onAddShape]);
+  const handleAudio = useCallback(() => onAudio(), [onAudio]);
+  const handleFilters = useCallback(() => onFilters?.(), [onFilters]);
+  const handleSpeed = useCallback(() => onSpeed?.(), [onSpeed]);
+
   return (
-    <View
-      style={[styles.toolPanel, { backgroundColor: tokens.colors.surface }]}
-    >
+    <View style={containerStyle}>
       <AtomicText
         type="bodyMedium"
-        style={{
-          color: tokens.colors.textPrimary,
-          fontWeight: "600",
-          marginBottom: 12,
-        }}
+        style={titleStyle}
       >
         {t("editor.tools.title")}
       </AtomicText>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        <TouchableOpacity
-          style={[
-            styles.toolButton,
-            { backgroundColor: tokens.colors.backgroundPrimary },
-          ]}
-          onPress={onAddText}
-        >
-          <AtomicIcon name="text-outline" size="md" color="primary" />
-          <AtomicText
-            type="labelSmall"
-            style={{ color: tokens.colors.textPrimary, marginTop: 4 }}
-          >
-            {t("editor.tools.text")}
-          </AtomicText>
-        </TouchableOpacity>
+        <ToolButton
+          icon="text-outline"
+          label={t("editor.tools.text")}
+          onPress={handleAddText}
+          backgroundColor={backgroundColor}
+          textColor={textColor}
+        />
 
-        <TouchableOpacity
-          style={[
-            styles.toolButton,
-            { backgroundColor: tokens.colors.backgroundPrimary },
-          ]}
-          onPress={onAddImage}
-        >
-          <AtomicIcon name="image-outline" size="md" color="primary" />
-          <AtomicText
-            type="labelSmall"
-            style={{ color: tokens.colors.textPrimary, marginTop: 4 }}
-          >
-            {t("editor.tools.image")}
-          </AtomicText>
-        </TouchableOpacity>
+        <ToolButton
+          icon="image-outline"
+          label={t("editor.tools.image")}
+          onPress={handleAddImage}
+          backgroundColor={backgroundColor}
+          textColor={textColor}
+        />
 
-        <TouchableOpacity
-          style={[
-            styles.toolButton,
-            { backgroundColor: tokens.colors.backgroundPrimary },
-          ]}
-          onPress={onAddShape}
-        >
-          <AtomicIcon name="square-outline" size="md" color="primary" />
-          <AtomicText
-            type="labelSmall"
-            style={{ color: tokens.colors.textPrimary, marginTop: 4 }}
-          >
-            {t("editor.tools.shape")}
-          </AtomicText>
-        </TouchableOpacity>
+        <ToolButton
+          icon="square-outline"
+          label={t("editor.tools.shape")}
+          onPress={handleAddShape}
+          backgroundColor={backgroundColor}
+          textColor={textColor}
+        />
 
-        <TouchableOpacity
-          style={[
-            styles.toolButton,
-            { backgroundColor: tokens.colors.backgroundPrimary },
-          ]}
-          onPress={onAudio}
-        >
-          <AtomicIcon name="musical-notes-outline" size="md" color="primary" />
-          <AtomicText
-            type="labelSmall"
-            style={{ color: tokens.colors.textPrimary, marginTop: 4 }}
-          >
-            {t("editor.tools.audio")}
-          </AtomicText>
-          {hasAudio && (
-            <View
-              style={[
-                styles.audioBadge,
-                {
-                  backgroundColor: tokens.colors.success,
-                  borderColor: tokens.colors.surface,
-                },
-              ]}
-            />
-          )}
-        </TouchableOpacity>
+        <ToolButton
+          icon="musical-notes-outline"
+          label={t("editor.tools.audio")}
+          onPress={handleAudio}
+          backgroundColor={backgroundColor}
+          textColor={textColor}
+          showBadge={hasAudio}
+          badgeColor={tokens.colors.success}
+          badgeBorderColor={tokens.colors.surface}
+        />
 
         {onFilters && (
-          <TouchableOpacity
-            style={[
-              styles.toolButton,
-              { backgroundColor: tokens.colors.backgroundPrimary },
-            ]}
-            onPress={onFilters}
-          >
-            <AtomicIcon name="sparkles" size="md" color="primary" />
-            <AtomicText
-              type="labelSmall"
-              style={{ color: tokens.colors.textPrimary, marginTop: 4 }}
-            >
-              {t("editor.tools.filters") || "Filters"}
-            </AtomicText>
-          </TouchableOpacity>
+          <ToolButton
+            icon="sparkles"
+            label={t("editor.tools.filters") || "Filters"}
+            onPress={handleFilters}
+            backgroundColor={backgroundColor}
+            textColor={textColor}
+          />
         )}
 
         {onSpeed && (
-          <TouchableOpacity
-            style={[
-              styles.toolButton,
-              { backgroundColor: tokens.colors.backgroundPrimary },
-            ]}
-            onPress={onSpeed}
-          >
-            <AtomicIcon name="flash" size="md" color="primary" />
-            <AtomicText
-              type="labelSmall"
-              style={{ color: tokens.colors.textPrimary, marginTop: 4 }}
-            >
-              {t("editor.tools.speed") || "Speed"}
-            </AtomicText>
-          </TouchableOpacity>
+          <ToolButton
+            icon="flash"
+            label={t("editor.tools.speed") || "Speed"}
+            onPress={handleSpeed}
+            backgroundColor={backgroundColor}
+            textColor={textColor}
+          />
         )}
       </ScrollView>
     </View>
   );
-};
+});
+
+EditorToolPanel.displayName = 'EditorToolPanel';
 
 const styles = StyleSheet.create({
   toolPanel: {

@@ -1,15 +1,17 @@
 /**
  * Editor Preview Area Component
  * Single Responsibility: Display video preview canvas and playback controls
+ * Optimized to prevent unnecessary re-renders
  */
 
-import React, { useMemo } from "react";
+import React, { useMemo, useCallback } from "react";
 import { View, TouchableOpacity, Dimensions } from "react-native";
 import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { DraggableLayer } from "./DraggableLayer";
 import type { Scene, Layer } from "../../domain/entities/video-project.types";
 import { createPreviewStyles } from "./EditorPreviewArea.styles";
+import { formatTimeDisplay, calculateProgressPercent } from "../../infrastructure/utils/time-calculations.utils";
 
 const { width } = Dimensions.get("window");
 const PREVIEW_ASPECT_RATIO = 16 / 9;
@@ -28,7 +30,7 @@ interface EditorPreviewAreaProps {
   onReset: () => void;
 }
 
-export const EditorPreviewArea: React.FC<EditorPreviewAreaProps> = ({
+export const EditorPreviewArea: React.FC<EditorPreviewAreaProps> = React.memo(({
   scene,
   selectedLayerId,
   isPlaying,
@@ -43,26 +45,88 @@ export const EditorPreviewArea: React.FC<EditorPreviewAreaProps> = ({
   const tokens = useAppDesignTokens();
   const styles = useMemo(() => createPreviewStyles(tokens), [tokens]);
 
+  // Memoize canvas style
+  const canvasStyle = useMemo(() => [
+    styles.previewCanvas,
+    {
+      backgroundColor:
+        scene.background.type === "color"
+          ? scene.background.value
+          : tokens.colors.surfaceSecondary,
+      height: PREVIEW_HEIGHT,
+    },
+  ], [styles.previewCanvas, scene.background.type, scene.background.value, tokens.colors.surfaceSecondary]);
+
+  // Memoize empty preview text style
+  const emptyTextStyle = useMemo(() => ({
+    color: tokens.colors.textSecondary,
+    marginTop: 12,
+  }), [tokens.colors.textSecondary]);
+
+  // Memoize layer actions button style
+  const layerActionsButtonStyle = useMemo(() => [
+    styles.layerActionsButton,
+    { backgroundColor: tokens.colors.primary },
+  ], [styles.layerActionsButton, tokens.colors.primary]);
+
+  // Stable callbacks for layer operations
+  const handleLayerSelect = useCallback((layerId: string) => {
+    onLayerSelect(layerId);
+  }, [onLayerSelect]);
+
+  const createLayerPositionHandler = useCallback((layerId: string) => {
+    return (x: number, y: number) => {
+      onLayerPositionChange(layerId, x, y);
+    };
+  }, [onLayerPositionChange]);
+
+  const createLayerSizeHandler = useCallback((layerId: string) => {
+    return (width: number, height: number) => {
+      onLayerSizeChange(layerId, width, height);
+    };
+  }, [onLayerSizeChange]);
+
+  // Stable callback for layer actions button
+  const handleLayerActionsPress = useCallback(() => {
+    const layer = scene.layers.find((l) => l.id === selectedLayerId);
+    if (layer) {
+      onLayerActionsPress(layer);
+    }
+  }, [scene.layers, selectedLayerId, onLayerActionsPress]);
+
+  // Memoize playback controls style
+  const playbackControlsStyle = useMemo(() => [
+    styles.playbackControls,
+    { backgroundColor: tokens.colors.surface },
+  ], [styles.playbackControls, tokens.colors.surface]);
+
+  // Memoize progress bar container style
+  const progressBarContainerStyle = useMemo(() => [
+    styles.progressBarContainer,
+    { backgroundColor: tokens.colors.borderLight },
+  ], [styles.progressBarContainer, tokens.colors.borderLight]);
+
+  // Memoize progress bar style
+  const progressBarStyle = useMemo(() => ({
+    ...styles.progressBar,
+    width: `${calculateProgressPercent(currentTime, scene.duration)}%` as any,
+    backgroundColor: tokens.colors.primary,
+  }), [styles.progressBar, currentTime, scene.duration, tokens.colors.primary]);
+
+  // Memoize time text style
+  const timeTextStyle = useMemo(() => ({
+    color: tokens.colors.textSecondary,
+  }), [tokens.colors.textSecondary]);
+
   return (
     <View style={styles.previewSection}>
-      <View
-        style={[
-          styles.previewCanvas,
-          {
-            backgroundColor:
-              scene.background.type === "color"
-                ? scene.background.value
-                : tokens.colors.surfaceSecondary,
-            height: PREVIEW_HEIGHT,
-          },
-        ]}
-      >
+      <View style={canvasStyle}>
         {scene.layers.length === 0 ? (
           <View style={styles.emptyPreview}>
             <AtomicIcon name="film-outline" size="xl" color="secondary" />
             <AtomicText
               type="bodyMedium"
-              style={{ color: tokens.colors.textSecondary, marginTop: 12 }}
+              style={emptyTextStyle}
             >
               Canvas is empty. Add layers to get started.
             </AtomicText>
@@ -76,28 +140,16 @@ export const EditorPreviewArea: React.FC<EditorPreviewAreaProps> = ({
                 canvasWidth={width}
                 canvasHeight={PREVIEW_HEIGHT}
                 isSelected={selectedLayerId === layer.id}
-                onSelect={() => onLayerSelect(layer.id)}
-                onPositionChange={(x, y) =>
-                  onLayerPositionChange(layer.id, x, y)
-                }
-                onSizeChange={(w, h) => onLayerSizeChange(layer.id, w, h)}
+                onSelect={() => handleLayerSelect(layer.id)}
+                onPositionChange={createLayerPositionHandler(layer.id)}
+                onSizeChange={createLayerSizeHandler(layer.id)}
               />
             ))}
 
             {selectedLayerId && (
               <TouchableOpacity
-                style={[
-                  styles.layerActionsButton,
-                  { backgroundColor: tokens.colors.primary },
-                ]}
-                onPress={() => {
-                  const layer = scene.layers.find(
-                    (l) => l.id === selectedLayerId,
-                  );
-                  if (layer) {
-                    onLayerActionsPress(layer);
-                  }
-                }}
+                style={layerActionsButtonStyle}
+                onPress={handleLayerActionsPress}
               >
                 <AtomicIcon
                   name="ellipsis-vertical"
@@ -110,12 +162,7 @@ export const EditorPreviewArea: React.FC<EditorPreviewAreaProps> = ({
         )}
       </View>
 
-      <View
-        style={[
-          styles.playbackControls,
-          { backgroundColor: tokens.colors.surface },
-        ]}
-      >
+      <View style={playbackControlsStyle}>
         <View style={styles.playbackRow}>
           <TouchableOpacity onPress={onPlayPause} style={styles.playButton}>
             <AtomicIcon
@@ -128,10 +175,9 @@ export const EditorPreviewArea: React.FC<EditorPreviewAreaProps> = ({
           <View style={styles.timeDisplay}>
             <AtomicText
               type="labelSmall"
-              style={{ color: tokens.colors.textSecondary }}
+              style={timeTextStyle}
             >
-              {Math.floor(currentTime / 1000)}s /{" "}
-              {Math.floor(scene.duration / 1000)}s
+              {formatTimeDisplay(currentTime, true)} / {formatTimeDisplay(scene.duration, true)}
             </AtomicText>
           </View>
 
@@ -140,23 +186,12 @@ export const EditorPreviewArea: React.FC<EditorPreviewAreaProps> = ({
           </TouchableOpacity>
         </View>
 
-        <View
-          style={[
-            styles.progressBarContainer,
-            { backgroundColor: tokens.colors.borderLight },
-          ]}
-        >
-          <View
-            style={[
-              styles.progressBar,
-              {
-                width: `${(currentTime / scene.duration) * 100}%`,
-                backgroundColor: tokens.colors.primary,
-              },
-            ]}
-          />
+        <View style={progressBarContainerStyle}>
+          <View style={progressBarStyle} />
         </View>
       </View>
     </View>
   );
-};
+});
+
+EditorPreviewArea.displayName = 'EditorPreviewArea';
