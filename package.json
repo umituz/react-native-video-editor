@@ -16,7 +16,8 @@
     "lint:fix": "eslint src --fix",
     "version:patch": "npm version patch -m 'chore: release v%s'",
     "version:minor": "npm version minor -m 'chore: release v%s'",
-    "version:major": "npm version major -m 'chore: release v%s'"
+    "version:major": "npm version major -m 'chore: release v%s'",
+    "setup:skill": "node -e \"const fs = require('fs'); const path = require('path'); const skillDir = path.join(process.env.HOME, '.claude', 'skills', 'react-native-video-editor'); fs.mkdirSync(skillDir, {recursive: true}); fs.copyFileSync(path.join(__dirname, 'skills/SKILL.md'), path.join(skillDir, 'SKILL.md')); console.log('✅ @umituz/react-native-video-editor setup skill installed to Claude Code!');\""
   },
   "keywords": [
     "react-native",
