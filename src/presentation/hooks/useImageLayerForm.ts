@@ -3,8 +3,8 @@
  * Manages form state for image layer editor
  */
 
-import { useState, useCallback } from "react";
 import type { ImageLayer } from "../../domain/entities/video-project.types";
+import { useLayerForm } from "./generic/use-layer-form.hook";
 
 interface ImageLayerFormState {
   imageUri: string;
@@ -25,33 +25,33 @@ interface UseImageLayerFormReturn {
 export function useImageLayerForm(
   initialLayer?: ImageLayer,
 ): UseImageLayerFormReturn {
-  const [formState, setFormState] = useState<ImageLayerFormState>({
-    imageUri: initialLayer?.uri || "",
-    opacity: initialLayer?.opacity || 1,
-  });
-
-  const setImageUri = useCallback((uri: string) => {
-    setFormState((prev) => ({ ...prev, imageUri: uri }));
-  }, []);
-
-  const setOpacity = useCallback((opacity: number) => {
-    setFormState((prev) => ({ ...prev, opacity }));
-  }, []);
-
-  const buildLayerData = useCallback((): Partial<ImageLayer> => {
-    return {
+  const form = useLayerForm<ImageLayerFormState>({
+    initialValues: {
+      imageUri: initialLayer?.uri || "",
+      opacity: initialLayer?.opacity || 1,
+    },
+    validators: {
+      imageUri: (value) => {
+        if (!value || value.trim().length === 0) {
+          return "Image URI is required";
+        }
+        return null;
+      },
+    },
+    buildData: (formState) => ({
       uri: formState.imageUri,
       opacity: formState.opacity,
-    };
-  }, [formState]);
+    }),
+  });
 
-  const isValid = formState.imageUri.length > 0;
+  const setImageUri = (uri: string) => form.updateField("imageUri", uri);
+  const setOpacity = (opacity: number) => form.updateField("opacity", opacity);
 
   return {
-    formState,
+    formState: form.formState,
     setImageUri,
     setOpacity,
-    buildLayerData,
-    isValid,
+    buildLayerData: form.buildLayerData,
+    isValid: form.isValid,
   };
 }

@@ -3,9 +3,9 @@
  * Manages form state for text layer editor
  */
 
-import { useState, useCallback } from "react";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import type { TextLayer } from "../../domain/entities/video-project.types";
+import { useLayerForm } from "./generic/use-layer-form.hook";
 
 export interface TextLayerFormState {
   text: string;
@@ -36,65 +36,52 @@ export function useTextLayerForm(
 ): UseTextLayerFormReturn {
   const tokens = useAppDesignTokens();
 
-  const [formState, setFormState] = useState<TextLayerFormState>({
-    text: initialLayer?.content || "",
-    fontSize: initialLayer?.fontSize || 48,
-    fontFamily: initialLayer?.fontFamily || "System",
-    fontWeight:
-      (initialLayer?.fontWeight as "normal" | "bold" | "300" | "700") || "bold",
-    color: initialLayer?.color || tokens.colors.textInverse,
-    textAlign: initialLayer?.textAlign || "center",
-  });
-
-  const setText = useCallback((text: string) => {
-    setFormState((prev: TextLayerFormState) => ({ ...prev, text }));
-  }, []);
-
-  const setFontSize = useCallback((size: number) => {
-    setFormState((prev: TextLayerFormState) => ({ ...prev, fontSize: size }));
-  }, []);
-
-  const setFontFamily = useCallback((family: string) => {
-    setFormState((prev: TextLayerFormState) => ({ ...prev, fontFamily: family }));
-  }, []);
-
-  const setFontWeight = useCallback(
-    (weight: "normal" | "bold" | "300" | "700") => {
-      setFormState((prev: TextLayerFormState) => ({ ...prev, fontWeight: weight }));
+  const form = useLayerForm<TextLayerFormState>({
+    initialValues: {
+      text: initialLayer?.content || "",
+      fontSize: initialLayer?.fontSize || 48,
+      fontFamily: initialLayer?.fontFamily || "System",
+      fontWeight:
+        (initialLayer?.fontWeight as "normal" | "bold" | "300" | "700") || "bold",
+      color: initialLayer?.color || tokens.colors.textInverse,
+      textAlign: initialLayer?.textAlign || "center",
     },
-    [],
-  );
-
-  const setColor = useCallback((color: string) => {
-    setFormState((prev: TextLayerFormState) => ({ ...prev, color }));
-  }, []);
-
-  const setTextAlign = useCallback((align: "left" | "center" | "right") => {
-    setFormState((prev: TextLayerFormState) => ({ ...prev, textAlign: align }));
-  }, []);
-
-  const buildLayerData = useCallback((): Partial<TextLayer> => {
-    return {
+    validators: {
+      text: (value) => {
+        if (!value || value.trim().length === 0) {
+          return "Text content is required";
+        }
+        return null;
+      },
+    },
+    buildData: (formState) => ({
       content: formState.text,
       fontSize: formState.fontSize,
       fontFamily: formState.fontFamily,
       fontWeight: formState.fontWeight,
       color: formState.color,
       textAlign: formState.textAlign,
-    };
-  }, [formState]);
+    }),
+  });
 
-  const isValid = formState.text.trim().length > 0;
+  const setText = (text: string) => form.updateField("text", text);
+  const setFontSize = (size: number) => form.updateField("fontSize", size);
+  const setFontFamily = (family: string) => form.updateField("fontFamily", family);
+  const setFontWeight = (weight: "normal" | "bold" | "300" | "700") =>
+    form.updateField("fontWeight", weight);
+  const setColor = (color: string) => form.updateField("color", color);
+  const setTextAlign = (align: "left" | "center" | "right") =>
+    form.updateField("textAlign", align);
 
   return {
-    formState,
+    formState: form.formState,
     setText,
     setFontSize,
     setFontFamily,
     setFontWeight,
     setColor,
     setTextAlign,
-    buildLayerData,
-    isValid,
+    buildLayerData: form.buildLayerData,
+    isValid: form.isValid,
   };
 }

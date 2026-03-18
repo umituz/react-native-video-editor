@@ -4,61 +4,52 @@
  */
 
 import { generateUUID } from "@umituz/react-native-design-system/uuid";
-import type { Scene, ShapeLayer } from "../../domain/entities/video-project.types";
+import type { ShapeLayer } from "../../domain/entities/video-project.types";
 import type { LayerOperationResult, AddShapeLayerData } from "../../domain/entities/video-project.types";
+import { BaseLayerOperationsService } from "./base/base-layer-operations.service";
 
-class ShapeLayerOperationsService {
-  /**
-   * Add shape layer to scene
-   */
+interface ShapeLayerDataWithDefault extends AddShapeLayerData {
+  defaultColor: string;
+}
+
+class ShapeLayerOperationsService extends BaseLayerOperationsService<ShapeLayer> {
+  protected createLayer(data: unknown): ShapeLayer {
+    const { defaultColor, ...layerData } = data as ShapeLayerDataWithDefault;
+
+    return {
+      id: generateUUID(),
+      type: "shape",
+      shape: (layerData.shape ?? "rectangle") as ShapeLayer["shape"],
+      position: { x: 25, y: 25 },
+      size: { width: 50, height: 50 },
+      rotation: 0,
+      opacity: layerData.opacity ?? 1,
+      fillColor: layerData.fillColor ?? defaultColor,
+      borderColor: layerData.borderColor,
+      borderWidth: layerData.borderWidth,
+      animation: {
+        type: "fade",
+        duration: 500,
+        easing: "ease-in-out",
+      },
+    };
+  }
+
+  protected validateLayerData(): string | null {
+    return null;
+  }
+
+  protected getLayerType(): ShapeLayer["type"] {
+    return "shape";
+  }
+
   addShapeLayer(
     scenes: Scene[],
     sceneIndex: number,
     layerData: AddShapeLayerData,
     defaultColor: string,
   ): LayerOperationResult {
-    try {
-      if (sceneIndex < 0 || sceneIndex >= scenes.length) {
-        return {
-          success: false,
-          updatedScenes: scenes,
-          error: "Invalid scene index",
-        };
-      }
-
-      const newLayer: ShapeLayer = {
-        id: generateUUID(),
-        type: "shape",
-        shape: (layerData.shape ?? "rectangle") as ShapeLayer["shape"],
-        position: { x: 25, y: 25 },
-        size: { width: 50, height: 50 },
-        rotation: 0,
-        opacity: layerData.opacity ?? 1,
-        fillColor: layerData.fillColor ?? defaultColor,
-        borderColor: layerData.borderColor,
-        borderWidth: layerData.borderWidth,
-        animation: {
-          type: "fade",
-          duration: 500,
-          easing: "ease-in-out",
-        },
-      };
-
-      const updatedScenes = [...scenes];
-      updatedScenes[sceneIndex] = {
-        ...updatedScenes[sceneIndex],
-        layers: [...updatedScenes[sceneIndex].layers, newLayer],
-      };
-
-      return { success: true, updatedScenes };
-    } catch (error) {
-      return {
-        success: false,
-        updatedScenes: scenes,
-        error:
-          error instanceof Error ? error.message : "Failed to add shape layer",
-      };
-    }
+    return this.addLayer(scenes, sceneIndex, { ...layerData, defaultColor });
   }
 }
 

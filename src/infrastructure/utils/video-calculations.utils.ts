@@ -4,29 +4,11 @@
  */
 
 import type { Scene, VideoProject } from "../../domain/entities/video-project.types";
-
-/**
- * Resolution multipliers for file size estimation
- */
-export const RESOLUTION_MULTIPLIERS: Record<string, number> = {
-  "720p": 0.5,
-  "1080p": 1.0,
-  "4k": 3.0,
-};
-
-/**
- * Quality multipliers for file size estimation
- */
-export const QUALITY_MULTIPLIERS: Record<string, number> = {
-  low: 0.6,
-  medium: 1.0,
-  high: 1.4,
-};
-
-/**
- * Base file size per second of video (in MB)
- */
-export const BASE_SIZE_PER_SECOND = 2.5;
+import {
+  RESOLUTION_MULTIPLIERS,
+  QUALITY_MULTIPLIERS,
+  BASE_SIZE_PER_SECOND,
+} from "../constants/export.constants";
 
 /**
  * Calculate estimated file size for video export
@@ -37,8 +19,8 @@ export function calculateEstimatedFileSize(
   quality: string,
 ): number {
   const baseSize = durationSeconds * BASE_SIZE_PER_SECOND;
-  const resolutionMultiplier = RESOLUTION_MULTIPLIERS[resolution] || 1.0;
-  const qualityMultiplier = QUALITY_MULTIPLIERS[quality] || 1.0;
+  const resolutionMultiplier = RESOLUTION_MULTIPLIERS[resolution as keyof typeof RESOLUTION_MULTIPLIERS] || 1.0;
+  const qualityMultiplier = QUALITY_MULTIPLIERS[quality as keyof typeof QUALITY_MULTIPLIERS] || 1.0;
 
   return baseSize * resolutionMultiplier * qualityMultiplier;
 }

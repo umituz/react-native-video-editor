@@ -6,42 +6,43 @@
 import type { Scene, VideoProject, Layer } from "../../domain/entities/video-project.types";
 
 /**
- * Optimized deep clone for VideoProject
- * Uses structured clone if available, falls back to manual clone
+ * Generic deep clone using structured clone or spread operator
  */
-export function cloneVideoProject(project: VideoProject): VideoProject {
-  // Use structured clone for better performance if available
+export function deepClone<T>(obj: T): T {
   if (typeof structuredClone !== 'undefined') {
-    return structuredClone(project);
+    return structuredClone(obj);
   }
 
-  // Manual clone fallback - only clone what's necessary
-  return {
-    ...project,
-    scenes: project.scenes.map((scene: Scene) => ({
-      ...scene,
-      layers: scene.layers.map((layer: Layer) => ({ ...layer })),
-    })),
-  };
+  if (Array.isArray(obj)) {
+    return obj.map(item => deepClone(item)) as T;
+  }
+
+  if (obj !== null && typeof obj === 'object') {
+    return Object.keys(obj).reduce((acc, key) => {
+      (acc as Record<string, unknown>)[key] = deepClone((obj as Record<string, unknown>)[key]);
+      return acc;
+    }, {} as T);
+  }
+
+  return obj;
+}
+
+/**
+ * Optimized deep clone for VideoProject
+ */
+export function cloneVideoProject(project: VideoProject): VideoProject {
+  return deepClone(project);
 }
 
 /**
  * Optimized deep clone for Scene
  */
 export function cloneScene(scene: Scene): Scene {
-  if (typeof structuredClone !== 'undefined') {
-    return structuredClone(scene);
-  }
-
-  return {
-    ...scene,
-    layers: scene.layers.map((layer: Layer) => ({ ...layer })),
-  };
+  return deepClone(scene);
 }
 
 /**
- * Optimized shallow clone for Layer
- * Layer objects are already immutable in our architecture
+ * Shallow clone for Layer
  */
 export function cloneLayer(layer: Layer): Layer {
   return { ...layer };
@@ -51,7 +52,7 @@ export function cloneLayer(layer: Layer): Layer {
  * Clone multiple layers
  */
 export function cloneLayers(layers: Layer[]): Layer[] {
-  return layers.map((layer: Layer) => ({ ...layer }));
+  return layers.map(layer => ({ ...layer }));
 }
 
 /**
@@ -61,7 +62,7 @@ export function cloneSceneWithNewId(scene: Scene, generateId: () => string): Sce
   return {
     ...scene,
     id: generateId(),
-    layers: scene.layers.map((layer: Layer) => ({
+    layers: scene.layers.map(layer => ({
       ...layer,
       id: generateId(),
     })),
@@ -79,36 +80,16 @@ export function cloneLayerWithNewId(layer: Layer, generateId: () => string): Lay
 }
 
 /**
- * Optimized clone for Audio configuration
+ * Generic shallow clone for any object
  */
-export function cloneAudio(audio: Scene["audio"]): Scene["audio"] {
-  if (!audio) return audio;
-  return { ...audio };
+export function shallowClone<T>(obj: T): T {
+  if (!obj) return obj;
+  if (Array.isArray(obj)) return [...obj] as T;
+  return { ...obj } as T;
 }
 
 /**
- * Optimized clone for Background configuration
- */
-export function cloneBackground(background: Scene["background"]): Scene["background"] {
-  return { ...background };
-}
-
-/**
- * Optimized clone for Transition configuration
- */
-export function cloneTransition(transition: Scene["transition"]): Scene["transition"] {
-  return { ...transition };
-}
-
-/**
- * Create a safe copy of an array (shallow clone)
- */
-export function cloneArray<T>(array: T[]): T[] {
-  return [...array];
-}
-
-/**
- * Safe array slice that handles edge cases
+ * Safe array slice
  */
 export function safeSlice<T>(
   array: T[],
