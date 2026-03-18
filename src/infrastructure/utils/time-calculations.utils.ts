@@ -1,21 +1,7 @@
 /**
  * Time Calculation Utilities
- * Centralized time-related calculations for video editor
+ * Internal time-related calculations for video editor
  */
-
-/**
- * Convert milliseconds to seconds
- */
-export function msToSeconds(ms: number): number {
-  return ms / 1000;
-}
-
-/**
- * Convert seconds to milliseconds
- */
-export function secondsToMs(seconds: number): number {
-  return seconds * 1000;
-}
 
 /**
  * Format milliseconds as display time (e.g., "5s" or "1:23")
@@ -44,10 +30,7 @@ export function formatTimeDetailed(ms: number): string {
   return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}.${tenths}`;
 }
 
-/**
- * Calculate progress percentage (0-1)
- */
-export function calculateProgress(current: number, total: number): number {
+function calculateProgress(current: number, total: number): number {
   if (total <= 0) return 0;
   return Math.min(1, Math.max(0, current / total));
 }
@@ -74,13 +57,6 @@ export function addDeltaTime(baseTime: number, deltaTime: number): number {
 }
 
 /**
- * Clamp time to duration bounds
- */
-export function clampTime(time: number, duration: number): number {
-  return Math.max(0, Math.min(duration, time));
-}
-
-/**
  * Check if time is at or past duration
  */
 export function isTimeAtEnd(time: number, duration: number): boolean {
@@ -97,11 +73,4 @@ export function toSrtTime(seconds: number): string {
   const ms = Math.floor((seconds % 1) * 1000);
 
   return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")},${String(ms).padStart(3, "0")}`;
-}
-
-/**
- * Calculate total duration from scenes (in milliseconds)
- */
-export function calculateTotalDuration(sceneDurations: number[]): number {
-  return sceneDurations.reduce((total, duration) => total + duration, 0);
 }
