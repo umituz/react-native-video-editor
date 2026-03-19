@@ -1,10 +1,11 @@
 /**
  * Editor Timeline Component
  * Single Responsibility: Display scene timeline
+ * PERFORMANCE: Uses FlatList for efficient horizontal scene rendering
  */
 
-import React, { useMemo } from "react";
-import { View, ScrollView, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useMemo, useCallback } from "react";
+import { View, FlatList, TouchableOpacity, StyleSheet } from "react-native";
 import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { useLocalization } from "@umituz/react-native-settings";
@@ -131,15 +132,13 @@ export const EditorTimeline: React.FC<EditorTimelineProps> = ({
         </TouchableOpacity>
       </View>
 
-      <ScrollView
+      <FlatList
         horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.scenesScroll}
-      >
-        {project.scenes.map((scene: Scene, index: number) => (
+        data={project.scenes}
+        keyExtractor={(scene) => scene.id}
+        renderItem={useCallback(({ item, index }: { item: Scene; index: number }) => (
           <SceneCard
-            key={scene.id}
-            scene={scene}
+            scene={item}
             index={index}
             isSelected={currentSceneIndex === index}
             onSelect={onSceneSelect}
@@ -151,8 +150,27 @@ export const EditorTimeline: React.FC<EditorTimelineProps> = ({
             onPrimaryColor={tokens.colors.onPrimary}
             textPrimaryColor={tokens.colors.textPrimary}
           />
-        ))}
-      </ScrollView>
+        ), [currentSceneIndex, onSceneSelect, onSceneLongPress, tokens.colors])}
+        showsHorizontalScrollIndicator={false}
+        style={styles.scenesScroll}
+        // Performance optimizations for horizontal lists
+        removeClippedSubviews={true}
+        maxToRenderPerBatch={5}
+        updateCellsBatchingPeriod={50}
+        initialNumToRender={5}
+        windowSize={5}
+        // Prevents layout flicker
+        getItemLayout={(data, index) => ({
+          length: 84, // sceneCard width + marginRight
+          offset: 84 * index,
+          index,
+        })}
+        // Maintain scroll position
+        maintainVisibleContentPosition={{
+          minIndexForVisible: 0,
+          autoscrollToTopThreshold: 10,
+        }}
+      />
     </View>
   );
 };

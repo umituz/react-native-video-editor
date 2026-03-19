@@ -1,12 +1,11 @@
 /**
  * Layer Actions Menu Component
  * Single Responsibility: Display layer action menu
+ * REFACTORED: Now uses generic ActionMenu component (89 lines)
  */
 
-import React from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
-import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system/atoms";
-import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
+import React, { useMemo, useCallback } from "react";
+import { ActionMenu, type ActionMenuItem } from "./generic/ActionMenu";
 import { useLocalization } from "@umituz/react-native-settings";
 import type { Layer } from "../../domain/entities/video-project.types";
 
@@ -35,167 +34,106 @@ export const LayerActionsMenu: React.FC<LayerActionsMenuProps> = ({
   onMoveBack,
   onDelete,
 }) => {
-  const tokens = useAppDesignTokens();
   const { t } = useLocalization();
 
-  return (
-    <View style={{ paddingVertical: 8 }}>
-      {layer.type === "text" && (
-        <TouchableOpacity style={styles.actionMenuItem} onPress={onEditText}>
-          <AtomicIcon name="create-outline" size="md" color="primary" />
-          <AtomicText
-            type="bodyMedium"
-            style={{
-              color: tokens.colors.textPrimary,
-              marginLeft: 12,
-            }}
-          >
-            {t("editor.layers.actions.editText")}
-          </AtomicText>
-        </TouchableOpacity>
-      )}
-      {layer.type === "image" && (
-        <TouchableOpacity style={styles.actionMenuItem} onPress={onEditImage}>
-          <AtomicIcon name="create-outline" size="md" color="primary" />
-          <AtomicText
-            type="bodyMedium"
-            style={{
-              color: tokens.colors.textPrimary,
-              marginLeft: 12,
-            }}
-          >
-            {t("editor.layers.actions.editImage")}
-          </AtomicText>
-        </TouchableOpacity>
-      )}
+  // Build menu items based on layer type
+  const menuItems = useMemo<ActionMenuItem[]>(() => {
+    const items: ActionMenuItem[] = [];
 
-      <TouchableOpacity style={styles.actionMenuItem} onPress={onAnimate}>
-        <AtomicIcon name="sparkles-outline" size="md" color="primary" />
-        <AtomicText
-          type="bodyMedium"
-          style={{
-            color: tokens.colors.textPrimary,
-            marginLeft: 12,
-          }}
-        >
-          {layer.animation
-            ? t("editor.layers.actions.editAnimation")
-            : t("editor.layers.actions.addAnimation")}
-        </AtomicText>
-        {layer.animation && (
-          <View
-            style={[
-              styles.animationBadge,
-              { backgroundColor: tokens.colors.success },
-            ]}
-          />
-        )}
-      </TouchableOpacity>
+    // Type-specific actions
+    if (layer.type === "text") {
+      items.push({
+        id: "edit-text",
+        label: t("editor.layers.actions.editText") || "Edit Text",
+        icon: "create-outline",
+      });
+    }
 
-      <TouchableOpacity style={styles.actionMenuItem} onPress={onDuplicate}>
-        <AtomicIcon name="copy" size="md" color="primary" />
-        <AtomicText
-          type="bodyMedium"
-          style={{
-            color: tokens.colors.textPrimary,
-            marginLeft: 12,
-          }}
-        >
-          {t("editor.layers.actions.duplicate")}
-        </AtomicText>
-      </TouchableOpacity>
+    if (layer.type === "image") {
+      items.push({
+        id: "edit-image",
+        label: t("editor.layers.actions.editImage") || "Edit Image",
+        icon: "create-outline",
+      });
+    }
 
-      <View
-        style={[styles.divider, { backgroundColor: tokens.colors.border }]}
-      />
+    // Common actions
+    items.push(
+      {
+        id: "animate",
+        label: layer.animation
+          ? (t("editor.layers.actions.editAnimation") || "Edit Animation")
+          : (t("editor.layers.actions.addAnimation") || "Add Animation"),
+        icon: "sparkles-outline",
+      },
+      {
+        id: "duplicate",
+        label: t("editor.layers.actions.duplicate") || "Duplicate",
+        icon: "copy",
+      },
+      {
+        id: "move-front",
+        label: t("editor.layers.actions.moveFront") || "Bring to Front",
+        icon: "flip-to-front",
+      },
+      {
+        id: "move-up",
+        label: t("editor.layers.actions.moveUp") || "Move Forward",
+        icon: "arrow-upward",
+      },
+      {
+        id: "move-down",
+        label: t("editor.layers.actions.moveDown") || "Move Backward",
+        icon: "arrow-downward",
+      },
+      {
+        id: "move-back",
+        label: t("editor.layers.actions.moveBack") || "Send to Back",
+        icon: "flip-to-back",
+      },
+      {
+        id: "delete",
+        label: t("editor.layers.actions.delete") || "Delete",
+        icon: "delete",
+        destructive: true,
+      },
+    );
 
-      <TouchableOpacity style={styles.actionMenuItem} onPress={onMoveFront}>
-        <AtomicIcon name="chevron-up-outline" size="md" color="secondary" />
-        <AtomicText
-          type="bodyMedium"
-          style={{
-            color: tokens.colors.textSecondary,
-            marginLeft: 12,
-          }}
-        >
-          {t("editor.layers.actions.bringToFront")}
-        </AtomicText>
-      </TouchableOpacity>
+    return items;
+  }, [layer, t]);
 
-      <TouchableOpacity style={styles.actionMenuItem} onPress={onMoveUp}>
-        <AtomicIcon name="chevron-up-outline" size="md" color="secondary" />
-        <AtomicText
-          type="bodyMedium"
-          style={{
-            color: tokens.colors.textSecondary,
-            marginLeft: 12,
-          }}
-        >
-          {t("editor.layers.actions.moveUp")}
-        </AtomicText>
-      </TouchableOpacity>
+  // Handle action selection
+  const handleSelect = useCallback((actionId: string) => {
+    switch (actionId) {
+      case "edit-text":
+        onEditText();
+        break;
+      case "edit-image":
+        onEditImage();
+        break;
+      case "animate":
+        onAnimate();
+        break;
+      case "duplicate":
+        onDuplicate();
+        break;
+      case "move-front":
+        onMoveFront();
+        break;
+      case "move-up":
+        onMoveUp();
+        break;
+      case "move-down":
+        onMoveDown();
+        break;
+      case "move-back":
+        onMoveBack();
+        break;
+      case "delete":
+        onDelete();
+        break;
+    }
+  }, [onEditText, onEditImage, onAnimate, onDuplicate, onMoveFront, onMoveUp, onMoveDown, onMoveBack, onDelete]);
 
-      <TouchableOpacity style={styles.actionMenuItem} onPress={onMoveDown}>
-        <AtomicIcon name="chevron-down" size="md" color="secondary" />
-        <AtomicText
-          type="bodyMedium"
-          style={{
-            color: tokens.colors.textSecondary,
-            marginLeft: 12,
-          }}
-        >
-          {t("editor.layers.actions.moveDown")}
-        </AtomicText>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.actionMenuItem} onPress={onMoveBack}>
-        <AtomicIcon name="chevron-down-outline" size="md" color="secondary" />
-        <AtomicText
-          type="bodyMedium"
-          style={{
-            color: tokens.colors.textSecondary,
-            marginLeft: 12,
-          }}
-        >
-          {t("editor.layers.actions.sendToBack")}
-        </AtomicText>
-      </TouchableOpacity>
-
-      <View
-        style={[styles.divider, { backgroundColor: tokens.colors.border }]}
-      />
-
-      <TouchableOpacity style={styles.actionMenuItem} onPress={onDelete}>
-        <AtomicIcon name="trash-outline" size="md" color="error" />
-        <AtomicText
-          type="bodyMedium"
-          style={{
-            color: tokens.colors.error,
-            marginLeft: 12,
-          }}
-        >
-          {t("editor.layers.actions.delete")}
-        </AtomicText>
-      </TouchableOpacity>
-    </View>
-  );
+  return <ActionMenu actions={menuItems} onSelect={handleSelect} testID="layer-actions-menu" />;
 };
-
-const styles = StyleSheet.create({
-  actionMenuItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-  },
-  divider: {
-    height: 1,
-    marginVertical: 8,
-  },
-  animationBadge: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginLeft: 8,
-  },
-});

@@ -1,7 +1,7 @@
 /**
  * useEditorPlayback Hook
  * Single Responsibility: Playback control for editor
- * Optimized for performance with stable animation loop
+ * PERFORMANCE: Optimized with frame throttling (30fps target) and stable refs
  */
 
 import { useState, useEffect, useCallback, useRef } from "react";
@@ -11,6 +11,11 @@ import {
   addDeltaTime,
   isTimeAtEnd,
 } from "../../infrastructure/utils/time-calculations.utils";
+
+// PERFORMANCE: Target 30fps instead of 60fps to reduce CPU load
+// 60fps = 16.67ms, 30fps = 33.33ms between frames
+const TARGET_FPS = 30;
+const FRAME_INTERVAL = 1000 / TARGET_FPS;
 
 interface UseEditorPlaybackParams {
   currentScene: Scene | undefined;
@@ -33,6 +38,7 @@ export function useEditorPlayback({
   // Use refs to avoid re-creating animation loop on every render
   const animationFrameRef = useRef<number | null>(null);
   const lastTimestampRef = useRef<number>(0);
+  const lastFrameTimeRef = useRef<number>(0); // Track frame time for throttling
   const isPlayingRef = useRef(isPlaying);
   const currentSceneRef = useRef(currentScene);
   const durationRef = useRef(0);
@@ -49,7 +55,7 @@ export function useEditorPlayback({
     }
   }, [currentScene]);
 
-  // Video playback animation loop - optimized with refs
+  // Video playback animation loop - optimized with refs and frame throttling
   useEffect(() => {
     if (!currentScene) return;
 
@@ -60,9 +66,19 @@ export function useEditorPlayback({
         return;
       }
 
+      // PERFORMANCE: Frame throttling - skip frames to maintain target FPS
+      if (lastFrameTimeRef.current > 0) {
+        const elapsed = timestamp - lastFrameTimeRef.current;
+        if (elapsed < FRAME_INTERVAL) {
+          animationFrameRef.current = requestAnimationFrame(animate);
+          return;
+        }
+      }
+
       if (lastTimestampRef.current === 0) {
         lastTimestampRef.current = timestamp;
       }
+      lastFrameTimeRef.current = timestamp;
 
       const deltaTime = calculateDelta(timestamp, lastTimestampRef.current);
       lastTimestampRef.current = timestamp;
@@ -87,6 +103,7 @@ export function useEditorPlayback({
 
     if (isPlaying) {
       lastTimestampRef.current = 0;
+      lastFrameTimeRef.current = 0;
       animationFrameRef.current = requestAnimationFrame(animate);
     }
 

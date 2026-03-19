@@ -1,10 +1,11 @@
 /**
  * SubtitleListPanel Component
  * Full subtitle editor panel: list + add/edit modal
+ * PERFORMANCE: Uses FlatList for efficient rendering of large subtitle lists
  */
 
-import React, { useMemo } from "react";
-import { View, ScrollView } from "react-native";
+import React, { useMemo, useCallback } from "react";
+import { View, FlatList } from "react-native";
 import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { SubtitleListHeader } from "./subtitle/SubtitleListHeader";
@@ -40,13 +41,41 @@ export const SubtitleListPanel: React.FC<SubtitleListPanelProps> = ({
     return subtitles.find((s) => currentTime >= s.startTime && currentTime <= s.endTime)?.id ?? null;
   }, [subtitles, currentTime]);
 
-  const emptyStyles = {
+  // Memoize empty styles to prevent recreation
+  const emptyStyles = useMemo(() => ({
     emptyBox: {
       alignItems: "center" as const,
       paddingTop: tokens.spacing.xl,
       gap: tokens.spacing.sm,
     },
-  };
+  }), [tokens.spacing.xl, tokens.spacing.sm]);
+
+  // Stable render item for FlatList - prevents unnecessary re-renders
+  const renderItem = useCallback(({ item }: { item: Subtitle }) => (
+    <SubtitleListItem
+      key={item.id}
+      subtitle={item}
+      isActive={item.id === activeId}
+      onEdit={form.openEdit}
+      onSeek={onSeek}
+    />
+  ), [activeId, form.openEdit, onSeek]);
+
+  // Stable key extractor
+  const keyExtractor = useCallback((item: Subtitle) => item.id, []);
+
+  // List empty component - memoized
+  const ListEmptyComponent = useMemo(() => (
+    <View style={emptyStyles.emptyBox}>
+      <AtomicIcon name="video" size="lg" color="textSecondary" />
+      <AtomicText color="textSecondary">
+        {t("subtitle.panel.empty") || "No subtitles yet"}
+      </AtomicText>
+      <AtomicText type="labelSmall" color="textTertiary">
+        {t("subtitle.panel.emptyHint") || "Tap + to add a subtitle"}
+      </AtomicText>
+    </View>
+  ), [emptyStyles.emptyBox, t]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -56,29 +85,27 @@ export const SubtitleListPanel: React.FC<SubtitleListPanelProps> = ({
         title={t("subtitle.panel.title") || "Subtitles"}
       />
 
-      <ScrollView contentContainerStyle={{ paddingVertical: tokens.spacing.sm }}>
-        {subtitles.length === 0 ? (
-          <View style={emptyStyles.emptyBox}>
-            <AtomicIcon name="video" size="lg" color="textSecondary" />
-            <AtomicText color="textSecondary">
-              {t("subtitle.panel.empty") || "No subtitles yet"}
-            </AtomicText>
-            <AtomicText type="labelSmall" color="textTertiary">
-              {t("subtitle.panel.emptyHint") || "Tap + to add a subtitle"}
-            </AtomicText>
-          </View>
-        ) : (
-          subtitles.map((subtitle) => (
-            <SubtitleListItem
-              key={subtitle.id}
-              subtitle={subtitle}
-              isActive={subtitle.id === activeId}
-              onEdit={form.openEdit}
-              onSeek={onSeek}
-            />
-          ))
-        )}
-      </ScrollView>
+      <FlatList
+        data={subtitles}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+        ListEmptyComponent={ListEmptyComponent}
+        contentContainerStyle={{
+          paddingVertical: tokens.spacing.sm,
+          flexGrow: 1,
+        }}
+        removeClippedSubviews={true}
+        maxToRenderPerBatch={10}
+        updateCellsBatchingPeriod={50}
+        initialNumToRender={10}
+        windowSize={5}
+        // Performance: Prevents layout jumps on Android
+        getItemLayout={(data, index) => ({
+          length: 80, // Approximate height of each item
+          offset: 80 * index,
+          index,
+        })}
+      />
 
       <SubtitleModal
         visible={form.showModal}

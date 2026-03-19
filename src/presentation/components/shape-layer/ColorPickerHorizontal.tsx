@@ -1,12 +1,14 @@
 /**
- * ColorPickerHorizontal Component
+ * Color Picker Horizontal Component
  * Horizontal scrolling color picker for shape layer
+ * REFACTORED: Uses generic Selector with colorPreview mode (28 lines)
  */
 
-import React from "react";
-import { View, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
-import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system/atoms";
+import React, { useMemo } from "react";
+import { View } from "react-native";
+import { AtomicText } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
+import { Selector, type SelectorItem } from "../generic/Selector";
 import { SHAPE_COLORS } from "../../../infrastructure/constants/shape-layer.constants";
 
 interface ColorPickerHorizontalProps {
@@ -22,8 +24,13 @@ export const ColorPickerHorizontal: React.FC<ColorPickerHorizontalProps> = ({
 }) => {
   const tokens = useAppDesignTokens();
 
+  const items = useMemo<SelectorItem[]>(
+    () => SHAPE_COLORS.map((color) => ({ value: color.value, label: "", color: color.value })),
+    [],
+  );
+
   return (
-    <View style={styles.section}>
+    <View style={{ marginBottom: tokens.spacing.md }}>
       <AtomicText
         type="bodyMedium"
         style={{
@@ -34,56 +41,14 @@ export const ColorPickerHorizontal: React.FC<ColorPickerHorizontalProps> = ({
       >
         {title}
       </AtomicText>
-
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.colorsScroll}
-      >
-        {SHAPE_COLORS.map((color) => (
-          <TouchableOpacity
-            key={color.value}
-            style={[
-              styles.colorButton,
-              {
-                backgroundColor: color.value,
-                borderColor:
-                  selectedColor === color.value
-                    ? tokens.colors.primary
-                    : tokens.colors.borderLight,
-                borderWidth: selectedColor === color.value ? 3 : 2,
-              },
-            ]}
-            onPress={() => onColorChange(color.value)}
-          >
-            {selectedColor === color.value && (
-              <AtomicIcon
-                name="checkmark-outline"
-                size="sm"
-                color={color.value === "#FFFFFF" ? "primary" : "onSurface"}
-              />
-            )}
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+      <Selector
+        items={items}
+        selectedValue={selectedColor}
+        onSelect={onColorChange}
+        orientation="horizontal"
+        colorPreview
+        testID="color-picker-horizontal"
+      />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  section: {
-    marginBottom: 24,
-  },
-  colorsScroll: {
-    marginHorizontal: -16,
-    paddingHorizontal: 16,
-  },
-  colorButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 12,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

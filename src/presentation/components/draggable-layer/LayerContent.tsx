@@ -1,10 +1,12 @@
 /**
  * LayerContent Component
  * Renders different layer types (text, image, shape)
+ * PERFORMANCE: Uses expo-image for better caching and memory management
  */
 
 import React from "react";
-import { View, Image, Text as RNText, StyleSheet } from "react-native";
+import { View, Text as RNText, StyleSheet } from "react-native";
+import { Image } from "expo-image";
 import { AtomicIcon } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import type { Layer, TextLayer, ImageLayer, ShapeLayer } from "../../../domain/entities/video-project.types";
@@ -46,7 +48,10 @@ export const LayerContent: React.FC<LayerContentProps> = ({ layer }) => {
         <Image
           source={{ uri: imageLayer.uri }}
           style={styles.layerImage}
-          resizeMode="cover"
+          contentFit="cover"
+          // PERFORMANCE: Cache strategy for better performance
+          cachePolicy="memory-disk"
+          transition={200} // Smooth fade-in
         />
       ) : (
         <View style={[styles.imagePlaceholder, { backgroundColor: tokens.colors.surface }]}>

@@ -1,12 +1,11 @@
 /**
  * Scene Actions Menu Component
  * Single Responsibility: Display scene action menu
+ * REFACTORED: Uses generic ActionMenu component (40 lines)
  */
 
-import React from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
-import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system/atoms";
-import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
+import React, { useMemo, useCallback } from "react";
+import { ActionMenu, type ActionMenuItem } from "./generic/ActionMenu";
 
 interface SceneActionsMenuProps {
   sceneIndex: number;
@@ -21,46 +20,37 @@ export const SceneActionsMenu: React.FC<SceneActionsMenuProps> = ({
   onDuplicate,
   onDelete,
 }) => {
-  const tokens = useAppDesignTokens();
+  const menuItems = useMemo<ActionMenuItem[]>(() => {
+    const items: ActionMenuItem[] = [
+      {
+        id: "duplicate",
+        label: "Duplicate Scene",
+        icon: "copy",
+      },
+    ];
 
-  return (
-    <View style={{ paddingVertical: 8 }}>
-      <TouchableOpacity style={styles.actionMenuItem} onPress={onDuplicate}>
-        <AtomicIcon name="copy" size="md" color="primary" />
-        <AtomicText
-          type="bodyMedium"
-          style={{
-            color: tokens.colors.textPrimary,
-            marginLeft: 12,
-          }}
-        >
-          Duplicate Scene
-        </AtomicText>
-      </TouchableOpacity>
+    if (canDelete) {
+      items.push({
+        id: "delete",
+        label: "Delete Scene",
+        icon: "delete",
+        destructive: true,
+      });
+    }
 
-      {canDelete && (
-        <TouchableOpacity style={styles.actionMenuItem} onPress={onDelete}>
-          <AtomicIcon name="trash-outline" size="md" color="error" />
-          <AtomicText
-            type="bodyMedium"
-            style={{
-              color: tokens.colors.error,
-              marginLeft: 12,
-            }}
-          >
-            Delete Scene
-          </AtomicText>
-        </TouchableOpacity>
-      )}
-    </View>
-  );
+    return items;
+  }, [canDelete]);
+
+  const handleSelect = useCallback((actionId: string) => {
+    switch (actionId) {
+      case "duplicate":
+        onDuplicate();
+        break;
+      case "delete":
+        onDelete();
+        break;
+    }
+  }, [onDuplicate, onDelete]);
+
+  return <ActionMenu actions={menuItems} onSelect={handleSelect} testID="scene-actions-menu" />;
 };
-
-const styles = StyleSheet.create({
-  actionMenuItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-  },
-});

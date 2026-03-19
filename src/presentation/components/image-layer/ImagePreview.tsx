@@ -1,10 +1,12 @@
 /**
  * ImagePreview Component
  * Image preview or placeholder for image layer editor
+ * PERFORMANCE: Uses expo-image with caching for better performance
  */
 
 import React from "react";
-import { View, Image, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
+import { Image } from "expo-image";
 import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 
@@ -24,6 +26,10 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
       <Image
         source={{ uri: imageUri }}
         style={[styles.imagePreview, { opacity }]}
+        // PERFORMANCE: Cache strategy for better performance
+        cachePolicy="memory-disk"
+        transition={200} // Smooth fade-in
+        placeholder="#F0F0F0" // Placeholder color while loading
       />
     );
   }

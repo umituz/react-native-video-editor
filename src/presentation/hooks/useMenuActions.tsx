@@ -1,9 +1,10 @@
 /**
  * useMenuActions Hook
  * Single Responsibility: Menu action handlers (layer actions menu)
+ * MEMORY: Properly cleans up timers to prevent memory leaks
  */
 
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { LayerActionsMenu } from "../components/LayerActionsMenu";
 import type { Layer } from "../../domain/entities/video-project.types";
 import type { UseEditorLayersReturn } from "./useEditorLayers";
@@ -30,6 +31,17 @@ export function useMenuActions({
 }: UseMenuActionsParams): UseMenuActionsReturn {
   const { openBottomSheet, closeBottomSheet } = bottomSheet;
 
+  // MEMORY: Track all timers for cleanup
+  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  // MEMORY: Clean up all timers on unmount
+  useEffect(() => {
+    return () => {
+      timersRef.current.forEach((timer) => clearTimeout(timer));
+      timersRef.current = [];
+    };
+  }, []);
+
   const handleLayerActionsPress = useCallback(
     (layer: Layer) => {
       openBottomSheet({
@@ -39,15 +51,18 @@ export function useMenuActions({
             layer={layer}
             onEditText={() => {
               closeBottomSheet();
-              setTimeout(() => handleEditLayer(), 300);
+              const timer = setTimeout(() => handleEditLayer(), 300);
+              timersRef.current.push(timer);
             }}
             onEditImage={() => {
               closeBottomSheet();
-              setTimeout(() => handleEditImageLayer(layer.id), 300);
+              const timer = setTimeout(() => handleEditImageLayer(layer.id), 300);
+              timersRef.current.push(timer);
             }}
             onAnimate={() => {
               closeBottomSheet();
-              setTimeout(() => handleAnimate(layer.id), 300);
+              const timer = setTimeout(() => handleAnimate(layer.id), 300);
+              timersRef.current.push(timer);
             }}
             onDuplicate={() => {
               closeBottomSheet();

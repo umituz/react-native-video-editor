@@ -1,13 +1,15 @@
 /**
- * ColorPicker Component
+ * Color Picker Component
  * Color picker for text layer
+ * REFACTORED: Uses generic Selector with colorPreview mode (35 lines)
  */
 
-import React from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { useLocalization } from "@umituz/react-native-settings";
-import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system/atoms";
+import React, { useMemo } from "react";
+import { View } from "react-native";
+import { AtomicText } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
+import { useLocalization } from "@umituz/react-native-settings";
+import { Selector, type SelectorItem } from "../generic/Selector";
 import { TEXT_COLORS } from "../../../infrastructure/constants/text-layer.constants";
 
 interface ColorPickerProps {
@@ -22,8 +24,13 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
   const { t } = useLocalization();
   const tokens = useAppDesignTokens();
 
+  const items = useMemo<SelectorItem[]>(
+    () => TEXT_COLORS.map((color) => ({ value: color, label: "", color })),
+    [],
+  );
+
   return (
-    <View style={styles.section}>
+    <View style={{ marginBottom: tokens.spacing.md }}>
       <AtomicText
         type="bodyMedium"
         style={{
@@ -34,55 +41,14 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
       >
         {t("editor.properties.color")}
       </AtomicText>
-      <View style={styles.colorGrid}>
-        {TEXT_COLORS.map((color) => (
-          <TouchableOpacity
-            key={color}
-            style={[
-              styles.colorButton,
-              {
-                backgroundColor: color,
-                borderColor:
-                  selectedColor === color
-                    ? tokens.colors.primary
-                    : tokens.colors.borderLight,
-                borderWidth: selectedColor === color ? 3 : 1,
-              },
-            ]}
-            onPress={() => onColorChange(color)}
-          >
-            {selectedColor === color && (
-              <AtomicIcon
-                name="checkmark-outline"
-                size="sm"
-                color={
-                  color === "#FFFFFF" || color === "#FCD34D"
-                    ? "primary"
-                    : "onSurface"
-                }
-              />
-            )}
-          </TouchableOpacity>
-        ))}
-      </View>
+      <Selector
+        items={items}
+        selectedValue={selectedColor}
+        onSelect={onColorChange}
+        orientation="grid"
+        colorPreview
+        testID="color-picker"
+      />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  section: {
-    marginBottom: 24,
-  },
-  colorGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 12,
-  },
-  colorButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

@@ -1,10 +1,12 @@
 /**
  * useDraggableLayerGestures Hook
  * Manages gesture handling for draggable layers
+ * PERFORMANCE: Uses runOnJS for state updates to prevent UI thread blocking
  */
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Gesture } from "react-native-gesture-handler";
+import { runOnJS } from "react-native-reanimated";
 
 interface UseDraggableLayerGesturesParams {
   initialX: number;
@@ -74,22 +76,23 @@ export function useDraggableLayerGestures({
   const gestureHandler = Gesture.Pan()
     .onStart(() => {
       startRef.current = { ...state, x: state.x, y: state.y };
-      onSelect();
+      runOnJS(onSelect)();
     })
     .onUpdate((event) => {
+      'worklet';
       const newX = startRef.current.x + event.translationX;
       const newY = startRef.current.y + event.translationY;
-      setState((prev) => ({ ...prev, x: newX, y: newY }));
+      // Use runOnJS for state updates to prevent blocking UI thread
+      runOnJS(setState)({ x: newX, y: newY, width: state.width, height: state.height });
     })
     .onEnd(() => {
-      setState((prev) => {
-        const clampedX = clamp(prev.x, 0, canvasWidth - prev.width);
-        const clampedY = clamp(prev.y, 0, canvasHeight - prev.height);
-        const newX = (clampedX / canvasWidth) * 100;
-        const newY = (clampedY / canvasHeight) * 100;
-        onPositionChange(newX, newY);
-        return { ...prev, x: clampedX, y: clampedY };
-      });
+      'worklet';
+      const clampedX = clamp(state.x, 0, canvasWidth - state.width);
+      const clampedY = clamp(state.y, 0, canvasHeight - state.height);
+      const newX = (clampedX / canvasWidth) * 100;
+      const newY = (clampedY / canvasHeight) * 100;
+      runOnJS(setState)({ x: clampedX, y: clampedY, width: state.width, height: state.height });
+      runOnJS(onPositionChange)(newX, newY);
     });
 
   const createResizeHandler = (
@@ -98,10 +101,12 @@ export function useDraggableLayerGestures({
   ) => {
     return Gesture.Pan()
       .onStart(() => {
+        'worklet';
         startRef.current = { ...state };
-        onSelect();
+        runOnJS(onSelect)();
       })
       .onUpdate((event) => {
+        'worklet';
         const newWidth = Math.max(MIN_SIZE, startRef.current.width + deltaX(event.translationX));
         const newHeight = Math.max(MIN_SIZE, startRef.current.height + deltaY(event.translationY));
         const clampedWidth = Math.min(newWidth, canvasWidth - startRef.current.x);
@@ -117,24 +122,22 @@ export function useDraggableLayerGestures({
           newY = Math.max(0, startRef.current.y + (startRef.current.height - clampedHeight));
         }
 
-        setState({ x: newX, y: newY, width: clampedWidth, height: clampedHeight });
+        runOnJS(setState)({ x: newX, y: newY, width: clampedWidth, height: clampedHeight });
       })
       .onEnd(() => {
-        setState((prev) => {
-          // Clamp position to canvas bounds
-          const clampedX = Math.max(0, Math.min(prev.x, canvasWidth - prev.width));
-          const clampedY = Math.max(0, Math.min(prev.y, canvasHeight - prev.height));
+        'worklet';
+        // Clamp position to canvas bounds
+        const clampedX = Math.max(0, Math.min(state.x, canvasWidth - state.width));
+        const clampedY = Math.max(0, Math.min(state.y, canvasHeight - state.height));
 
-          const newWidth = (prev.width / canvasWidth) * 100;
-          const newHeight = (prev.height / canvasHeight) * 100;
-          const newX = (clampedX / canvasWidth) * 100;
-          const newY = (clampedY / canvasHeight) * 100;
+        const newWidth = (state.width / canvasWidth) * 100;
+        const newHeight = (state.height / canvasHeight) * 100;
+        const newX = (clampedX / canvasWidth) * 100;
+        const newY = (clampedY / canvasHeight) * 100;
 
-          onSizeChange(newWidth, newHeight);
-          onPositionChange(newX, newY);
-
-          return { ...prev, x: clampedX, y: clampedY };
-        });
+        runOnJS(onSizeChange)(newWidth, newHeight);
+        runOnJS(onPositionChange)(newX, newY);
+        runOnJS(setState)({ x: clampedX, y: clampedY, width: state.width, height: state.height });
       });
   };
 

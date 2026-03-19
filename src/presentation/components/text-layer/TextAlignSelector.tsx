@@ -1,13 +1,15 @@
 /**
- * TextAlignSelector Component
+ * Text Align Selector Component
  * Text alignment selector for text layer
+ * REFACTORED: Uses generic Selector component (38 lines)
  */
 
-import React from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { useLocalization } from "@umituz/react-native-settings";
-import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system/atoms";
+import React, { useMemo } from "react";
+import { View } from "react-native";
+import { AtomicText } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
+import { useLocalization } from "@umituz/react-native-settings";
+import { Selector, type SelectorItem } from "../generic/Selector";
 import { TEXT_ALIGNS } from "../../../infrastructure/constants/text-layer.constants";
 
 interface TextAlignSelectorProps {
@@ -22,8 +24,17 @@ export const TextAlignSelector: React.FC<TextAlignSelectorProps> = ({
   const { t } = useLocalization();
   const tokens = useAppDesignTokens();
 
+  const items = useMemo<SelectorItem<"left" | "center" | "right">[]>(
+    () => TEXT_ALIGNS.map((align) => ({
+      value: align.value,
+      label: "",
+      icon: align.icon,
+    })),
+    [],
+  );
+
   return (
-    <View style={styles.section}>
+    <View style={{ marginBottom: tokens.spacing.md }}>
       <AtomicText
         type="bodyMedium"
         style={{
@@ -34,51 +45,13 @@ export const TextAlignSelector: React.FC<TextAlignSelectorProps> = ({
       >
         {t("editor.properties.text_align")}
       </AtomicText>
-      <View style={styles.alignButtons}>
-        {TEXT_ALIGNS.map((align) => (
-          <TouchableOpacity
-            key={align.value}
-            style={[
-              styles.alignButton,
-              {
-                backgroundColor:
-                  textAlign === align.value
-                    ? tokens.colors.primary
-                    : tokens.colors.surface,
-                borderColor:
-                  textAlign === align.value
-                    ? tokens.colors.primary
-                    : tokens.colors.borderLight,
-              },
-            ]}
-            onPress={() => onTextAlignChange(align.value)}
-          >
-            <AtomicIcon
-              name={align.icon}
-              size="md"
-              color={textAlign === align.value ? "onSurface" : "secondary"}
-            />
-          </TouchableOpacity>
-        ))}
-      </View>
+      <Selector
+        items={items}
+        selectedValue={textAlign}
+        onSelect={onTextAlignChange}
+        icon
+        testID="text-align-selector"
+      />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  section: {
-    marginBottom: 24,
-  },
-  alignButtons: {
-    flexDirection: "row",
-    gap: 8,
-  },
-  alignButton: {
-    flex: 1,
-    paddingVertical: 12,
-    borderRadius: 8,
-    borderWidth: 2,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

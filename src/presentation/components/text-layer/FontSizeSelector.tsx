@@ -1,13 +1,15 @@
 /**
- * FontSizeSelector Component
+ * Font Size Selector Component
  * Font size selector for text layer
+ * REFACTORED: Uses generic Selector component (45 lines)
  */
 
-import React from "react";
-import { View, ScrollView, TouchableOpacity, StyleSheet } from "react-native";
-import { useLocalization } from "@umituz/react-native-settings";
+import React, { useMemo } from "react";
+import { View } from "react-native";
 import { AtomicText } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
+import { useLocalization } from "@umituz/react-native-settings";
+import { Selector, type SelectorItem } from "../generic/Selector";
 import { FONT_SIZES } from "../../../infrastructure/constants/text-layer.constants";
 
 interface FontSizeSelectorProps {
@@ -22,8 +24,13 @@ export const FontSizeSelector: React.FC<FontSizeSelectorProps> = ({
   const { t } = useLocalization();
   const tokens = useAppDesignTokens();
 
+  const items = useMemo<SelectorItem<number>[]>(
+    () => FONT_SIZES.map((size) => ({ value: size, label: `${size}px` })),
+    [],
+  );
+
   return (
-    <View style={styles.section}>
+    <View style={{ marginBottom: tokens.spacing.md }}>
       <AtomicText
         type="bodyMedium"
         style={{
@@ -34,51 +41,13 @@ export const FontSizeSelector: React.FC<FontSizeSelectorProps> = ({
       >
         {t("editor.properties.font_size")}: {fontSize}px
       </AtomicText>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {FONT_SIZES.map((size) => (
-          <TouchableOpacity
-            key={size}
-            style={[
-              styles.sizeButton,
-              {
-                backgroundColor:
-                  fontSize === size
-                    ? tokens.colors.primary
-                    : tokens.colors.surface,
-                borderColor:
-                  fontSize === size
-                    ? tokens.colors.primary
-                    : tokens.colors.borderLight,
-              },
-            ]}
-            onPress={() => onFontSizeChange(size)}
-          >
-            <AtomicText
-              type="bodySmall"
-              style={{
-                color:
-                  fontSize === size ? tokens.colors.onPrimary : tokens.colors.textPrimary,
-                fontWeight: fontSize === size ? "600" : "400",
-              }}
-            >
-              {size}
-            </AtomicText>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+      <Selector
+        items={items}
+        selectedValue={fontSize}
+        onSelect={onFontSizeChange}
+        orientation="horizontal"
+        testID="font-size-selector"
+      />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  section: {
-    marginBottom: 24,
-  },
-  sizeButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 8,
-    borderWidth: 1,
-    marginRight: 8,
-  },
-});

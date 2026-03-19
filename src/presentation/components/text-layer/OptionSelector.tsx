@@ -1,12 +1,14 @@
 /**
- * OptionSelector Component
+ * Option Selector Component
  * Reusable selector for font family, font weight, etc.
+ * REFACTORED: Uses generic Selector component (29 lines)
  */
 
-import React from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useMemo } from "react";
+import { View } from "react-native";
 import { AtomicText } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
+import { Selector, type SelectorItem } from "../generic/Selector";
 
 interface Option {
   label: string;
@@ -28,8 +30,13 @@ export const OptionSelector: React.FC<OptionSelectorProps> = ({
 }) => {
   const tokens = useAppDesignTokens();
 
+  const items = useMemo<SelectorItem<string>[]>(
+    () => options.map((option) => ({ value: option.value, label: option.label })),
+    [options],
+  );
+
   return (
-    <View style={styles.section}>
+    <View style={{ marginBottom: tokens.spacing.md }}>
       <AtomicText
         type="bodyMedium"
         style={{
@@ -40,57 +47,13 @@ export const OptionSelector: React.FC<OptionSelectorProps> = ({
       >
         {title}
       </AtomicText>
-      <View style={styles.optionsGrid}>
-        {options.map((option) => (
-          <TouchableOpacity
-            key={option.value}
-            style={[
-              styles.optionButton,
-              {
-                backgroundColor:
-                  selectedValue === option.value
-                    ? tokens.colors.primary + "20"
-                    : tokens.colors.surface,
-                borderColor:
-                  selectedValue === option.value
-                    ? tokens.colors.primary
-                    : tokens.colors.borderLight,
-              },
-            ]}
-            onPress={() => onValueChange(option.value)}
-          >
-            <AtomicText
-              type="labelSmall"
-              style={{
-                color:
-                  selectedValue === option.value
-                    ? tokens.colors.primary
-                    : tokens.colors.textPrimary,
-                fontWeight: selectedValue === option.value ? "600" : "400",
-              }}
-            >
-              {option.label}
-            </AtomicText>
-          </TouchableOpacity>
-        ))}
-      </View>
+      <Selector
+        items={items}
+        selectedValue={selectedValue}
+        onSelect={onValueChange}
+        orientation="grid"
+        testID="option-selector"
+      />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  section: {
-    marginBottom: 24,
-  },
-  optionsGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 8,
-  },
-  optionButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 8,
-    borderWidth: 1,
-  },
-});
