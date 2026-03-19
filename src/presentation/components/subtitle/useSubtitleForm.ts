@@ -3,7 +3,7 @@
  * Manages subtitle form state and operations
  */
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback } from "react";
 import { DEFAULT_SUBTITLE_STYLE } from "../../../infrastructure/constants/subtitle.constants";
 import type { Subtitle, SubtitleStyle } from "../../../domain/entities/video-project.types";
 

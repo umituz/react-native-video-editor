@@ -55,7 +55,7 @@ export const SubtitleModal: React.FC<SubtitleModalProps> = ({
       paddingHorizontal: tokens.spacing.md,
       paddingTop: tokens.spacing.md,
       paddingBottom: tokens.spacing.xl,
-      maxHeight: "90%",
+      maxHeight: "90%" as const,
     },
     handle: {
       width: 36,
@@ -136,7 +136,7 @@ export const SubtitleModal: React.FC<SubtitleModalProps> = ({
               />
             </View>
 
-            <SubtitleStylePicker value={style} onChange={onChangeStyle} />
+            <SubtitleStylePicker style={style} previewText={text} onChange={onChangeStyle} t={(key) => key} />
 
             <View style={styles.actionRow}>
               <TouchableOpacity style={styles.cancelBtn} onPress={onCancel}>

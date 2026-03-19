@@ -5,7 +5,6 @@
 
 import React from "react";
 import { View, ScrollView, TouchableOpacity } from "react-native";
-import { AtomicText } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { COLLAGE_LAYOUTS } from "../../../infrastructure/constants/collage.constants";
 import type { CollageLayout } from "../../../infrastructure/constants/collage.constants";
@@ -93,9 +92,6 @@ export const CollageLayoutSelector: React.FC<CollageLayoutSelectorProps> = ({
                 );
               })}
             </View>
-            <AtomicText type="caption" color="textSecondary">
-              {layout.name}
-            </AtomicText>
           </TouchableOpacity>
         ))}
       </ScrollView>

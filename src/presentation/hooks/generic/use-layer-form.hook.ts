@@ -5,30 +5,30 @@
  */
 
 import { useState, useCallback } from "react";
-import type { Layer } from "../../domain/entities/video-project.types";
+import type { Layer, ImageLayer, TextLayer } from "../../../domain/entities/video-project.types";
 
 /**
  * Form field validator function type
  */
-export type ValidatorFn<T> = (value: T[keyof T]) => string | null;
+export type ValidatorFn<T, K extends keyof T = keyof T> = (value: T[K]) => string | null;
 
 /**
  * Layer form configuration
  */
 export interface UseLayerFormConfig<T extends Record<string, unknown>> {
   initialValues: Partial<T>;
-  validators?: Partial<Record<keyof T, ValidatorFn<T>>>;
-  buildData: (formState: T) => Partial<Layer>;
+  validators?: Record<string, (value: unknown) => string | null>;
+  buildData: (formState: T) => Partial<Layer> | Partial<ImageLayer> | Partial<TextLayer>;
 }
 
 /**
  * Layer form return type
  */
-export interface UseLayerFormReturn<T extends Record<string, unknown>> {
+export interface UseLayerFormReturn<T extends Record<string, unknown>, R = Partial<Layer>> {
   formState: T;
   updateField: <K extends keyof T>(field: K, value: T[K]) => void;
   setFormState: (state: T | ((prev: T) => T)) => void;
-  buildLayerData: () => Partial<Layer>;
+  buildLayerData: () => R;
   isValid: boolean;
   errors: Partial<Record<keyof T, string | null>>;
   validateField: <K extends keyof T>(field: K) => string | null;
@@ -39,9 +39,9 @@ export interface UseLayerFormReturn<T extends Record<string, unknown>> {
  * Generic hook for managing layer form state
  * Provides type-safe form management with validation support
  */
-export function useLayerForm<T extends Record<string, unknown>>(
+export function useLayerForm<T extends Record<string, unknown>, R = Partial<Layer>>(
   config: UseLayerFormConfig<T>,
-): UseLayerFormReturn<T> {
+): UseLayerFormReturn<T, R> {
   const { initialValues, validators = {}, buildData } = config;
 
   const [formState, setFormState] = useState<T>(
@@ -60,7 +60,7 @@ export function useLayerForm<T extends Record<string, unknown>>(
       }));
 
       // Clear error for this field
-      if (errors[field]) {
+      if (errors[field as keyof typeof errors]) {
         setErrors((prev) => ({
           ...prev,
           [field]: null,
@@ -72,7 +72,7 @@ export function useLayerForm<T extends Record<string, unknown>>(
 
   const validateField = useCallback(
     <K extends keyof T>(field: K): string | null => {
-      const validator = validators[field];
+      const validator = validators[String(field)];
       if (!validator) return null;
 
       const error = validator(formState[field]);
@@ -91,10 +91,13 @@ export function useLayerForm<T extends Record<string, unknown>>(
     const newErrors: Partial<Record<keyof T, string | null>> = {};
 
     for (const field in validators) {
-      const error = validators[field]!(formState[field]);
-      if (error) {
-        newErrors[field] = error;
-        hasError = true;
+      const validator = validators[field];
+      if (validator) {
+        const error = validator(formState[field as keyof T]);
+        if (error) {
+          newErrors[field as keyof T] = error;
+          hasError = true;
+        }
       }
     }
 
@@ -102,8 +105,8 @@ export function useLayerForm<T extends Record<string, unknown>>(
     return !hasError;
   }, [formState, validators]);
 
-  const buildLayerData = useCallback((): Partial<Layer> => {
-    return buildData(formState);
+  const buildLayerData = useCallback((): R => {
+    return buildData(formState) as R;
   }, [formState, buildData]);
 
   const isValid = Object.values(errors).every((error) => error === null);

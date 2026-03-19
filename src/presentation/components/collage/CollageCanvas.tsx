@@ -44,8 +44,8 @@ export const CollageCanvas: React.FC<CollageCanvasProps> = ({
       overflow: "hidden" as const,
     },
     cellImage: {
-      width: "100%",
-      height: "100%",
+      width: "100%" as const,
+      height: "100%" as const,
     },
     cellEmpty: {
       flex: 1,

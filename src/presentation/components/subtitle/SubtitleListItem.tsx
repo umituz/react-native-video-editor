@@ -29,7 +29,6 @@ export const SubtitleListItem: React.FC<SubtitleListItemProps> = ({
     item: {
       flexDirection: "row" as const,
       alignItems: "center" as const,
-      backgroundColor: tokens.colors.surface,
       borderRadius: tokens.borders.radius.md,
       marginHorizontal: tokens.spacing.md,
       marginBottom: tokens.spacing.sm,
@@ -70,17 +69,17 @@ export const SubtitleListItem: React.FC<SubtitleListItemProps> = ({
         activeOpacity={0.7}
       >
         <View style={styles.itemTimeRow}>
-          <AtomicText variant="caption" color="textSecondary">
+          <AtomicText color="textSecondary">
             {formatTimeDetailed(subtitle.startTime)}
           </AtomicText>
-          <AtomicText variant="caption" color="textSecondary">
+          <AtomicText color="textSecondary">
             →
           </AtomicText>
-          <AtomicText variant="caption" color="textSecondary">
+          <AtomicText color="textSecondary">
             {formatTimeDetailed(subtitle.endTime)}
           </AtomicText>
         </View>
-        <AtomicText variant="body" color="textPrimary" numberOfLines={2}>
+        <AtomicText color="textPrimary" numberOfLines={2}>
           {subtitle.text}
         </AtomicText>
       </TouchableOpacity>

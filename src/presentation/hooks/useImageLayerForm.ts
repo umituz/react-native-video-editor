@@ -4,11 +4,12 @@
  */
 
 import type { ImageLayer } from "../../domain/entities/video-project.types";
-import { useLayerForm } from "./generic/use-layer-form.hook";
+import { useLayerForm, type UseLayerFormConfig } from "./generic/use-layer-form.hook";
 
 interface ImageLayerFormState {
   imageUri: string;
   opacity: number;
+  [key: string]: unknown;
 }
 
 interface UseImageLayerFormReturn {
@@ -25,14 +26,14 @@ interface UseImageLayerFormReturn {
 export function useImageLayerForm(
   initialLayer?: ImageLayer,
 ): UseImageLayerFormReturn {
-  const form = useLayerForm<ImageLayerFormState>({
+  const config: UseLayerFormConfig<ImageLayerFormState> = {
     initialValues: {
       imageUri: initialLayer?.uri || "",
       opacity: initialLayer?.opacity || 1,
     },
     validators: {
-      imageUri: (value) => {
-        if (!value || value.trim().length === 0) {
+      imageUri: (value: unknown) => {
+        if (!value || (typeof value === "string" && value.trim().length === 0)) {
           return "Image URI is required";
         }
         return null;
@@ -41,8 +42,10 @@ export function useImageLayerForm(
     buildData: (formState) => ({
       uri: formState.imageUri,
       opacity: formState.opacity,
-    }),
-  });
+    } as Partial<ImageLayer>),
+  };
+
+  const form = useLayerForm<ImageLayerFormState, Partial<ImageLayer>>(config);
 
   const setImageUri = (uri: string) => form.updateField("imageUri", uri);
   const setOpacity = (opacity: number) => form.updateField("opacity", opacity);

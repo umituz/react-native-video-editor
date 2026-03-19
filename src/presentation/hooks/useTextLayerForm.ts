@@ -5,7 +5,7 @@
 
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import type { TextLayer } from "../../domain/entities/video-project.types";
-import { useLayerForm } from "./generic/use-layer-form.hook";
+import { useLayerForm, type UseLayerFormConfig } from "./generic/use-layer-form.hook";
 
 export interface TextLayerFormState {
   text: string;
@@ -14,6 +14,7 @@ export interface TextLayerFormState {
   fontWeight: "normal" | "bold" | "300" | "700";
   color: string;
   textAlign: "left" | "center" | "right";
+  [key: string]: unknown;
 }
 
 interface UseTextLayerFormReturn {
@@ -36,7 +37,7 @@ export function useTextLayerForm(
 ): UseTextLayerFormReturn {
   const tokens = useAppDesignTokens();
 
-  const form = useLayerForm<TextLayerFormState>({
+  const config: UseLayerFormConfig<TextLayerFormState> = {
     initialValues: {
       text: initialLayer?.content || "",
       fontSize: initialLayer?.fontSize || 48,
@@ -47,8 +48,8 @@ export function useTextLayerForm(
       textAlign: initialLayer?.textAlign || "center",
     },
     validators: {
-      text: (value) => {
-        if (!value || value.trim().length === 0) {
+      text: (value: unknown) => {
+        if (!value || (typeof value === "string" && value.trim().length === 0)) {
           return "Text content is required";
         }
         return null;
@@ -61,8 +62,10 @@ export function useTextLayerForm(
       fontWeight: formState.fontWeight,
       color: formState.color,
       textAlign: formState.textAlign,
-    }),
-  });
+    } as Partial<TextLayer>),
+  };
+
+  const form = useLayerForm<TextLayerFormState, Partial<TextLayer>>(config);
 
   const setText = (text: string) => form.updateField("text", text);
   const setFontSize = (size: number) => form.updateField("fontSize", size);

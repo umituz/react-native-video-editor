@@ -4,7 +4,7 @@
  */
 
 import { generateUUID } from "@umituz/react-native-design-system/uuid";
-import type { ImageLayer } from "../../domain/entities/video-project.types";
+import type { ImageLayer, Scene } from "../../domain/entities/video-project.types";
 import type { LayerOperationResult, AddImageLayerData } from "../../domain/entities/video-project.types";
 import { BaseLayerOperationsService } from "./base/base-layer-operations.service";
 

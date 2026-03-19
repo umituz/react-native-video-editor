@@ -4,7 +4,7 @@
  */
 
 import { generateUUID } from "@umituz/react-native-design-system/uuid";
-import type { ShapeLayer } from "../../domain/entities/video-project.types";
+import type { ShapeLayer, Scene } from "../../domain/entities/video-project.types";
 import type { LayerOperationResult, AddShapeLayerData } from "../../domain/entities/video-project.types";
 import { BaseLayerOperationsService } from "./base/base-layer-operations.service";
 
