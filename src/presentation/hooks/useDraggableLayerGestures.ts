@@ -6,6 +6,7 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Gesture } from "react-native-gesture-handler";
+// @ts-ignore - react-native-reanimated is an optional peer dependency
 import { runOnJS } from "react-native-reanimated";
 
 interface UseDraggableLayerGesturesParams {
