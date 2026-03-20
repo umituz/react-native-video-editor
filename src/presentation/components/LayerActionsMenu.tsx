@@ -13,7 +13,6 @@ interface LayerActionsMenuProps {
   layer: Layer;
   onEditText: () => void;
   onEditImage: () => void;
-  onAnimate: () => void;
   onDuplicate: () => void;
   onMoveFront: () => void;
   onMoveUp: () => void;
@@ -26,7 +25,6 @@ export const LayerActionsMenu: React.FC<LayerActionsMenuProps> = ({
   layer,
   onEditText,
   onEditImage,
-  onAnimate,
   onDuplicate,
   onMoveFront,
   onMoveUp,
@@ -59,13 +57,6 @@ export const LayerActionsMenu: React.FC<LayerActionsMenuProps> = ({
 
     // Common actions
     items.push(
-      {
-        id: "animate",
-        label: layer.animation
-          ? (t("editor.layers.actions.editAnimation") || "Edit Animation")
-          : (t("editor.layers.actions.addAnimation") || "Add Animation"),
-        icon: "sparkles-outline",
-      },
       {
         id: "duplicate",
         label: t("editor.layers.actions.duplicate") || "Duplicate",
@@ -111,9 +102,6 @@ export const LayerActionsMenu: React.FC<LayerActionsMenuProps> = ({
       case "edit-image":
         onEditImage();
         break;
-      case "animate":
-        onAnimate();
-        break;
       case "duplicate":
         onDuplicate();
         break;
@@ -133,7 +121,7 @@ export const LayerActionsMenu: React.FC<LayerActionsMenuProps> = ({
         onDelete();
         break;
     }
-  }, [onEditText, onEditImage, onAnimate, onDuplicate, onMoveFront, onMoveUp, onMoveDown, onMoveBack, onDelete]);
+  }, [onEditText, onEditImage, onDuplicate, onMoveFront, onMoveUp, onMoveDown, onMoveBack, onDelete]);
 
   return <ActionMenu actions={menuItems} onSelect={handleSelect} testID="layer-actions-menu" />;
 };

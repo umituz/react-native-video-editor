@@ -3,7 +3,7 @@
  * Orchestrator service that delegates to specialized layer operation services
  */
 
-import type { Scene, Animation } from "../../domain/entities/video-project.types";
+import type { Scene } from "../../domain/entities/video-project.types";
 import type { LayerOperationResult, LayerOrderAction } from "../../domain/entities/video-project.types";
 import { layerDeleteService } from "./layer-operations/layer-delete.service";
 import { layerOrderService } from "./layer-operations/layer-order.service";
@@ -70,20 +70,6 @@ class LayerManipulationService {
       layerId,
       width,
       height,
-    );
-  }
-
-  updateLayerAnimation(
-    scenes: Scene[],
-    sceneIndex: number,
-    layerId: string,
-    animation: Animation | undefined,
-  ): LayerOperationResult {
-    return layerTransformService.updateLayerAnimation(
-      scenes,
-      sceneIndex,
-      layerId,
-      animation,
     );
   }
 }

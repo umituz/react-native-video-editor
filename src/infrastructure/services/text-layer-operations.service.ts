@@ -29,11 +29,6 @@ class TextLayerOperationsService extends BaseLayerOperationsService<TextLayer> {
       fontWeight: (layerData.fontWeight as TextLayer["fontWeight"]) || "bold",
       color: layerData.color || defaultColor,
       textAlign: layerData.textAlign || "center",
-      animation: {
-        type: "fade",
-        duration: 500,
-        easing: "ease-in-out",
-      },
     };
   }
 

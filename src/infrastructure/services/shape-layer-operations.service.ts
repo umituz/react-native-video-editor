@@ -27,11 +27,6 @@ class ShapeLayerOperationsService extends BaseLayerOperationsService<ShapeLayer>
       fillColor: layerData.fillColor ?? defaultColor,
       borderColor: layerData.borderColor,
       borderWidth: layerData.borderWidth,
-      animation: {
-        type: "fade",
-        duration: 500,
-        easing: "ease-in-out",
-      },
     };
   }
 

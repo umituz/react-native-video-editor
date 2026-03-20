@@ -6,8 +6,6 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Gesture } from "react-native-gesture-handler";
-// @ts-ignore - react-native-reanimated is an optional peer dependency
-import { runOnJS } from "react-native-reanimated";
 
 interface UseDraggableLayerGesturesParams {
   initialX: number;
@@ -77,23 +75,20 @@ export function useDraggableLayerGestures({
   const gestureHandler = Gesture.Pan()
     .onStart(() => {
       startRef.current = { ...state, x: state.x, y: state.y };
-      runOnJS(onSelect)();
+      onSelect();
     })
     .onUpdate((event) => {
-      'worklet';
       const newX = startRef.current.x + event.translationX;
       const newY = startRef.current.y + event.translationY;
-      // Use runOnJS for state updates to prevent blocking UI thread
-      runOnJS(setState)({ x: newX, y: newY, width: state.width, height: state.height });
+      setState({ x: newX, y: newY, width: state.width, height: state.height });
     })
     .onEnd(() => {
-      'worklet';
       const clampedX = clamp(state.x, 0, canvasWidth - state.width);
       const clampedY = clamp(state.y, 0, canvasHeight - state.height);
       const newX = (clampedX / canvasWidth) * 100;
       const newY = (clampedY / canvasHeight) * 100;
-      runOnJS(setState)({ x: clampedX, y: clampedY, width: state.width, height: state.height });
-      runOnJS(onPositionChange)(newX, newY);
+      setState({ x: clampedX, y: clampedY, width: state.width, height: state.height });
+      onPositionChange(newX, newY);
     });
 
   const createResizeHandler = (
@@ -102,12 +97,10 @@ export function useDraggableLayerGestures({
   ) => {
     return Gesture.Pan()
       .onStart(() => {
-        'worklet';
         startRef.current = { ...state };
-        runOnJS(onSelect)();
+        onSelect();
       })
       .onUpdate((event) => {
-        'worklet';
         const newWidth = Math.max(MIN_SIZE, startRef.current.width + deltaX(event.translationX));
         const newHeight = Math.max(MIN_SIZE, startRef.current.height + deltaY(event.translationY));
         const clampedWidth = Math.min(newWidth, canvasWidth - startRef.current.x);
@@ -123,10 +116,9 @@ export function useDraggableLayerGestures({
           newY = Math.max(0, startRef.current.y + (startRef.current.height - clampedHeight));
         }
 
-        runOnJS(setState)({ x: newX, y: newY, width: clampedWidth, height: clampedHeight });
+        setState({ x: newX, y: newY, width: clampedWidth, height: clampedHeight });
       })
       .onEnd(() => {
-        'worklet';
         // Clamp position to canvas bounds
         const clampedX = Math.max(0, Math.min(state.x, canvasWidth - state.width));
         const clampedY = Math.max(0, Math.min(state.y, canvasHeight - state.height));
@@ -136,9 +128,9 @@ export function useDraggableLayerGestures({
         const newX = (clampedX / canvasWidth) * 100;
         const newY = (clampedY / canvasHeight) * 100;
 
-        runOnJS(onSizeChange)(newWidth, newHeight);
-        runOnJS(onPositionChange)(newX, newY);
-        runOnJS(setState)({ x: clampedX, y: clampedY, width: state.width, height: state.height });
+        onSizeChange(newWidth, newHeight);
+        onPositionChange(newX, newY);
+        setState({ x: clampedX, y: clampedY, width: state.width, height: state.height });
       });
   };
 

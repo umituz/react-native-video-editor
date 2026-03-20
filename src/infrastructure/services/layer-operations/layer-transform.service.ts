@@ -1,9 +1,9 @@
 /**
  * Layer Transform Service
- * Single Responsibility: Handle layer position, size, and animation updates
+ * Single Responsibility: Handle layer position and size updates
  */
 
-import type { Scene, Animation } from "../../../domain/entities/video-project.types";
+import type { Scene } from "../../../domain/entities/video-project.types";
 import type { LayerOperationResult } from "../../../domain/entities/video-project.types";
 
 class LayerTransformService {
@@ -111,56 +111,6 @@ class LayerTransformService {
           error instanceof Error
             ? error.message
             : "Failed to update layer size",
-      };
-    }
-  }
-
-  /**
-   * Update layer animation
-   */
-  updateLayerAnimation(
-    scenes: Scene[],
-    sceneIndex: number,
-    layerId: string,
-    animation: Animation | undefined,
-  ): LayerOperationResult {
-    try {
-      if (sceneIndex < 0 || sceneIndex >= scenes.length) {
-        return {
-          success: false,
-          updatedScenes: scenes,
-          error: "Invalid scene index",
-        };
-      }
-
-      const updatedScenes = [...scenes];
-      const layerIndex = updatedScenes[sceneIndex].layers.findIndex(
-        (l) => l.id === layerId,
-      );
-
-      if (layerIndex === -1) {
-        return {
-          success: false,
-          updatedScenes: scenes,
-          error: "Layer not found",
-        };
-      }
-
-      const existingLayer = updatedScenes[sceneIndex].layers[layerIndex];
-      updatedScenes[sceneIndex].layers[layerIndex] = {
-        ...existingLayer,
-        animation,
-      };
-
-      return { success: true, updatedScenes };
-    } catch (error) {
-      return {
-        success: false,
-        updatedScenes: scenes,
-        error:
-          error instanceof Error
-            ? error.message
-            : "Failed to update layer animation",
       };
     }
   }

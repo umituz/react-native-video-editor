@@ -1,13 +1,13 @@
 /**
  * useLayerManipulation Hook
- * Single Responsibility: Layer manipulation operations (delete, order, duplicate, position, size, animation)
+ * Single Responsibility: Layer manipulation operations (delete, order, duplicate, position, size)
  */
 
 import { useCallback } from "react";
 import { Alert } from "react-native";
 import { useLocalization } from "@umituz/react-native-settings";
 import { layerOperationsService } from "../../infrastructure/services/layer-operations.service";
-import type { Scene, LayerOrderAction, Animation } from "../../domain/entities/video-project.types";
+import type { Scene, LayerOrderAction } from "../../domain/entities/video-project.types";
 
 interface UseLayerManipulationParams {
   scenes: Scene[];
@@ -23,10 +23,6 @@ interface UseLayerManipulationReturn {
   duplicateLayer: (layerId: string) => void;
   updateLayerPosition: (layerId: string, x: number, y: number) => void;
   updateLayerSize: (layerId: string, width: number, height: number) => void;
-  updateLayerAnimation: (
-    layerId: string,
-    animation: Animation | undefined,
-  ) => void;
 }
 
 export function useLayerManipulation({
@@ -136,36 +132,11 @@ export function useLayerManipulation({
     [scenes, sceneIndex, onUpdateScenes],
   );
 
-  const updateLayerAnimation = useCallback(
-    (layerId: string, animation: Animation | undefined) => {
-      const result = layerOperationsService.updateLayerAnimation(
-        scenes,
-        sceneIndex,
-        layerId,
-        animation,
-      );
-      if (result.success) {
-        onUpdateScenes(result.updatedScenes);
-        onCloseBottomSheet();
-        Alert.alert(
-          t("editor.layers.animation.success"),
-          t(animation
-            ? "editor.layers.animation.applied"
-            : "editor.layers.animation.removed"),
-        );
-      } else {
-        Alert.alert(t("editor.layers.animation.error"));
-      }
-    },
-    [scenes, sceneIndex, onUpdateScenes, onCloseBottomSheet, t],
-  );
-
   return {
     deleteLayer,
     changeLayerOrder,
     duplicateLayer,
     updateLayerPosition,
     updateLayerSize,
-    updateLayerAnimation,
   };
 }

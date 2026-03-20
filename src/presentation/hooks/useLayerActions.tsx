@@ -1,6 +1,6 @@
 /**
  * useLayerActions Hook
- * Single Responsibility: Layer action handlers (add, edit, animate)
+ * Single Responsibility: Layer action handlers (add, edit)
  */
 
 import { useCallback } from "react";
@@ -8,7 +8,6 @@ import { useLocalization } from "@umituz/react-native-settings";
 import { TextLayerEditor } from "../components/TextLayerEditor";
 import { ImageLayerEditor } from "../components/ImageLayerEditor";
 import { ShapeLayerEditor } from "../components/ShapeLayerEditor";
-import { AnimationEditor } from "../components/AnimationEditor";
 import type { Scene, Layer } from "../../domain/entities/video-project.types";
 import type { UseEditorLayersReturn } from "./useEditorLayers";
 import type { UseEditorBottomSheetReturn } from "./useEditorBottomSheet";
@@ -26,7 +25,6 @@ interface UseLayerActionsReturn {
   handleAddImage: () => void;
   handleEditImageLayer: (layerId: string) => void;
   handleAddShape: () => void;
-  handleAnimate: (layerId: string) => void;
 }
 
 export function useLayerActions({
@@ -120,47 +118,11 @@ export function useLayerActions({
     });
   }, [layers.addShapeLayer, openBottomSheet, closeBottomSheet, t]);
 
-  const handleAnimate = useCallback(
-    (layerId: string) => {
-      if (!currentScene) return;
-      const layer = currentScene.layers.find((l: Layer) => l.id === layerId);
-      if (!layer) return;
-
-      openBottomSheet({
-        title: layer.animation
-          ? t("editor.layers.animation.edit")
-          : t("editor.layers.animation.add"),
-        children: (
-          <AnimationEditor
-            animation={layer.animation}
-            onSave={(animation) =>
-              layers.updateLayerAnimation(layerId, animation)
-            }
-            onRemove={
-              layer.animation
-                ? () => layers.updateLayerAnimation(layerId, undefined)
-                : undefined
-            }
-            onCancel={closeBottomSheet}
-          />
-        ),
-      });
-    },
-    [
-      currentScene,
-      layers.updateLayerAnimation,
-      openBottomSheet,
-      closeBottomSheet,
-      t,
-    ],
-  );
-
   return {
     handleAddText,
     handleEditLayer,
     handleAddImage,
     handleEditImageLayer,
     handleAddShape,
-    handleAnimate,
   };
 }

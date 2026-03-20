@@ -7,7 +7,7 @@ import { textLayerOperationsService } from "./text-layer-operations.service";
 import { imageLayerOperationsService } from "./image-layer-operations.service";
 import { shapeLayerOperationsService } from "./shape-layer-operations.service";
 import { layerManipulationService } from "./layer-manipulation.service";
-import type { Scene, TextLayer, ImageLayer, Animation } from "../../domain/entities/video-project.types";
+import type { Scene, TextLayer, ImageLayer } from "../../domain/entities/video-project.types";
 import type {
   LayerOperationResult,
   LayerOrderAction,
@@ -174,23 +174,6 @@ class LayerOperationsService {
       layerId,
       width,
       height,
-    );
-  }
-
-  /**
-   * Update layer animation
-   */
-  updateLayerAnimation(
-    scenes: Scene[],
-    sceneIndex: number,
-    layerId: string,
-    animation: Animation | undefined,
-  ): LayerOperationResult {
-    return layerManipulationService.updateLayerAnimation(
-      scenes,
-      sceneIndex,
-      layerId,
-      animation,
     );
   }
 }

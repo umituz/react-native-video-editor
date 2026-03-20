@@ -20,11 +20,6 @@ class ImageLayerOperationsService extends BaseLayerOperationsService<ImageLayer>
       size: { width: 70, height: 40 },
       rotation: 0,
       opacity: layerData.opacity ?? 1,
-      animation: {
-        type: "fade",
-        duration: 500,
-        easing: "ease-in-out",
-      },
     };
   }
 

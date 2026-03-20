@@ -15,7 +15,6 @@ interface UseMenuActionsParams {
   bottomSheet: UseEditorBottomSheetReturn;
   handleEditLayer: () => void;
   handleEditImageLayer: (layerId: string) => void;
-  handleAnimate: (layerId: string) => void;
 }
 
 interface UseMenuActionsReturn {
@@ -27,7 +26,6 @@ export function useMenuActions({
   bottomSheet,
   handleEditLayer,
   handleEditImageLayer,
-  handleAnimate,
 }: UseMenuActionsParams): UseMenuActionsReturn {
   const { openBottomSheet, closeBottomSheet } = bottomSheet;
 
@@ -57,11 +55,6 @@ export function useMenuActions({
             onEditImage={() => {
               closeBottomSheet();
               const timer = setTimeout(() => handleEditImageLayer(layer.id), 300);
-              timersRef.current.push(timer);
-            }}
-            onAnimate={() => {
-              closeBottomSheet();
-              const timer = setTimeout(() => handleAnimate(layer.id), 300);
               timersRef.current.push(timer);
             }}
             onDuplicate={() => {
@@ -96,7 +89,6 @@ export function useMenuActions({
       layers,
       handleEditLayer,
       handleEditImageLayer,
-      handleAnimate,
       openBottomSheet,
       closeBottomSheet,
     ],

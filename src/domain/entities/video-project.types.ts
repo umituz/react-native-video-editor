@@ -31,14 +31,6 @@ export interface Subtitle {
 
 export type TransitionType = "fade" | "slide" | "zoom" | "wipe" | "none";
 
-export type AnimationType =
-  | "fade"
-  | "slide"
-  | "bounce"
-  | "zoom"
-  | "rotate"
-  | "none";
-
 export interface Position {
   x: number;
   y: number;
@@ -47,13 +39,6 @@ export interface Position {
 export interface Size {
   width: number;
   height: number;
-}
-
-export interface Animation {
-  type: AnimationType;
-  duration: number;
-  delay?: number;
-  easing?: "linear" | "ease-in" | "ease-out" | "ease-in-out";
 }
 
 export interface Transition {
@@ -90,7 +75,6 @@ export interface TextLayer {
     | "900";
   color: string;
   textAlign: "left" | "center" | "right";
-  animation?: Animation;
 }
 
 export interface ImageLayer {
@@ -101,7 +85,6 @@ export interface ImageLayer {
   size: Size;
   rotation: number;
   opacity: number;
-  animation?: Animation;
 }
 
 export interface VideoLayer {
@@ -115,7 +98,6 @@ export interface VideoLayer {
   startTime: number;
   endTime: number;
   volume: number;
-  animation?: Animation;
 }
 
 export interface ShapeLayer {
@@ -129,7 +111,6 @@ export interface ShapeLayer {
   fillColor: string;
   borderColor?: string;
   borderWidth?: number;
-  animation?: Animation;
 }
 
 export type Layer = TextLayer | ImageLayer | VideoLayer | ShapeLayer;

@@ -14,7 +14,7 @@ import type {
   LayerOrderAction,
   Scene,
 } from "../../domain/entities/video-project.types";
-import type { TextLayer, ImageLayer, Animation } from "../../domain/entities/video-project.types";
+import type { TextLayer, ImageLayer } from "../../domain/entities/video-project.types";
 
 interface UseEditorLayersParams {
   projectId: string;
@@ -37,10 +37,6 @@ export interface UseEditorLayersReturn {
   duplicateLayer: (layerId: string) => void;
   updateLayerPosition: (layerId: string, x: number, y: number) => void;
   updateLayerSize: (layerId: string, width: number, height: number) => void;
-  updateLayerAnimation: (
-    layerId: string,
-    animation: Animation | undefined,
-  ) => void;
 }
 
 export function useEditorLayers({
@@ -93,6 +89,5 @@ export function useEditorLayers({
     duplicateLayer: layerManipulation.duplicateLayer,
     updateLayerPosition: layerManipulation.updateLayerPosition,
     updateLayerSize: layerManipulation.updateLayerSize,
-    updateLayerAnimation: layerManipulation.updateLayerAnimation,
   };
 }

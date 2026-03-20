@@ -15,13 +15,11 @@ export type {
   ImageLayer,
   VideoLayer,
   ShapeLayer,
-  Animation,
   Audio,
   ExportSettings,
   AspectRatio,
   LayerType,
   TransitionType,
-  AnimationType,
   Position,
   Size,
   Transition,
@@ -73,7 +71,6 @@ export { SceneActionsMenu } from "./presentation/components/SceneActionsMenu";
 export { TextLayerEditor } from "./presentation/components/TextLayerEditor";
 export { AudioEditor } from "./presentation/components/AudioEditor";
 export { ShapeLayerEditor } from "./presentation/components/ShapeLayerEditor";
-export { AnimationEditor } from "./presentation/components/AnimationEditor";
 export { DraggableLayer } from "./presentation/components/DraggableLayer";
 export { ImageLayerEditor } from "./presentation/components/ImageLayerEditor";
 export { ExportDialog } from "./presentation/components/ExportDialog";
@@ -94,7 +91,6 @@ export { useEditorActions } from "./presentation/hooks/useEditorActions";
 export { useTextLayerForm } from "./presentation/hooks/useTextLayerForm";
 export { useImageLayerForm } from "./presentation/hooks/useImageLayerForm";
 export { useShapeLayerForm } from "./presentation/hooks/useShapeLayerForm";
-export { useAnimationLayerForm } from "./presentation/hooks/useAnimationLayerForm";
 export { useAudioLayerForm } from "./presentation/hooks/useAudioLayerForm";
 export { useTextLayerOperations } from "./presentation/hooks/useTextLayerOperations";
 export { useImageLayerOperations } from "./presentation/hooks/useImageLayerOperations";

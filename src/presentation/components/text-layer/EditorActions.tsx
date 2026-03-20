@@ -14,6 +14,8 @@ interface EditorActionsProps {
   onSave: () => void;
   saveLabel: string;
   isValid: boolean;
+  onRemove?: () => void;
+  removeLabel?: string;
 }
 
 export const EditorActions: React.FC<EditorActionsProps> = ({
@@ -21,6 +23,8 @@ export const EditorActions: React.FC<EditorActionsProps> = ({
   onSave,
   saveLabel,
   isValid,
+  onRemove,
+  removeLabel,
 }) => {
   const tokens = useAppDesignTokens();
   const { t } = useLocalization();
@@ -29,6 +33,24 @@ export const EditorActions: React.FC<EditorActionsProps> = ({
     <View
       style={[styles.actions, { borderTopColor: tokens.colors.borderLight }]}
     >
+      {onRemove && (
+        <TouchableOpacity
+          style={[
+            styles.actionButton,
+            styles.removeButton,
+            { borderColor: tokens.colors.error },
+          ]}
+          onPress={onRemove}
+        >
+          <AtomicText
+            type="bodyMedium"
+            style={{ color: tokens.colors.error }}
+          >
+            {removeLabel || t("common.buttons.remove")}
+          </AtomicText>
+        </TouchableOpacity>
+      )}
+
       <TouchableOpacity
         style={[
           styles.actionButton,
@@ -82,6 +104,9 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
+  },
+  removeButton: {
+    borderWidth: 1,
   },
   cancelButton: {
     borderWidth: 1,

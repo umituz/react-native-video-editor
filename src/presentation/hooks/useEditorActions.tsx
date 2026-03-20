@@ -29,7 +29,6 @@ interface UseEditorActionsReturn {
   handleEditImageLayer: (layerId: string) => void;
   handleAddShape: () => void;
   handleAudio: () => void;
-  handleAnimate: (layerId: string) => void;
   handleLayerActionsPress: (layer: Layer) => void;
   handleSceneLongPress: (index: number) => void;
   handleExport: () => void;
@@ -63,7 +62,6 @@ export function useEditorActions({
     bottomSheet,
     handleEditLayer: layerActions.handleEditLayer,
     handleEditImageLayer: layerActions.handleEditImageLayer,
-    handleAnimate: layerActions.handleAnimate,
   });
 
   const exportActions = useExportActions({
@@ -84,7 +82,6 @@ export function useEditorActions({
     handleEditImageLayer: layerActions.handleEditImageLayer,
     handleAddShape: layerActions.handleAddShape,
     handleAudio: sceneActions.handleAudio,
-    handleAnimate: layerActions.handleAnimate,
     handleLayerActionsPress: menuActions.handleLayerActionsPress,
     handleSceneLongPress,
     handleExport: exportActions.handleExport,
