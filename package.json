@@ -42,7 +42,17 @@
     "expo-image": ">=1.0.0",
     "react": ">=18.2.0",
     "react-native": ">=0.74.0",
+    "react-native-gesture-handler": ">=2.0.0",
+    "react-native-reanimated": ">=3.0.0",
     "zustand": ">=4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react-native-gesture-handler": {
+      "optional": true
+    },
+    "react-native-reanimated": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@gorhom/bottom-sheet": "^5.2.8",
@@ -64,6 +74,7 @@
     "react": "19.1.0",
     "react-native": "0.81.5",
     "react-native-gesture-handler": "^2.30.0",
+    "react-native-reanimated": "^3.16.0",
     "typescript": "~5.9.2"
   },
   "publishConfig": {
