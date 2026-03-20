@@ -126,11 +126,17 @@ export class EditorService {
       errors.push("Layer type is required");
     }
 
-    if (layer.type === "image" && !(layer as any).uri) {
+    // Type guards for layer-specific properties
+    const isImageLayer = (l: Partial<Layer>): l is Partial<ImageLayer> =>
+      l.type === "image";
+    const isTextLayer = (l: Partial<Layer>): l is Partial<TextLayer> =>
+      l.type === "text";
+
+    if (isImageLayer(layer) && !layer.uri) {
       errors.push("Image layer requires URI");
     }
 
-    if (layer.type === "text" && !(layer as any).content) {
+    if (isTextLayer(layer) && !layer.content) {
       errors.push("Text layer requires content");
     }
 

@@ -41,7 +41,7 @@ const ToolbarButtonComp = React.memo<{ button: ToolbarButton; styles: any }>(({ 
     accessibilityRole="button"
     accessibilityLabel={button.label}
   >
-    <AtomicIcon name={button.icon as any} size="sm" color={button.destructive ? "error" : "primary"} />
+    <AtomicIcon name={button.icon} size="sm" color={button.destructive ? "error" : "primary"} />
     <AtomicText type="labelSmall" style={styles.label}>{button.label}</AtomicText>
     {button.showBadge && <View style={[styles.badge, { backgroundColor: button.badgeColor }]}><AtomicText style={styles.badgeText}>!</AtomicText></View>}
   </TouchableOpacity>
