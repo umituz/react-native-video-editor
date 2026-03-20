@@ -28,22 +28,27 @@ export interface SelectorProps<T = string> {
   testID?: string;
 }
 
-const SelectorItem = React.memo<{ item: SelectorItem; isSelected: boolean; onSelect: () => void; styles: any; icon: boolean; colorPreview: boolean }>(
-  ({ item, isSelected, onSelect, styles, icon, colorPreview }) => (
-    <TouchableOpacity
-      style={[styles.item, isSelected && styles.itemSelected, item.disabled && styles.itemDisabled]}
-      onPress={onSelect}
-      disabled={item.disabled}
-      accessibilityRole="button"
-      accessibilityState={{ selected: isSelected }}
-      accessibilityLabel={item.label}
-    >
-      {colorPreview && item.color && <View style={[styles.colorPreview, { backgroundColor: item.color }]} />}
-      {icon && item.icon && <AtomicIcon name={item.icon} size="sm" color="textPrimary" />}
-      <AtomicText type="labelSmall" style={styles.label} color={isSelected ? "primary" : "textPrimary"}>{item.label}</AtomicText>
-    </TouchableOpacity>
-  )
-);
+const SelectorItem = React.memo(<T,>({ item, isSelected, onSelect, styles, icon, colorPreview }: {
+  item: SelectorItem<T>;
+  isSelected: boolean;
+  onSelect: () => void;
+  styles: any;
+  icon: boolean;
+  colorPreview: boolean;
+}) => (
+  <TouchableOpacity
+    style={[styles.item, isSelected && styles.itemSelected, item.disabled && styles.itemDisabled]}
+    onPress={onSelect}
+    disabled={item.disabled}
+    accessibilityRole="button"
+    accessibilityState={{ selected: isSelected }}
+    accessibilityLabel={item.label}
+  >
+    {colorPreview && item.color && <View style={[styles.colorPreview, { backgroundColor: item.color }]} />}
+    {icon && item.icon && <AtomicIcon name={item.icon} size="sm" color="textPrimary" />}
+    <AtomicText type="labelSmall" style={styles.label} color={isSelected ? "primary" : "textPrimary"}>{item.label}</AtomicText>
+  </TouchableOpacity>
+));
 
 SelectorItem.displayName = "SelectorItem";
 

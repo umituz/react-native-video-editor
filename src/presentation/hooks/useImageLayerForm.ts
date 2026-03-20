@@ -36,6 +36,9 @@ export function useImageLayerForm(
         if (!value || (typeof value === "string" && value.trim().length === 0)) {
           return "Image URI is required";
         }
+        if (typeof value !== "string") {
+          return "Image URI must be a string";
+        }
         return null;
       },
     },

@@ -55,7 +55,6 @@ export const SubtitleModal: React.FC<SubtitleModalProps> = ({
       paddingHorizontal: tokens.spacing.md,
       paddingTop: tokens.spacing.md,
       paddingBottom: tokens.spacing.xl,
-      maxHeight: "90%" as const,
     },
     handle: {
       width: 36,

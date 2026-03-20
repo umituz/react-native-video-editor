@@ -52,6 +52,9 @@ export function useTextLayerForm(
         if (!value || (typeof value === "string" && value.trim().length === 0)) {
           return "Text content is required";
         }
+        if (typeof value !== "string") {
+          return "Text content must be a string";
+        }
         return null;
       },
     },
